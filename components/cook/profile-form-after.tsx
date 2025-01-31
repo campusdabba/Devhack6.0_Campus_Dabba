@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 "use client";
 import { ChangeEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -75,7 +73,7 @@ const formSchema = z.object({
   password: z.string().optional(),
   latitude: z.number().optional(),
   longitude: z.number().optional(),
-  profile_picture: z.string().optional(),
+  profile_image: z.string().optional(),
   cuisineType: z.string(),
   description: z.string().min(50, {
     message: "Bio must be at least 50 characters.",
@@ -95,8 +93,8 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export function CookProfileForm() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const supabase = createClient();
   const [imageUrl, setImageUrl] = useState("");
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -112,19 +110,55 @@ export function CookProfileForm() {
     },
   });
   useEffect(() => {
-    const registrationData = localStorage.getItem("registrationData");
-    if (registrationData) {
-      const parsedData = JSON.parse(registrationData);
-      if (parsedData && parsedData.cook_name) {
-        const nameParts = parsedData.cook_name.split(" ");
-        form.setValue("first_name", nameParts[0] || "");
-        form.setValue("last_name", nameParts[1] || "");
+    fetchCookData();
+  }, []);
+
+  const fetchCookData = async () => {
+    try {
+      const {
+        data: { user: authUser },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (authUser) {
+        const { data: cookData, error: cookError } = await supabase
+          .from("cooks")
+          .select("*")
+          .eq("cook_id", authUser.id)
+          .single();
+
+        if (cookError) throw cookError;
+
+        if (cookData) {
+          form.setValue("first_name", cookData.first_name);
+          form.setValue("last_name", cookData.last_name);
+          form.setValue("email", cookData.email);
+          form.setValue("phone", cookData.phone);
+          form.setValue("street", cookData.address.street);
+          form.setValue("city", cookData.address.city);
+          form.setValue("state", cookData.address.state);
+          form.setValue("profile_image", cookData.profile_image);
+          setImageUrl(cookData.profile_image);
+          form.setValue("pincode", cookData.address.pincode);
+          form.setValue("cuisineType", cookData.cuisineType);
+          form.setValue("description", cookData.description);
+          if (cookData.certification) {
+            setCertifications(cookData.certification);
+            form.setValue("certification", cookData.certification);
+          }
+        }
       }
-      form.setValue("email", parsedData.cook_email);
-      form.setValue("phone", parsedData.cook_phone);
-      form.setValue("password", parsedData.cook_password);
+    } catch (error) {
+      console.error("Error fetching cook data:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load cook data",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
-  }, [form]);
+  };
 
   const addCertification = () => {
     const newCert = {
@@ -159,14 +193,13 @@ export function CookProfileForm() {
       });
     }
   };
-
   const handleLocationSelect = (lat: number, lng: number) => {
     form.setValue("latitude", lat);
     form.setValue("longitude", lng);
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
+    setLoading(true);
 
     try {
       const supabase = await createClient();
@@ -177,7 +210,7 @@ export function CookProfileForm() {
 
       if (!user) throw new Error("No user found");
 
-      let finalImageUrl = values.profile_picture; // Keep existing if no new upload
+      let finalImageUrl = values.profile_image; // Keep existing if no new upload
       if (uploadedImage) {
         const fileExt = uploadedImage.name.split(".").pop();
         const fileName = `${user.id}-${Math.random()}.${fileExt}`;
@@ -194,8 +227,9 @@ export function CookProfileForm() {
         finalImageUrl = publicUrl;
       }
 
-      const { error } = await supabase.from("cooks").upsert(
-        {
+      const { error } = await supabase
+        .from("cooks")
+        .update({
           cook_id: user.id, // Explicitly set the id from auth
           email: values.email,
           first_name: values.first_name,
@@ -213,12 +247,9 @@ export function CookProfileForm() {
           certification: values.certification,
           password: values.password,
           region: values.state,
-        },
-        {
-          onConflict: "id",
-          returning: "minimal",
-        }
-      );
+        })
+        .eq("cook_id", user.id) // Match the existing record using cook_id
+        .single();
 
       if (error) {
         console.error("Update error:", error);
@@ -239,106 +270,13 @@ export function CookProfileForm() {
         variant: "destructive",
       });
     } finally {
-      setIsLoading(false);
-=======
-=======
->>>>>>> origin/main
-"use client"
-
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader2, Upload } from "lucide-react"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-
-import { MapPreview } from "@/components/map/map-preview"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
-import { CuisineType } from "@/types"
-
-const formSchema = z.object({
-  address: z.string().min(10, {
-    message: "Address must be at least 10 characters.",
-  }),
-  latitude: z.number().optional(),
-  longitude: z.number().optional(),
-  cuisineType: z.string(),
-  bio: z.string().min(50, {
-    message: "Bio must be at least 50 characters.",
-  }),
-  certification: z.string().optional(),
-})
-
-export function CookProfileForm() {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [debouncedAddress, setDebouncedAddress] = useState("")
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      address: "",
-      latitude: undefined,
-      longitude: undefined,
-      cuisineType: "indian",
-      bio: "",
-    },
-  })
-
-  const watchAddress = form.watch("address")
-
-  // Update debounced address
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedAddress(watchAddress)
-    }, 1000)
-
-    return () => clearTimeout(timer)
-  }, [watchAddress])
-
-  const handleLocationSelect = (lat: number, lng: number) => {
-    form.setValue("latitude", lat)
-    form.setValue("longitude", lng)
-  }
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true)
-
-    try {
-      // Here we would typically make an API call to update the profile
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-
-      toast({
-        title: "Profile updated!",
-        description: "Your profile has been successfully updated.",
-      })
-
-      router.push("/cook/dashboard")
-    } catch (error) {
-      toast({
-        title: "Something went wrong.",
-        description: "Please try again later.",
-        variant: "destructive",
-      })
-    } finally {
-      setIsLoading(false)
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
+      setLoading(false);
     }
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-<<<<<<< HEAD
-<<<<<<< HEAD
         <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}
@@ -347,7 +285,7 @@ export function CookProfileForm() {
               <FormItem>
                 <FormLabel>First Name</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled />
+                  <Input {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -359,7 +297,7 @@ export function CookProfileForm() {
               <FormItem>
                 <FormLabel>Last Name</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled />
+                  <Input {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -372,48 +310,29 @@ export function CookProfileForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input {...field} disabled />
+                <Input {...field} />
               </FormControl>
-=======
-=======
->>>>>>> origin/main
-        <FormField
-          control={form.control}
-          name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Address</FormLabel>
-              <FormControl>
-                <Textarea placeholder="Enter your complete address" className="resize-none" {...field} />
-              </FormControl>
-              <FormMessage />
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
             </FormItem>
           )}
         />
 
         <FormField
           control={form.control}
-<<<<<<< HEAD
-<<<<<<< HEAD
           name="phone"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Phone</FormLabel>
               <FormControl>
-                <Input {...field} disabled />
+                <Input {...field} />
               </FormControl>
             </FormItem>
           )}
         />
 
         <div className="space-y-2">
-          <Label htmlFor="profile-image">Profile Picture</Label>
+          <Label htmlFor="profile_image">Profile Picture</Label>
           <Input
-            id="profile-image"
+            id="profile_image"
             type="file"
             accept="image/*"
             onChange={(event: ChangeEvent<HTMLInputElement>) => {
@@ -473,6 +392,7 @@ export function CookProfileForm() {
                 <FormLabel>State</FormLabel>
                 <Select
                   onValueChange={field.onChange}
+                  value={field.value}
                   defaultValue={field.value}
                 >
                   <FormControl>
@@ -505,21 +425,6 @@ export function CookProfileForm() {
               </FormControl>
               <FormMessage />
             </FormItem>
-=======
-=======
->>>>>>> origin/main
-          name="location"
-          render={() => (
-            <MapPreview
-              address={debouncedAddress}
-              latitude={form.getValues("latitude")}
-              longitude={form.getValues("longitude")}
-              onLocationSelect={handleLocationSelect}
-            />
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
           )}
         />
 
@@ -550,23 +455,10 @@ export function CookProfileForm() {
 
         <FormField
           control={form.control}
-<<<<<<< HEAD
-<<<<<<< HEAD
           name="description"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Description</FormLabel>
-=======
-=======
->>>>>>> origin/main
-          name="bio"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
               <FormControl>
                 <Textarea
                   placeholder="Tell us about your cooking experience and specialties"
@@ -574,23 +466,13 @@ export function CookProfileForm() {
                   {...field}
                 />
               </FormControl>
-<<<<<<< HEAD
-<<<<<<< HEAD
               <FormDescription>
                 This will be displayed to students when they view your profile
               </FormDescription>
-=======
-              <FormDescription>This will be displayed to students when they view your profile</FormDescription>
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-              <FormDescription>This will be displayed to students when they view your profile</FormDescription>
->>>>>>> origin/main
               <FormMessage />
             </FormItem>
           )}
         />
-<<<<<<< HEAD
-<<<<<<< HEAD
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-medium">Certifications</h3>
@@ -662,70 +544,12 @@ export function CookProfileForm() {
             </div>
           ))}
         </div>
-=======
-=======
->>>>>>> origin/main
 
-        <FormField
-          control={form.control}
-          name="certification"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Cooking Certification</FormLabel>
-              <FormControl>
-                <div className="flex items-center gap-4">
-                  <Input
-                    type="file"
-                    accept="image/*,.pdf"
-                    className="hidden"
-                    id="certification"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0]
-                      if (file) {
-                        field.onChange(file.name)
-                      }
-                    }}
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => {
-                      document.getElementById("certification")?.click()
-                    }}
-                  >
-                    <Upload className="mr-2 h-4 w-4" />
-                    Upload Certificate
-                  </Button>
-                  {field.value && <span className="text-sm">{field.value}</span>}
-                </div>
-              </FormControl>
-              <FormDescription>Upload any cooking certifications you may have (optional)</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
-
-        <Button type="submit" disabled={isLoading}>
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        <Button type="submit" disabled={loading}>
+          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Save Profile
         </Button>
       </form>
     </Form>
-<<<<<<< HEAD
-<<<<<<< HEAD
   );
 }
-=======
-  )
-}
-
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-  )
-}
-
->>>>>>> origin/main

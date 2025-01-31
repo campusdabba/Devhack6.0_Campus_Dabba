@@ -22,7 +22,15 @@ export function UserNav({ onLogout }: { onLogout: () => void }) {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
+<<<<<<< HEAD
+<<<<<<< HEAD
+          <Link href="/profile">Profile</Link>
+=======
           <Link href="/dashboard">Profile</Link>
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+          <Link href="/dashboard">Profile</Link>
+>>>>>>> origin/main
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/settings">Settings</Link>

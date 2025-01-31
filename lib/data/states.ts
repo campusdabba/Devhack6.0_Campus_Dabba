@@ -2,6 +2,37 @@ import type { Cook, MenuItem } from "@/types"
 
 export const states = [
   "All States",
+<<<<<<< HEAD
+<<<<<<< HEAD
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Tamil Nadu",
+  "Telangana",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+];
+=======
+=======
+>>>>>>> origin/main
   "Maharashtra",
   "Delhi",
   "Karnataka",
@@ -17,6 +48,10 @@ export const states = [
 =======
 ]
 >>>>>>> a6396a4 (Version lOLZ)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
 
 export type State = (typeof states)[number]
 
@@ -64,6 +99,25 @@ export const cooksByState: Record<State, (Cook & { menuItems: MenuItem[] })[]> =
           dayOfWeek: 1,
           isAvailable: true,
         },
+<<<<<<< HEAD
+<<<<<<< HEAD
+        {
+          id: "1",
+          cookId: "1",
+          name: "Friday Special Thali", 
+          description: "Friday's special menu",
+          price: 150,
+          dietaryType: "veg",
+          cuisineType: "indian",
+          mealType: "lunch",
+          dayOfWeek: 5, // Change this to match Friday
+          isAvailable: true
+        },
+        
+=======
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
       ],
     },
   ],

@@ -1,4 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
 "use client"
 
 import Link from "next/link"
@@ -10,6 +15,10 @@ import { Button } from "@/components/ui/button"
 import { useCart } from "@/components/providers/cart-provider"
 import { useToast } from "@/components/ui/use-toast"
 =======
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
 "use client";
 
 import Link from "next/link";
@@ -21,10 +30,23 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/providers/cart-provider";
 import { useToast } from "@/components/ui/use-toast";
 import InputSearch from "@/components/ui/search-bar";
+<<<<<<< HEAD
+<<<<<<< HEAD
+import { UserNav } from "@/components/layout/User-nav";
+import { createClient } from "@/utils/supabase/client";
+import { Session } from "@supabase/supabase-js";
+import Image from "next/image";
+=======
+=======
+>>>>>>> origin/main
 import { UserNav } from "@/components/layout/user-nav";
 import { createClient } from "@/utils/supabase/client";
 import { Session } from "@supabase/supabase-js";
 >>>>>>> a6396a4 (Version lOLZ)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
 
 const navItems = [
   {
@@ -44,6 +66,11 @@ const navItems = [
     href: "/cook/register",
   },
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
 ]
 
 export function MainNav() {
@@ -66,6 +93,10 @@ export function MainNav() {
     router.push("/login")
   }
 =======
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
 ];
 
 export function MainNav() {
@@ -101,17 +132,40 @@ export function MainNav() {
     });
     router.push("/login");
   };
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
 >>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> origin/main
 
   return (
     <div className="mr-4 flex items-center justify-between w-full">
       <div className="flex items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
 <<<<<<< HEAD
+<<<<<<< HEAD
+          <Image
+            src="https://ejtjwejiulepzcglswis.supabase.co/storage/v1/object/public/webpage-images//logo.png"
+            alt="CampusDabba Logo"
+            width={60}
+            height={60}
+            className="mr-4 rounded-lg"
+          />
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
           <span className="hidden font-bold sm:inline-block">FoodConnect</span>
 =======
           <span className="hidden font-bold sm:inline-block">Campus Dabba</span>
 >>>>>>> a6396a4 (Version lOLZ)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
         </Link>
         <nav className="flex items-center space-x-6 text-sm font-medium">
           {navItems.map((item) => (
@@ -121,12 +175,24 @@ export function MainNav() {
               className={cn(
                 "transition-colors hover:text-foreground/80",
 <<<<<<< HEAD
+<<<<<<< HEAD
+                pathname === item.href
+                  ? "text-foreground"
+                  : "text-foreground/60"
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
                 pathname === item.href ? "text-foreground" : "text-foreground/60",
 =======
                 pathname === item.href
                   ? "text-foreground"
                   : "text-foreground/60"
 >>>>>>> a6396a4 (Version lOLZ)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
               )}
             >
               {item.title}
@@ -136,15 +202,41 @@ export function MainNav() {
       </div>
       <div className="flex items-center space-x-4">
 <<<<<<< HEAD
+<<<<<<< HEAD
+        {![
+          "/search",
+          "/auth/login",
+          "/auth/register",
+          "/auth/registration",
+          "/cook/register",
+          "/cook/login",
+          "/cook/registration",
+        ].includes(pathname) && (
+          <Link href="/chatbot">
+=======
+<<<<<<< HEAD
 =======
         {!["/search", "/auth/login", "/auth/register"].includes(pathname) && (
           <Link href="/search">
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+=======
+        {!["/search", "/auth/login", "/auth/register"].includes(pathname) && (
+          <Link href="/search">
+>>>>>>> origin/main
             <InputSearch />
           </Link>
         )}
       </div>
       <div className="flex items-center space-x-4">
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
 >>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> origin/main
         <Button variant="outline" size="sm" asChild>
           <Link href="/cart" className="flex items-center gap-2">
             <ShoppingCart className="h-4 w-4" />
@@ -153,6 +245,11 @@ export function MainNav() {
           </Link>
         </Button>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
         {isLoggedIn ? (
           <Button variant="ghost" size="sm" onClick={handleLogout}>
             <LogOut className="h-4 w-4 mr-2" />
@@ -162,6 +259,10 @@ export function MainNav() {
           <Button variant="ghost" size="sm" asChild>
             <Link href="/login">
 =======
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
         {session ? (
           <UserNav
             onLogout={async () => {
@@ -185,7 +286,14 @@ export function MainNav() {
         ) : (
           <Button variant="ghost" size="sm" asChild>
             <Link href="/auth/login">
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
 >>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> origin/main
               <LogIn className="h-4 w-4 mr-2" />
               Login
             </Link>
@@ -194,6 +302,13 @@ export function MainNav() {
       </div>
     </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
+  );
+}
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
   )
 }
 
@@ -201,3 +316,7 @@ export function MainNav() {
   );
 }
 >>>>>>> a6396a4 (Version lOLZ)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main

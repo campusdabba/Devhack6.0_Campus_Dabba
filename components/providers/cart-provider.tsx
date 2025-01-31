@@ -3,6 +3,14 @@
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
 <<<<<<< HEAD
+<<<<<<< HEAD
+import { CartContextType, CartItem, MenuItem } from '@/types'
+
+
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
 import type { MenuItem } from "@/types"
 
 interface CartItem extends MenuItem {
@@ -21,6 +29,10 @@ import { CartContextType, CartItem, MenuItem } from '@/types'
 
 
 >>>>>>> a6396a4 (Version lOLZ)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
@@ -71,23 +83,46 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
   const updateQuantity = (id: string, quantity: number) => {
     setCart(prev => prev.map(i => 
       i.id === id ? {...i, quantity} : i
     ))
   }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
 >>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> origin/main
   const getCartTotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0)
   }
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart,updateQuantity, clearCart, getCartTotal }}>
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
     <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, getCartTotal }}>
 =======
     <CartContext.Provider value={{ cart, addToCart, removeFromCart,updateQuantity, clearCart, getCartTotal }}>
 >>>>>>> a6396a4 (Version lOLZ)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
       {children}
     </CartContext.Provider>
   )

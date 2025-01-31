@@ -1,4 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -12,6 +17,10 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Switch } from "@/components/ui/switch"
 import { toast } from "@/components/ui/use-toast"
 =======
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,7 +41,14 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
 >>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> origin/main
 
 const settingsFormSchema = z.object({
   marketingEmails: z.boolean().default(false).optional(),
@@ -41,6 +57,11 @@ const settingsFormSchema = z.object({
     required_error: "You need to select a theme.",
   }),
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
 })
 
 type SettingsFormValues = z.infer<typeof settingsFormSchema>
@@ -67,6 +88,10 @@ export function SettingsForm() {
       ),
     })
 =======
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
 });
 
 type SettingsFormValues = z.infer<typeof settingsFormSchema>;
@@ -88,7 +113,14 @@ export function SettingsForm() {
       title: "Settings updated",
       description: "Your preferences have been saved.",
     });
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
 >>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> origin/main
   }
 
   return (
@@ -102,11 +134,20 @@ export function SettingsForm() {
               <div className="space-y-0.5">
                 <FormLabel>Marketing emails</FormLabel>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
                 <FormDescription>Receive emails about new products, features, and more.</FormDescription>
               </div>
               <FormControl>
                 <Switch checked={field.value} onCheckedChange={field.onChange} />
 =======
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
                 <FormDescription>
                   Receive emails about new products, features, and more.
                 </FormDescription>
@@ -116,7 +157,14 @@ export function SettingsForm() {
                   checked={field.value}
                   onCheckedChange={field.onChange}
                 />
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
 >>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> origin/main
               </FormControl>
             </FormItem>
           )}
@@ -128,12 +176,21 @@ export function SettingsForm() {
             <FormItem className="flex flex-row items-start space-x-3 space-y-0">
               <FormControl>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
                 <Checkbox checked={field.value} onCheckedChange={field.onChange} />
               </FormControl>
               <div className="space-y-1 leading-none">
                 <FormLabel>Security emails</FormLabel>
                 <FormDescription>Receive emails about your account security.</FormDescription>
 =======
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
                 <Checkbox
                   checked={field.value}
                   onCheckedChange={field.onChange}
@@ -144,7 +201,14 @@ export function SettingsForm() {
                 <FormDescription>
                   Receive emails about your account security.
                 </FormDescription>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
 >>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> origin/main
               </div>
             </FormItem>
           )}
@@ -156,12 +220,24 @@ export function SettingsForm() {
             <FormItem className="space-y-1">
               <FormLabel>Theme</FormLabel>
 <<<<<<< HEAD
+<<<<<<< HEAD
+              <FormDescription>
+                Select the theme for the dashboard.
+              </FormDescription>
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
               <FormDescription>Select the theme for the dashboard.</FormDescription>
 =======
               <FormDescription>
                 Select the theme for the dashboard.
               </FormDescription>
 >>>>>>> a6396a4 (Version lOLZ)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
               <FormMessage />
               <RadioGroup
                 onValueChange={field.onChange}
@@ -190,12 +266,24 @@ export function SettingsForm() {
                       </div>
                     </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
+                    <span className="block w-full p-2 text-center font-normal">
+                      Light
+                    </span>
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
                     <span className="block w-full p-2 text-center font-normal">Light</span>
 =======
                     <span className="block w-full p-2 text-center font-normal">
                       Light
                     </span>
 >>>>>>> a6396a4 (Version lOLZ)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
                   </FormLabel>
                 </FormItem>
                 <FormItem>
@@ -220,12 +308,24 @@ export function SettingsForm() {
                       </div>
                     </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
+                    <span className="block w-full p-2 text-center font-normal">
+                      Dark
+                    </span>
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
                     <span className="block w-full p-2 text-center font-normal">Dark</span>
 =======
                     <span className="block w-full p-2 text-center font-normal">
                       Dark
                     </span>
 >>>>>>> a6396a4 (Version lOLZ)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
                   </FormLabel>
                 </FormItem>
               </RadioGroup>
@@ -236,6 +336,13 @@ export function SettingsForm() {
       </form>
     </Form>
 <<<<<<< HEAD
+<<<<<<< HEAD
+  );
+}
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
   )
 }
 
@@ -243,3 +350,7 @@ export function SettingsForm() {
   );
 }
 >>>>>>> a6396a4 (Version lOLZ)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main

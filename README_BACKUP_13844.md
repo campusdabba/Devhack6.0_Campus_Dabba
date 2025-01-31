@@ -1,11 +1,8 @@
 <<<<<<< HEAD
 # Campus_dabba_web_app
-<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 # Campus_dabba_web_app
-=======
->>>>>>> origin/main
 
 # 🚀 Campus Dabba Web
 
@@ -153,7 +150,4 @@ For further inquiries or contributions, kindly raise an issue or connect with th
 =======
 # Campus_dabba_web_app
 >>>>>>> a6396a4 (Version lOLZ)
-<<<<<<< HEAD
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main

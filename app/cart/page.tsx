@@ -36,7 +36,17 @@ export default function CartPage() {
       {cart.length === 0 ? (
         <div className="text-center py-10">
           <p className="text-muted-foreground">Your cart is empty</p>
+<<<<<<< HEAD
+<<<<<<< HEAD
+          <Link href="/" className="mt-4">
           <Button className="mt-4">Continue Shopping</Button>
+          </Link>
+=======
+          <Button className="mt-4">Continue Shopping</Button>
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+          <Button className="mt-4">Continue Shopping</Button>
+>>>>>>> origin/main
         </div>
       ) : (
         <>

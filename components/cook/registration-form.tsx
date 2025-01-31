@@ -1,3 +1,30 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
+import { createClient } from "@/utils/supabase/client";
+=======
+=======
+>>>>>>> origin/main
 "use client"
 
 import { useState } from "react"
@@ -12,6 +39,10 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
@@ -25,11 +56,25 @@ const formSchema = z.object({
   password: z.string().min(8, {
     message: "Password must be at least 8 characters.",
   }),
+<<<<<<< HEAD
+<<<<<<< HEAD
+});
+
+export function CookRegistrationForm() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+=======
+=======
+>>>>>>> origin/main
 })
 
 export function CookRegistrationForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,6 +84,61 @@ export function CookRegistrationForm() {
       phone: "",
       password: "",
     },
+<<<<<<< HEAD
+<<<<<<< HEAD
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+
+    try {
+      const supabase = await createClient();
+      const { error } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+        options: {
+          data: {
+            first_name: values.name.split(" ")[0],
+            last_name: values.name.split(" ")[1],
+            phone: values.phone,
+          },
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+      // Store registration data in localStorage
+      const registrationData = {
+        cook_name: values.name,
+        cook_email: values.email,
+        cook_phone: values.phone,
+        cook_password: values.password,
+      };
+      localStorage.setItem(
+        "registrationData",
+        JSON.stringify(registrationData)
+      );
+
+      toast({
+        title: "Registration started",
+        description: "Please complete your profile setup.",
+      });
+      // Sign in the user immediately after registration
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (signInError) {
+        throw signInError;
+      }
+
+      // Redirect to the additional information page
+      router.push("/cook/registration");
+=======
+=======
+>>>>>>> origin/main
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -54,14 +154,30 @@ export function CookRegistrationForm() {
       })
 
       router.push("/cook/verify")
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
     } catch (error) {
       toast({
         title: "Something went wrong.",
         description: "Please try again later.",
         variant: "destructive",
+<<<<<<< HEAD
+<<<<<<< HEAD
+      });
+    } finally {
+      setIsLoading(false);
+=======
       })
     } finally {
       setIsLoading(false)
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+      })
+    } finally {
+      setIsLoading(false)
+>>>>>>> origin/main
     }
   }
 
@@ -127,6 +243,17 @@ export function CookRegistrationForm() {
         </Button>
       </form>
     </Form>
+<<<<<<< HEAD
+<<<<<<< HEAD
+  );
+}
+=======
   )
 }
 
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+  )
+}
+
+>>>>>>> origin/main

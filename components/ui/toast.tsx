@@ -1,5 +1,10 @@
 "use client"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
 
 import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
@@ -129,6 +134,10 @@ export {
   ToastAction,
 }
 =======
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
 import { toast as sonnerToast, Toaster as SonnerToaster } from "sonner"
 
 export { SonnerToaster as ToastProvider }
@@ -147,5 +156,14 @@ export const ToastClose = () => null
 export const ToastTitle = () => null 
 export const ToastDescription = () => null
 export const ToastAction = () => null
+<<<<<<< HEAD
+<<<<<<< HEAD
+export const Toast = () => null
+=======
 export const Toast = () => null
 >>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+export const Toast = () => null
+>>>>>>> a6396a4 (Version lOLZ)
+>>>>>>> origin/main
