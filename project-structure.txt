@@ -1,0 +1,50 @@
+CampusDabba/
+├── app/
+│   ├── admin/
+│   │   ├── cooks/
+│   │   ├── coupons/
+│   │   ├── orders/
+│   │   ├── payments/
+│   │   ├── reports/
+│   │   ├── settings/
+│   │   ├── users/
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── api/
+│   │   ├── auth/
+│   │   ├── cooks/
+│   │   ├── coupons/
+│   │   ├── orders/
+│   │   ├── payments/
+│   │   └── users/
+│   ├── (user)/
+│   │   ├── cart/
+│   │   ├── checkout/
+│   │   ├── cook/
+│   │   ├── dish/
+│   │   ├── orders/
+│   │   ├── profile/
+│   │   ├── search/
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/
+│   ├── admin/
+│   ├── ui/
+│   └── user/
+├── lib/
+│   ├── db.ts
+│   └── utils.ts
+├── public/
+│   ├── fonts/
+│   └── images/
+├── styles/
+│   └── globals.css
+├── types/
+├── next.config.js
+├── package.json
+├── postcss.config.js
+├── tailwind.config.js
+└── tsconfig.json
+
