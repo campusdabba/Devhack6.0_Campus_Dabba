@@ -1,31 +1,51 @@
-"use client";
+"use client"
+<<<<<<< HEAD
 
-import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from './toast'; // Corrected import
-import { useToast } from './mock-use-toast'; // Corrected import
-
-interface ToastType {
-  id: number;
-  title?: string;
-  description?: string;
-  action?: React.ReactNode;
-}
+import { useToast } from "@/hooks/use-toast"
+import {
+  Toast,
+  ToastClose,
+  ToastDescription,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
+} from "@/components/ui/toast"
 
 export function Toaster() {
-  const { toasts } = useToast();
+  const { toasts } = useToast()
 
   return (
     <ToastProvider>
-      {toasts.map(({ id, title, description, action }: ToastType) => (
-        <Toast key={id}>
-          <div className="grid gap-1">
-            {title && <ToastTitle>{title}</ToastTitle>}
-            {description && <ToastDescription>{description}</ToastDescription>}
-          </div>
-          {action}
-          <ToastClose />
-        </Toast>
-      ))}
+      {toasts.map(function ({ id, title, description, action, ...props }) {
+        return (
+          <Toast key={id} {...props}>
+            <div className="grid gap-1">
+              {title && <ToastTitle>{title}</ToastTitle>}
+              {description && (
+                <ToastDescription>{description}</ToastDescription>
+              )}
+            </div>
+            {action}
+            <ToastClose />
+          </Toast>
+        )
+      })}
       <ToastViewport />
     </ToastProvider>
-  );
+  )
 }
+=======
+import { Toaster as SonnerToaster } from "sonner"
+
+export function Toaster() {
+  return (
+    <SonnerToaster 
+      position="bottom-right"
+      toastOptions={{
+        duration: 5000,
+        className: "rounded-md border bg-background text-foreground",
+      }}
+    />
+  )
+}
+>>>>>>> a6396a4 (Version lOLZ)
