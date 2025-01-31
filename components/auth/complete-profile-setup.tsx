@@ -1,12 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { ChangeEvent, useEffect, useState } from "react";
-=======
-import { useEffect, useState } from "react";
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-import { useEffect, useState } from "react";
->>>>>>> origin/main
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -35,13 +27,7 @@ const formSchema = z.object({
   city: z.string().min(2, "City is required"),
   state: z.string().min(2, "State is required"),
   pincode: z.string().min(6, "Valid pincode required"),
-<<<<<<< HEAD
-<<<<<<< HEAD
   password: z.string().optional(),
-=======
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
 });
 
 export default function CompleteProfileSetup() {
@@ -63,8 +49,6 @@ export default function CompleteProfileSetup() {
       form.setValue("last_name", lastName || "");
       form.setValue("email", parsedData.email);
       form.setValue("phone", parsedData.phone);
-<<<<<<< HEAD
-<<<<<<< HEAD
       form.setValue("password", parsedData.password);
     }
   }, [form]);
@@ -105,36 +89,6 @@ export default function CompleteProfileSetup() {
       const {
         data: { publicUrl },
       } = supabase.storage.from("profile-images").getPublicUrl(fileName);
-=======
-=======
->>>>>>> origin/main
-    }
-  }, [form]);
-
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    try {
-      const file = event.target.files?.[0];
-      if (!file) return;
-
-      setIsUploading(true);
-      const supabase = await createClient();
-
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-
-      const { data, error } = await supabase.storage
-        .from('profile-images')
-        .upload(fileName, file);
-
-      if (error) throw error;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('profile-images')
-        .getPublicUrl(fileName);
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
 
       setImageUrl(publicUrl);
       toast({
@@ -145,38 +99,18 @@ export default function CompleteProfileSetup() {
       console.error(error);
       toast({
         title: "Error",
-<<<<<<< HEAD
-<<<<<<< HEAD
         description:
           error instanceof Error ? error.message : "Failed to upload image",
         variant: "destructive",
-=======
-        description: "Failed to upload image",
-        variant: "destructive"
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-        description: "Failed to upload image",
-        variant: "destructive"
->>>>>>> origin/main
       });
     } finally {
       setIsUploading(false);
     }
   };
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-
->>>>>>> origin/main
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
       const supabase = await createClient();
-<<<<<<< HEAD
-<<<<<<< HEAD
 
       const {
         data: { user },
@@ -190,28 +124,12 @@ export default function CompleteProfileSetup() {
           email: values.email,
           first_name: values.first_name,
           last_name: values.last_name,
-=======
-=======
->>>>>>> origin/main
-      
-      const { error } = await supabase
-        .from('users')
-        .update({
-          first_name: values.first_name,
-          last_name: values.last_name,
-          email: values.email,
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
           phone: values.phone,
           profile_image: imageUrl,
           address: {
             street: values.street,
             city: values.city,
             state: values.state,
-<<<<<<< HEAD
-<<<<<<< HEAD
             pincode: values.pincode,
           },
           user_preferences: {
@@ -234,28 +152,6 @@ export default function CompleteProfileSetup() {
 
       localStorage.removeItem("registrationData");
       router.push("/");
-=======
-=======
->>>>>>> origin/main
-            pincode: values.pincode
-          },
-          user_preferences: {
-            theme: 'light',
-            notifications: true
-          },
-          favourites: []
-        })
-        .eq('email', values.email);
-
-      if (error) throw error;
-
-      localStorage.removeItem("registrationData");
-      router.push("/");
-      
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
       toast({
         title: "Profile Updated",
         description: "Your profile has been successfully updated",
@@ -265,15 +161,7 @@ export default function CompleteProfileSetup() {
       toast({
         title: "Error",
         description: "Failed to update profile",
-<<<<<<< HEAD
-<<<<<<< HEAD
         variant: "destructive",
-=======
-        variant: "destructive"
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-        variant: "destructive"
->>>>>>> origin/main
       });
     } finally {
       setIsLoading(false);
@@ -338,8 +226,6 @@ export default function CompleteProfileSetup() {
             )}
           />
 
-<<<<<<< HEAD
-<<<<<<< HEAD
           <FormField
             control={form.control}
             name="phone"
@@ -353,18 +239,12 @@ export default function CompleteProfileSetup() {
             )}
           />
 
-=======
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
           <div className="space-y-2">
             <Label htmlFor="profile-image">Profile Picture</Label>
             <Input
               id="profile-image"
               type="file"
               accept="image/*"
-<<<<<<< HEAD
-<<<<<<< HEAD
               onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 const file = event.target.files?.[0];
                 if (file) {
@@ -377,20 +257,6 @@ export default function CompleteProfileSetup() {
               <img
                 src={imageUrl}
                 alt="Profile preview"
-=======
-=======
->>>>>>> origin/main
-              onChange={handleImageUpload}
-              disabled={isUploading}
-            />
-            {imageUrl && (
-              <img 
-                src={imageUrl} 
-                alt="Profile preview" 
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
                 className="w-24 h-24 rounded-full object-cover"
               />
             )}
@@ -453,21 +319,9 @@ export default function CompleteProfileSetup() {
             )}
           />
 
-<<<<<<< HEAD
-<<<<<<< HEAD
           <Button
             type="submit"
             disabled={isLoading || isUploading}
-=======
-          <Button 
-            type="submit" 
-            disabled={isLoading || isUploading} 
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-          <Button 
-            type="submit" 
-            disabled={isLoading || isUploading} 
->>>>>>> origin/main
             className="w-full"
           >
             {isLoading ? "Saving..." : "Complete Profile"}
@@ -476,12 +330,4 @@ export default function CompleteProfileSetup() {
       </Form>
     </div>
   );
-<<<<<<< HEAD
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-}
->>>>>>> origin/main

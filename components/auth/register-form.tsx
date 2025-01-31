@@ -1,27 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
-"use client"
-
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader2 } from "lucide-react"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { toast } from "@/components/ui/use-toast"
-=======
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
 "use client";
 
 import { useState } from "react";
@@ -44,14 +20,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { createClient } from "@/utils/supabase/client";
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> origin/main
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -66,35 +34,11 @@ const formSchema = z.object({
   phone: z.string().min(10, {
     message: "Please enter a valid phone number.",
   }),
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
-})
-
-export function RegisterForm() {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-=======
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
 });
 
 export function RegisterForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> origin/main
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -104,40 +48,6 @@ export function RegisterForm() {
       password: "",
       phone: "",
     },
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
-  })
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true)
-
-    try {
-      // Here we would typically make an API call to register
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      toast({
-        title: "Registration successful!",
-        description: "Welcome to FoodConnect! Please verify your email.",
-      })
-
-      router.push("/auth/verify")
-    } catch (error) {
-      toast({
-        title: "Something went wrong.",
-        description: "Please try again later.",
-        variant: "destructive",
-      })
-    } finally {
-      setIsLoading(false)
-=======
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -165,13 +75,7 @@ export function RegisterForm() {
         name: values.name,
         email: values.email,
         phone: values.phone,
-<<<<<<< HEAD
-<<<<<<< HEAD
         password: values.password,
-=======
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
       };
       localStorage.setItem(
         "registrationData",
@@ -193,19 +97,7 @@ export function RegisterForm() {
       }
 
       // Redirect to the additional information page
-<<<<<<< HEAD
-<<<<<<< HEAD
       router.push("/auth/registration");
-=======
-      router.push("/registration");
-
-      
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-      router.push("/registration");
-
-      
->>>>>>> origin/main
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -222,14 +114,6 @@ export function RegisterForm() {
       }
     } finally {
       setIsLoading(false);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> origin/main
     }
   }
 
@@ -258,22 +142,6 @@ export function RegisterForm() {
               <FormControl>
                 <Input placeholder="john@example.com" type="email" {...field} />
               </FormControl>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
-              <FormDescription>We'll send you a verification email.</FormDescription>
-=======
-              <FormDescription>
-                We'll send you a verification email.
-              </FormDescription>
->>>>>>> a6396a4 (Version lOLZ)
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
               <FormMessage />
             </FormItem>
           )}
@@ -311,22 +179,5 @@ export function RegisterForm() {
         </Button>
       </form>
     </Form>
-<<<<<<< HEAD
-<<<<<<< HEAD
   );
 }
-=======
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
-  )
-}
-
-=======
-  );
-}
->>>>>>> a6396a4 (Version lOLZ)
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main

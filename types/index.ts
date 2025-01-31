@@ -2,8 +2,6 @@ export type UserRole = "student" | "cook" | "delivery" | "admin"
 
 export type UserStatus = "pending" | "active" | "suspended"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7
 
 export interface WeeklySchedule {
@@ -133,10 +131,6 @@ export const dayMapping: Record<DayOfWeek, string> = {
 
 
 
-=======
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
 export type OrderStatus =
   | "pending"
   | "confirmed"
@@ -157,28 +151,15 @@ export interface User {
   name: string
   email: string
   phone: string
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  role: UserRole
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-  role: UserRole
->>>>>>> origin/main
   status: UserStatus
   createdAt: Date
   updatedAt: Date
 }
 
 export interface Cook extends User {
-<<<<<<< HEAD
-<<<<<<< HEAD
+  cook_id: string
   userrole: "cook"
   description: string
-=======
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
   address: string
   profilePicture?: string
   certification?: string
@@ -186,19 +167,13 @@ export interface Cook extends User {
   totalOrders: number
   totalEarnings: number
   isAvailable: boolean
-<<<<<<< HEAD
-<<<<<<< HEAD
   weeklySchedule?: WeeklySchedule
-=======
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
 }
+
+
 
 export interface MenuItem {
   id: string
-<<<<<<< HEAD
-<<<<<<< HEAD
   cook_id: string
   item_name: string
   description: string
@@ -208,26 +183,6 @@ export interface MenuItem {
   meal_type: string
   day_of_week: number
   isAvailable: boolean
-=======
-=======
->>>>>>> origin/main
-  cookId: string
-  name: string
-  description: string
-  price: number
-  dietaryType: DietaryType
-  cuisineType: CuisineType
-  mealType: MealType
-  dayOfWeek: number
-  isAvailable: boolean
-<<<<<<< HEAD
-=======
-  image?: string
->>>>>>> a6396a4 (Version lOLZ)
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
 }
 
 export interface Order {
@@ -243,27 +198,12 @@ export interface Order {
   updatedAt: Date
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 export interface CartItem extends MenuItem {
   quantity: number;
   menuItems?: MenuItem[];
 }
 
 
-=======
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
-=======
-export interface CartItem extends MenuItem {
-  quantity: number;
-}
-
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
 export interface CartContextType {
     cart: CartItem[];
     addToCart: (item: MenuItem) => void;
@@ -273,11 +213,3 @@ export interface CartContextType {
     clearCart: () => void;
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> origin/main

@@ -1,19 +1,7 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 import type { Metadata } from "next"
 
 import { CookProfileForm } from "@/components/cook/profile-form-after"
-=======
-import type { Metadata } from "next"
-
-import { CookProfileForm } from "@/components/cook/profile-form"
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-import type { Metadata } from "next"
-
-import { CookProfileForm } from "@/components/cook/profile-form"
->>>>>>> origin/main
 import { Separator } from "@/components/ui/separator"
 
 export const metadata: Metadata = {

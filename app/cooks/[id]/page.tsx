@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 "use client";
 import { useState, useEffect } from "react";
 import type { Metadata } from "next";
@@ -15,7 +13,6 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   Cook,
   MenuItem,
-  CartItem,
   dayMapping,
   WeeklySchedule,
   DayOfWeek,
@@ -25,6 +22,18 @@ import { Plus, Minus } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 
 // Add these helper functions before the component
+
+interface CartItem {
+  id: string;
+  cookId: string;
+  name: string;
+  description: string;
+  price: number;
+  dietaryType: "veg" | "non-veg" | "vegan";
+  mealType: "breakfast" | "lunch" | "dinner";
+  dayOfWeek: string;
+  quantity: number;
+}
 
 const { toast } = useToast();
 
@@ -94,7 +103,7 @@ export default function CookProfilePage({
       dietaryType: dayMenu[0]?.dietaryType || "veg",
       cuisineType: dayMenu[0]?.cuisineType || "indian",
       mealType: "lunch",
-      dayOfWeek: day,
+      dayOfWeek: day, 
       isAvailable: true,
       quantity: newQty,
       menuItems: dayMenu,
@@ -130,11 +139,6 @@ export default function CookProfilePage({
       try {
         setIsLoading(true);
         const supabase = createClient();
-
-        const {
-          data: { session },
-          error: sessionError,
-        } = await supabase.auth.signInAnonymously()
 
         if (sessionError) {
           console.error("Session error:", sessionError);
@@ -181,37 +185,6 @@ export default function CookProfilePage({
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!cookData) return <div>Cook not found</div>;
-=======
-=======
->>>>>>> origin/main
-import type { Metadata } from "next"
-import Image from "next/image"
-import { Check, MapPin, Clock, Truck } from "lucide-react"
-
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { cooksByState } from "@/lib/data/states"
-
-export const metadata: Metadata = {
-  title: "Cook Profile",
-  description: "View cook's profile and menu",
-}
-
-export default function CookProfilePage({ params }: { params: { id: string } }) {
-  // Find cook from all states
-  const cook = Object.values(cooksByState)
-    .flat()
-    .find((c) => c.id === params.id)
-
-  if (!cook) {
-    return <div>Cook not found</div>
-  }
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
 
   return (
     <div className="container mx-auto py-6">
@@ -220,18 +193,10 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
           <div className="space-y-6">
             <div className="flex items-center gap-4">
               <Image
-<<<<<<< HEAD
-<<<<<<< HEAD
                 src={
                   cook.profilePicture ||
                   "https://source.unsplash.com/random/100x100?chef"
                 }
-=======
-                src={cook.profilePicture || "https://source.unsplash.com/random/100x100?chef"}
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-                src={cook.profilePicture || "https://source.unsplash.com/random/100x100?chef"}
->>>>>>> origin/main
                 alt={cook.name}
                 width={80}
                 height={80}
@@ -240,17 +205,9 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
               <div>
                 <h1 className="text-2xl font-bold">{cook.name}</h1>
                 <p className="text-muted-foreground">Cooking & Baking</p>
-<<<<<<< HEAD
-<<<<<<< HEAD
                 <p className="text-sm text-muted-foreground">
                   {cook.certification}
                 </p>
-=======
-                <p className="text-sm text-muted-foreground">{cook.certification}</p>
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-                <p className="text-sm text-muted-foreground">{cook.certification}</p>
->>>>>>> origin/main
               </div>
             </div>
 
@@ -284,19 +241,9 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
             <div className="space-y-4">
               <h2 className="text-lg font-semibold">About</h2>
               <p className="text-muted-foreground">
-<<<<<<< HEAD
-<<<<<<< HEAD
                 I am a home chef who loves to cook and bake. I specialize in
                 South Indian cuisine. I use organic ingredients and cook with
                 love.
-=======
-                I am a home chef who loves to cook and bake. I specialize in South Indian cuisine. I use organic
-                ingredients and cook with love.
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-                I am a home chef who loves to cook and bake. I specialize in South Indian cuisine. I use organic
-                ingredients and cook with love.
->>>>>>> origin/main
               </p>
             </div>
 
@@ -329,8 +276,6 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
         <div>
           <Tabs defaultValue="menu" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-<<<<<<< HEAD
-<<<<<<< HEAD
               <TabsTrigger value="menu">Today's Dabba</TabsTrigger>
               <TabsTrigger value="schedule">This week's Dabba</TabsTrigger>
             </TabsList>
@@ -635,43 +580,6 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                       </TabsContent>
                     ))}
                   </Tabs>
-=======
-=======
->>>>>>> origin/main
-              <TabsTrigger value="menu">Today's Menu</TabsTrigger>
-              <TabsTrigger value="schedule">Schedule</TabsTrigger>
-            </TabsList>
-            <TabsContent value="menu" className="space-y-4">
-              {cook.menuItems.map((item) => (
-                <Card key={item.id}>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-medium">{item.name}</h3>
-                        <p className="text-sm text-muted-foreground">{item.description}</p>
-                      </div>
-                      <div className="text-right">
-                        <Badge variant="secondary" className="mb-2">
-                          {item.dietaryType}
-                        </Badge>
-                        <p className="font-semibold">₹{item.price}</p>
-                      </div>
-                    </div>
-                    <Button className="mt-4 w-full">Add to Cart</Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </TabsContent>
-            <TabsContent value="schedule">
-              <Card>
-                <CardContent className="p-4">
-                  <p className="text-sm text-muted-foreground">
-                    Schedule and availability information will be displayed here.
-                  </p>
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
                 </CardContent>
               </Card>
             </TabsContent>
@@ -679,17 +587,5 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
         </div>
       </div>
     </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
   );
 }
-=======
-  )
-}
-
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-  )
-}
-
->>>>>>> origin/main

@@ -6,39 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { createClient } from "@/utils/supabase/client";
-=======
-<<<<<<< HEAD
-=======
-import { createClient } from "@/utils/supabase/client";
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-=======
-import { createClient } from "@/utils/supabase/client";
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> origin/main
 
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-<<<<<<< HEAD
-<<<<<<< HEAD
 import {  useToast} from "@/components/ui/use-toast"
-=======
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
-import { useToast } from "@/components/ui/use-toast"
-=======
-import {  useToast} from "@/components/ui/use-toast"
->>>>>>> a6396a4 (Version lOLZ)
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
 
 const formSchema = z.object({
   email: z.string().email({
@@ -51,25 +24,8 @@ const formSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter()
-<<<<<<< HEAD
-<<<<<<< HEAD
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
-=======
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
-  const { toast } = useToast()
-  const [isLoading, setIsLoading] = useState(false)
-
-=======
-  const [isLoading, setIsLoading] = useState(false)
-  const { toast } = useToast()
->>>>>>> a6396a4 (Version lOLZ)
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -78,39 +34,6 @@ export function LoginForm() {
     },
   })
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true)
-
-    try {
-      // Here we would typically make an API call to authenticate
-      // For now, we'll simulate a successful login after a short delay
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      toast({
-        title: "Login successful!",
-        description: "Welcome back to FoodConnect.",
-      })
-
-      router.push("/")
-    } catch (error) {
-      toast({
-        title: "Something went wrong.",
-        description: "Please check your credentials and try again.",
-        variant: "destructive",
-      })
-    } finally {
-      setIsLoading(false)
-=======
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
   
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -158,14 +81,6 @@ export function LoginForm() {
       });
     } finally {
       setIsLoading(false);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> origin/main
     }
   }
 

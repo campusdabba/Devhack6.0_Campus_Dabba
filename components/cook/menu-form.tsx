@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 "use client";
 
 import { useState } from "react";
@@ -56,27 +54,6 @@ interface MenuItem {
   dietary_type: string;
   day_of_week: string;
 }
-=======
-=======
->>>>>>> origin/main
-"use client"
-
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader2 } from "lucide-react"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -88,8 +65,6 @@ const formSchema = z.object({
   price: z.string().regex(/^\d+(\.\d{1,2})?$/, {
     message: "Please enter a valid price.",
   }),
-<<<<<<< HEAD
-<<<<<<< HEAD
   mealType: z.enum(["breakfast", "lunch", "dinner"]), // Add proper enum values
   dietaryType: z.enum(["veg", "non-veg"]),
   dayOfWeek: z.string(),
@@ -97,26 +72,10 @@ const formSchema = z.object({
 
 export function MenuForm({ initialData, onSuccess, isEditing }: MenuFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-=======
-=======
->>>>>>> origin/main
-  mealType: z.string(),
-  dietaryType: z.string(),
-  dayOfWeek: z.string(),
-})
-
-export function MenuForm() {
-  const [isLoading, setIsLoading] = useState(false)
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-<<<<<<< HEAD
-<<<<<<< HEAD
       name: initialData?.item_name || "",
       description: initialData?.description || "",
       price: initialData?.price?.toString() || "",
@@ -212,45 +171,6 @@ export function MenuForm() {
   function handleItemSelect(item: MenuItem | null) {
     setSelectedItem(item || undefined);
   }
-=======
-=======
->>>>>>> origin/main
-      name: "",
-      description: "",
-      price: "",
-      mealType: "lunch",
-      dietaryType: "veg",
-      dayOfWeek: "1",
-    },
-  })
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true)
-
-    try {
-      // Here we would typically make an API call to add the menu item
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-
-      toast({
-        title: "Menu item added!",
-        description: "Your menu item has been successfully added.",
-      })
-
-      form.reset()
-    } catch (error) {
-      toast({
-        title: "Something went wrong.",
-        description: "Please try again later.",
-        variant: "destructive",
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
 
   return (
     <Form {...form}>
@@ -275,19 +195,11 @@ export function MenuForm() {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-<<<<<<< HEAD
-<<<<<<< HEAD
                 <Textarea
                   placeholder="Describe your dish"
                   className="resize-none"
                   {...field}
                 />
-=======
-                <Textarea placeholder="Describe your dish" className="resize-none" {...field} />
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-                <Textarea placeholder="Describe your dish" className="resize-none" {...field} />
->>>>>>> origin/main
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -300,20 +212,12 @@ export function MenuForm() {
             <FormItem>
               <FormLabel>Price</FormLabel>
               <FormControl>
-<<<<<<< HEAD
-<<<<<<< HEAD
                 <Input
                   placeholder="99.99"
                   type="number"
                   step="0.01"
                   {...field}
                 />
-=======
-                <Input placeholder="99.99" type="number" step="0.01" {...field} />
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-                <Input placeholder="99.99" type="number" step="0.01" {...field} />
->>>>>>> origin/main
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -326,18 +230,10 @@ export function MenuForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Meal Type</FormLabel>
-<<<<<<< HEAD
-<<<<<<< HEAD
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
-=======
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
->>>>>>> origin/main
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select meal type" />
@@ -359,18 +255,10 @@ export function MenuForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Dietary Type</FormLabel>
-<<<<<<< HEAD
-<<<<<<< HEAD
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
-=======
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
->>>>>>> origin/main
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select dietary type" />
@@ -392,26 +280,16 @@ export function MenuForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Day of Week</FormLabel>
-<<<<<<< HEAD
-<<<<<<< HEAD
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
-=======
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
->>>>>>> origin/main
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select day" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-<<<<<<< HEAD
-<<<<<<< HEAD
                     {[
                       "Monday",
                       "Tuesday",
@@ -425,20 +303,6 @@ export function MenuForm() {
                         {day}
                       </SelectItem>
                     ))}
-=======
-=======
->>>>>>> origin/main
-                    {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map(
-                      (day, index) => (
-                        <SelectItem key={day} value={String(index + 1)}>
-                          {day}
-                        </SelectItem>
-                      ),
-                    )}
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -452,17 +316,5 @@ export function MenuForm() {
         </Button>
       </form>
     </Form>
-<<<<<<< HEAD
-<<<<<<< HEAD
   );
 }
-=======
-  )
-}
-
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-  )
-}
-
->>>>>>> origin/main
