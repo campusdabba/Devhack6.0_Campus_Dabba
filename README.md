@@ -80,6 +80,11 @@ npm run dev
 
 ---
 
+## Github repo Link for the app ( mobile ) code 
+
+https://github.com/Campus-Dabba/campus_dabba_mobile
+
+
 ## 🌟 Future Enhancements  
 ✅ AI-powered meal recommendations  
 ✅ User feedback & rating system  
