@@ -21,13 +21,12 @@ const hardcodedResponses = {
     "uttar pradesh": `Uttar Pradesh Dabba Menu\nMonday – Poori, Aloo Sabzi, Boondi Raita\nTuesday – Chole Bhature, Kachumber Salad\nWednesday – Baati Chokha, Dal, Chutney\nThursday – Bedmi Puri, Aloo Sabzi, Jalebi\nFriday – Kachori, Matar Paneer, Tandoori Roti\nSaturday – Tehri, Boondi Raita, Achar\nSunday – Nihari, Sheermal, Kheer`,
     "rajasthan": `Rajasthan Dabba Menu\nMonday – Dal Baati Churma, Gatte ki Sabzi\nTuesday – Missi Roti, Ker Sangri, Bajra Khichdi\nWednesday – Pyaaz Kachori, Aloo Sabzi, Chaas\nThursday – Bajre ki Roti, Lahsun Chutney, Gatte Pulav\nFriday – Moong Dal Halwa, Kadhi, Methi Thepla\nSaturday – Ghewar, Panchmel Dal, Roti\nSunday – Rajasthani Thali, Malpua, Daal Bati`,
     "kerala": `Kerala Dabba Menu\nMonday – Puttu, Kadala Curry, Banana\nTuesday – Appam, Vegetable Stew, Coconut Chutney\nWednesday – Dosa, Sambar, Avial\nThursday – Idiyappam, Egg Curry, Pappadam\nFriday – Kerala Sadya, Payasam, Banana Chips\nSaturday – Fish Curry, Red Rice, Thoran\nSunday – Nadan Chicken Curry, Parotta, Rasam`,
-    "maharashtrian cooks near me": "We have Ashok Kumar and he is 3.6km away and today he will be cooking Pithla Bhakri for Lunch",
-    "tell me about my orders" : "You have 5 orders pending for this week, 2 orders for next week and 1 order for the week after that"
+    "maharashtrian cooks near me": "We have Ashok Kumar and he is 3.6km away and today he will be cooking Pithla Bhakri for Lunch"
 };
 
 const Chatbot = () => {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([
-    { role: "bot", content: "Hello! How can I assist you with Campus Dabba today? Would you like to the menu for a particular state or a cook for this week, You can type the name of state - you will get the closest cooks menu. :D" }
+    { role: "bot", content: "Hello! How can I assist you with Campus Dabba today?" }
   ]);
   const [input, setInput] = useState("");
 
