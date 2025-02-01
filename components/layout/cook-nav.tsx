@@ -9,11 +9,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/providers/cart-provider";
 import { useToast } from "@/components/ui/use-toast";
-<<<<<<< HEAD
-import InputSearch from "@/components/ui/search-bar";
-=======
 import {Input_search2} from "@/components/ui/search-bar";
->>>>>>> ef737eb (V6)
 import { UserNav } from "@/components/layout/User-nav";
 import { createClient } from "@/utils/supabase/client";
 import { Session } from "@supabase/supabase-js";
@@ -21,15 +17,7 @@ import { Session } from "@supabase/supabase-js";
 const navItems = [
   { title: "Profile", href: "/cook/profile" },
   { title: "MyDabba", href: "/cook/menu" },
-<<<<<<< HEAD
-<<<<<<< HEAD
-  { title: "Orders", href: "/cook/order-handler" },
-=======
   { title: "Orders", href: "/cook/orderprog" },
->>>>>>> 071bc5d (v5)
-=======
-  { title: "Orders", href: "/cook/orderprog" },
->>>>>>> ef737eb (V6)
   { title: "Payments", href: "/cook/payments" },
 ];
 
@@ -104,27 +92,14 @@ export function CookNav() {
         {!["/cook/search", "/cook/login", "/cook/register"].includes(
           pathname
         ) && (
-<<<<<<< HEAD
-          <Link href="/cook/search">
-            <InputSearch />
-=======
           <Link href="/chatbot">
             <Input_search2 />
->>>>>>> ef737eb (V6)
           </Link>
         )}
       </div>
       <div className="flex items-center space-x-4">
         <Button variant="outline" size="sm" asChild>
-<<<<<<< HEAD
-<<<<<<< HEAD
-          <Link href="/cook/order-handler" className="flex items-center gap-2">
-=======
           <Link href="/cook/orderprog" className="flex items-center gap-2">
->>>>>>> 071bc5d (v5)
-=======
-          <Link href="/cook/orderprog" className="flex items-center gap-2">
->>>>>>> ef737eb (V6)
             <ShoppingCart className="h-4 w-4" />
             <span>Active Orders</span>
           </Link>

@@ -1,44 +1,12 @@
 "use client";
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-=======
-
-import { useState } from "react";
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-
-import { useState } from "react";
->>>>>>> origin/main
-=======
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
->>>>>>> 071bc5d (v5)
-=======
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
->>>>>>> ef737eb (V6)
 import { CooksList } from "@/components/student/dashboard/cooks-list";
 import { StatesFilter } from "@/components/student/dashboard/states-filter";
 import { states } from "@/lib/data/states";
 import { StateCards } from "@/components/student/dashboard/StateCards";
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { MapPreview } from "@/components/map/map-preview";
-<<<<<<< HEAD
-=======
-import { MapPreview } from "@/components/map/map-preview";
->>>>>>> 071bc5d (v5)
-=======
-import { MapPreview } from "@/components/map/map-preview";
->>>>>>> ef737eb (V6)
 
 export default function DashboardPage() {
   const [selectedState, setSelectedState] = useState<string>(states[0]);
@@ -66,26 +34,6 @@ export default function DashboardPage() {
 
     checkUserRole();
   }, [router]);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-import { MapPreview } from "@/components/map/map-preview";
-=======
->>>>>>> origin/main
-=======
->>>>>>> a6396a4 (Version lOLZ)
-
-export default function DashboardPage() {
-  const [selectedState, setSelectedState] = useState<string>(states[0]);
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
-=======
->>>>>>> 071bc5d (v5)
-=======
->>>>>>> ef737eb (V6)
 
   return (
     <div className="space-y-6">
@@ -117,36 +65,9 @@ export default function DashboardPage() {
       />
 
       <div className="px-6">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent border-b-2 border-orange-400 pb-2">
           Households nearby you
         </h2>
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent border-b-2 border-orange-400 pb-2">
-          Households nearby you
-        </h2>
-=======
-        <h2 className="text-xl font-semibold mb-4">Households nearby you</h2>
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-        <h2 className="text-xl font-semibold mb-4">Households nearby you</h2>
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> origin/main
-=======
-        <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent border-b-2 border-orange-400 pb-2">
-          Households nearby you
-        </h2>
->>>>>>> 071bc5d (v5)
-=======
-        <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent border-b-2 border-orange-400 pb-2">
-          Households nearby you
-        </h2>
->>>>>>> ef737eb (V6)
       </div>
 
       <StatesFilter
@@ -154,19 +75,6 @@ export default function DashboardPage() {
         onStateChange={setSelectedState}
       />
       <CooksList selectedState={selectedState} />
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
->>>>>>> origin/main
-=======
->>>>>>> 071bc5d (v5)
-=======
->>>>>>> ef737eb (V6)
       <div className="px-6">
         <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent border-b-2 border-orange-400 pb-2">
           Dabba Providers near you
@@ -197,22 +105,6 @@ export default function DashboardPage() {
           &copy; {new Date().getFullYear()} Campus Dabba. All rights reserved.
         </div>
       </footer>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
-=======
-=======
->>>>>>> a6396a4 (Version lOLZ)
->>>>>>> origin/main
-=======
->>>>>>> 071bc5d (v5)
-=======
->>>>>>> ef737eb (V6)
     </div>
   );
 }
