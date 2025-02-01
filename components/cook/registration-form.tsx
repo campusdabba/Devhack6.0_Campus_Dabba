@@ -1,8 +1,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 
 import { useState } from "react";
@@ -25,6 +28,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { createClient } from "@/utils/supabase/client";
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -49,6 +53,8 @@ import { toast } from "@/components/ui/use-toast"
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
@@ -65,13 +71,17 @@ const formSchema = z.object({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 });
 
 export function CookRegistrationForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -87,6 +97,8 @@ export function CookRegistrationForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -99,8 +111,11 @@ export function CookRegistrationForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -152,6 +167,7 @@ export function CookRegistrationForm() {
       // Redirect to the additional information page
       router.push("/cook/registration");
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/main
@@ -176,11 +192,14 @@ export function CookRegistrationForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
     } catch (error) {
       toast({
         title: "Something went wrong.",
         description: "Please try again later.",
         variant: "destructive",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -202,6 +221,11 @@ export function CookRegistrationForm() {
     } finally {
       setIsLoading(false);
 >>>>>>> 071bc5d (v5)
+=======
+      });
+    } finally {
+      setIsLoading(false);
+>>>>>>> ef737eb (V6)
     }
   }
 
@@ -270,6 +294,7 @@ export function CookRegistrationForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   );
 }
 =======
@@ -286,3 +311,7 @@ export function CookRegistrationForm() {
   );
 }
 >>>>>>> 071bc5d (v5)
+=======
+  );
+}
+>>>>>>> ef737eb (V6)

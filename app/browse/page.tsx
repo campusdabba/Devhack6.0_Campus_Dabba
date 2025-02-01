@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -22,6 +23,8 @@ export default function BrowseCooksPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 
 import type { Metadata } from "next";
@@ -39,6 +42,7 @@ export default function BrowseCooksPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a6396a4 (Version lOLZ)
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -47,10 +51,13 @@ export default function BrowseCooksPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Browse Cooks</h1>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -76,6 +83,8 @@ export default function BrowseCooksPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
         <p className="text-muted-foreground">
           Discover talented home cooks and their delicious offerings
         </p>
@@ -91,6 +100,7 @@ export default function BrowseCooksPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a6396a4 (Version lOLZ)
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -99,3 +109,5 @@ export default function BrowseCooksPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)

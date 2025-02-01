@@ -1,8 +1,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 
 import { useState } from "react";
@@ -60,6 +63,7 @@ interface MenuItem {
   day_of_week: string;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/main
@@ -83,6 +87,8 @@ import { toast } from "@/components/ui/use-toast"
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -97,8 +103,11 @@ const formSchema = z.object({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   mealType: z.enum(["breakfast", "lunch", "dinner"]), // Add proper enum values
   dietaryType: z.enum(["veg", "non-veg"]),
   dayOfWeek: z.string(),
@@ -106,6 +115,7 @@ const formSchema = z.object({
 
 export function MenuForm({ initialData, onSuccess, isEditing }: MenuFormProps) {
   const [isLoading, setIsLoading] = useState(false);
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -123,6 +133,8 @@ export function MenuForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -130,8 +142,11 @@ export function MenuForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
       name: initialData?.item_name || "",
       description: initialData?.description || "",
       price: initialData?.price?.toString() || "",
@@ -228,6 +243,7 @@ export function MenuForm() {
     setSelectedItem(item || undefined);
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/main
@@ -269,6 +285,8 @@ export function MenuForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
   return (
     <Form {...form}>
@@ -296,13 +314,17 @@ export function MenuForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                 <Textarea
                   placeholder="Describe your dish"
                   className="resize-none"
                   {...field}
                 />
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
                 <Textarea placeholder="Describe your dish" className="resize-none" {...field} />
@@ -312,6 +334,8 @@ export function MenuForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -327,14 +351,18 @@ export function MenuForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                 <Input
                   placeholder="99.99"
                   type="number"
                   step="0.01"
                   {...field}
                 />
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
                 <Input placeholder="99.99" type="number" step="0.01" {...field} />
@@ -344,6 +372,8 @@ export function MenuForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -359,12 +389,16 @@ export function MenuForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -374,6 +408,8 @@ export function MenuForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select meal type" />
@@ -398,12 +434,16 @@ export function MenuForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -413,6 +453,8 @@ export function MenuForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select dietary type" />
@@ -437,12 +479,16 @@ export function MenuForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -452,6 +498,8 @@ export function MenuForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select day" />
@@ -461,8 +509,11 @@ export function MenuForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                     {[
                       "Monday",
                       "Tuesday",
@@ -476,6 +527,7 @@ export function MenuForm() {
                         {day}
                       </SelectItem>
                     ))}
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -493,6 +545,8 @@ export function MenuForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -506,6 +560,7 @@ export function MenuForm() {
         </Button>
       </form>
     </Form>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -525,3 +580,7 @@ export function MenuForm() {
   );
 }
 >>>>>>> 071bc5d (v5)
+=======
+  );
+}
+>>>>>>> ef737eb (V6)

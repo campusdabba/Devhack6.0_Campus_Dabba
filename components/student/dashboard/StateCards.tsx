@@ -3,8 +3,11 @@ import { useEffect, useRef, useState } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 import { useImageHandler } from '@/components/ui/use-image-handler';
 
 // Add interface for state images
@@ -15,12 +18,15 @@ interface StateImageMap {
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
 =======
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 export function StateCards({
   states,
   selectedState,
@@ -34,6 +40,7 @@ export function StateCards({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   const { getImageUrl } = useImageHandler();
   const [stateImages, setStateImages] = useState<StateImageMap>({});
 =======
@@ -44,6 +51,10 @@ export function StateCards({
   const { getImageUrl } = useImageHandler();
   const [stateImages, setStateImages] = useState<StateImageMap>({});
 >>>>>>> 071bc5d (v5)
+=======
+  const { getImageUrl } = useImageHandler();
+  const [stateImages, setStateImages] = useState<StateImageMap>({});
+>>>>>>> ef737eb (V6)
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollPosition = useRef(0);
@@ -52,6 +63,7 @@ export function StateCards({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   const defaultImageUrl = 'https://ejtjwejiulepzcglswis.supabase.co/storage/v1/object/public/webpage-images//default.avif'
 =======
 
@@ -62,6 +74,9 @@ export function StateCards({
 =======
   const defaultImageUrl = 'https://ejtjwejiulepzcglswis.supabase.co/storage/v1/object/public/webpage-images//default.avif'
 >>>>>>> 071bc5d (v5)
+=======
+  const defaultImageUrl = 'https://ejtjwejiulepzcglswis.supabase.co/storage/v1/object/public/webpage-images//default.avif'
+>>>>>>> ef737eb (V6)
   const startAnimation = () => {
     if (animationFrameId.current) {
       cancelAnimationFrame(animationFrameId.current);
@@ -115,8 +130,11 @@ export function StateCards({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   useEffect(() => {
     const loadImages = async () => {
       const loadedImages: StateImageMap = {};
@@ -140,6 +158,7 @@ export function StateCards({
         Suggestions for you
       </h2>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   return (
     <div className="w-full overflow-hidden">
@@ -152,6 +171,8 @@ export function StateCards({
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
       <div
         ref={containerRef}
         className="relative overflow-hidden"
@@ -179,6 +200,7 @@ export function StateCards({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   backgroundImage: `url('${stateImages[state] ?? defaultImageUrl}')`,
 =======
                   backgroundImage: `url('https://source.unsplash.com/400x200/?${state},landmark')`,
@@ -189,6 +211,9 @@ export function StateCards({
 =======
                   backgroundImage: `url('${stateImages[state] ?? defaultImageUrl}')`,
 >>>>>>> 071bc5d (v5)
+=======
+                  backgroundImage: `url('${stateImages[state] ?? defaultImageUrl}')`,
+>>>>>>> ef737eb (V6)
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
@@ -207,8 +232,11 @@ export function StateCards({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                     // Store state info in localStorage
                     localStorage.setItem("selectedState", state);
                     localStorage.setItem(
@@ -222,6 +250,7 @@ export function StateCards({
                   }}
                   className="px-3 py-1 bg-white/90 text-gray-800 rounded-full text-xs font-medium
             hover:bg-white transition-colors duration-200 mt-2"
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -238,6 +267,8 @@ export function StateCards({
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                 >
                   View Details
                 </button>

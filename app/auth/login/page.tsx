@@ -1,10 +1,14 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 =======
 
 >>>>>>> 071bc5d (v5)
+=======
+
+>>>>>>> ef737eb (V6)
 "use client";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -13,6 +17,7 @@ import {Loader_login} from "@/components/ui/join_us";
 import { LoginForm } from "@/components/auth/login-form";
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -46,6 +51,8 @@ export const metadata: Metadata = {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 export default function LoginPage() {
   return (
     <div className="container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -54,8 +61,11 @@ export default function LoginPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
         <div className="relative z-20 flex justify-center items-center">
           <div className="flex items-center text-5xl font-medium tracking-tight text-center">
             <Loader_login />
@@ -69,6 +79,7 @@ export default function LoginPage() {
             height={700}
             className=" object-cover shadow-xl"
           />
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -96,10 +107,13 @@ export default function LoginPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
         </div>
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
             <p className="text-lg">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -122,6 +136,10 @@ export default function LoginPage() {
               "CampusDabba has transformed how I discover and enjoy authentic
               home-cooked meals. The variety and quality are amazing!"
 >>>>>>> 071bc5d (v5)
+=======
+              "CampusDabba has transformed how I discover and enjoy authentic
+              home-cooked meals. The variety and quality are amazing!"
+>>>>>>> ef737eb (V6)
             </p>
             <footer className="text-sm">Sofia Davis</footer>
           </blockquote>
@@ -133,6 +151,7 @@ export default function LoginPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <p className="text-sm text-muted-foreground">
               Enter your credentials to sign in to your account
             </p>
@@ -149,6 +168,11 @@ export default function LoginPage() {
               Enter your credentials to sign in to your account
             </p>
 >>>>>>> 071bc5d (v5)
+=======
+            <p className="text-sm text-muted-foreground">
+              Enter your credentials to sign in to your account
+            </p>
+>>>>>>> ef737eb (V6)
           </div>
           <LoginForm />
           <p className="px-8 text-center text-sm text-muted-foreground">
@@ -156,12 +180,16 @@ export default function LoginPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
             <Link
               href="/auth/register"
               className="underline underline-offset-4 hover:text-primary"
             >
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
             <Link href="/auth/register" className="underline underline-offset-4 hover:text-primary">
@@ -171,6 +199,8 @@ export default function LoginPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
               Sign up
             </Link>
           </p>
@@ -180,6 +210,7 @@ export default function LoginPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   );
 }
 =======
@@ -196,3 +227,7 @@ export default function LoginPage() {
   );
 }
 >>>>>>> 071bc5d (v5)
+=======
+  );
+}
+>>>>>>> ef737eb (V6)

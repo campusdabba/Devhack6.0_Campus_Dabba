@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -25,6 +26,8 @@ import { toast } from "@/components/ui/use-toast"
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 
 import { useState } from "react";
@@ -50,6 +53,7 @@ import { createClient } from "@/utils/supabase/client";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a6396a4 (Version lOLZ)
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -58,6 +62,8 @@ import { createClient } from "@/utils/supabase/client";
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -72,6 +78,7 @@ const formSchema = z.object({
   phone: z.string().min(10, {
     message: "Please enter a valid phone number.",
   }),
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -91,11 +98,14 @@ export function RegisterForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 });
 
 export function RegisterForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -107,6 +117,8 @@ export function RegisterForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -116,6 +128,7 @@ export function RegisterForm() {
       password: "",
       phone: "",
     },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -153,6 +166,8 @@ export function RegisterForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -183,6 +198,7 @@ export function RegisterForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         password: values.password,
 =======
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -191,6 +207,9 @@ export function RegisterForm() {
 =======
         password: values.password,
 >>>>>>> 071bc5d (v5)
+=======
+        password: values.password,
+>>>>>>> ef737eb (V6)
       };
       localStorage.setItem(
         "registrationData",
@@ -215,6 +234,7 @@ export function RegisterForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       router.push("/auth/registration");
 =======
       router.push("/registration");
@@ -229,6 +249,9 @@ export function RegisterForm() {
 =======
       router.push("/auth/registration");
 >>>>>>> 071bc5d (v5)
+=======
+      router.push("/auth/registration");
+>>>>>>> ef737eb (V6)
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -248,6 +271,7 @@ export function RegisterForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a6396a4 (Version lOLZ)
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -256,6 +280,8 @@ export function RegisterForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
     }
   }
 
@@ -287,6 +313,7 @@ export function RegisterForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -303,6 +330,8 @@ export function RegisterForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
               <FormMessage />
             </FormItem>
           )}
@@ -343,6 +372,7 @@ export function RegisterForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   );
 }
 =======
@@ -364,3 +394,7 @@ export function RegisterForm() {
   );
 }
 >>>>>>> 071bc5d (v5)
+=======
+  );
+}
+>>>>>>> ef737eb (V6)

@@ -24,6 +24,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           error: "group-[.toast]:border-destructive group-[.toast]:text-destructive", // Add error styling
 =======
 <<<<<<< HEAD
@@ -39,6 +40,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
 =======
           error: "group-[.toast]:border-destructive group-[.toast]:text-destructive", // Add error styling
 >>>>>>> 071bc5d (v5)
+=======
+          error: "group-[.toast]:border-destructive group-[.toast]:text-destructive", // Add error styling
+>>>>>>> ef737eb (V6)
         },
       }}
       {...props}

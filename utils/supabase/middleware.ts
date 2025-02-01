@@ -4,6 +4,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const publicRoutes = ['/', '/auth/login', '/auth/register', '/browse','/cook/register','/student/register','/search',"/cart",'/checkout','cook/login','/states']
 =======
 const publicRoutes = ['/', '/auth/login', '/auth/register', '/browse','/cook/register','/student/register','/search']
@@ -17,6 +18,15 @@ const publicRoutes = ['/', '/auth/login', '/auth/register', '/browse','/cook/reg
 
 
 export async function updateSession(request: NextRequest) {
+=======
+
+const publicRoutes = ['/', '/auth/login', '/auth/register', '/browse','/cook/register','/student/register','/search',"/cart",'/checkout','cook/login','/states','/cooks/:id','/chatbot']
+
+
+export async function updateSession(request: NextRequest) {
+
+  
+>>>>>>> ef737eb (V6)
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -44,8 +54,20 @@ export async function updateSession(request: NextRequest) {
 
   const { data: { session } } = await supabase.auth.getSession()
 
+<<<<<<< HEAD
   // Check if the route requires authentication
   const isPublicRoute = publicRoutes.includes(request.nextUrl.pathname)
+=======
+  // Check if the current path matches a dynamic cook route
+const url = request.nextUrl.pathname
+const isDynamicCookRoute = url.startsWith('/cooks/') && url.split('/').length === 3
+const isPublicRoute = publicRoutes.some(route => {
+  if (route === '/cooks/:id') {
+    return isDynamicCookRoute
+  }
+  return route === url
+})
+>>>>>>> ef737eb (V6)
 
   if (!session && !isPublicRoute) {
     // Redirect to login if accessing protected route without session

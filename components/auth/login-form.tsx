@@ -9,6 +9,7 @@ import * as z from "zod"
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { createClient } from "@/utils/supabase/client";
 =======
 <<<<<<< HEAD
@@ -24,10 +25,14 @@ import { createClient } from "@/utils/supabase/client";
 =======
 import { createClient } from "@/utils/supabase/client";
 >>>>>>> 071bc5d (v5)
+=======
+import { createClient } from "@/utils/supabase/client";
+>>>>>>> ef737eb (V6)
 
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -47,6 +52,9 @@ import {  useToast} from "@/components/ui/use-toast"
 =======
 import {  useToast} from "@/components/ui/use-toast"
 >>>>>>> 071bc5d (v5)
+=======
+import {  useToast} from "@/components/ui/use-toast"
+>>>>>>> ef737eb (V6)
 
 const formSchema = z.object({
   email: z.string().email({
@@ -59,6 +67,7 @@ const formSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter()
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -83,6 +92,10 @@ export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
 >>>>>>> 071bc5d (v5)
+=======
+  const [isLoading, setIsLoading] = useState(false)
+  const { toast } = useToast()
+>>>>>>> ef737eb (V6)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -91,6 +104,7 @@ export function LoginForm() {
     },
   })
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -127,6 +141,8 @@ export function LoginForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -177,6 +193,7 @@ export function LoginForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a6396a4 (Version lOLZ)
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -185,6 +202,8 @@ export function LoginForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
     }
   }
 

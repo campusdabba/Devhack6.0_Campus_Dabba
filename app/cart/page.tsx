@@ -39,6 +39,7 @@ export default function CartPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Link href="/" className="mt-4">
           <Button className="mt-4">Continue Shopping</Button>
           </Link>
@@ -53,6 +54,11 @@ export default function CartPage() {
           <Button className="mt-4">Continue Shopping</Button>
           </Link>
 >>>>>>> 071bc5d (v5)
+=======
+          <Link href="/" className="mt-4">
+          <Button className="mt-4">Continue Shopping</Button>
+          </Link>
+>>>>>>> ef737eb (V6)
         </div>
       ) : (
         <>

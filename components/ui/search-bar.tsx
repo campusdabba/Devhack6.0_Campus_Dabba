@@ -8,6 +8,7 @@ const Input_search = () => {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <input className="input" name="text" type="text" placeholder="Explore Cooks........" />
 =======
         <input className="input" name="text" type="text" placeholder="Explore Cooks............." />
@@ -18,6 +19,19 @@ const Input_search = () => {
 =======
         <input className="input" name="text" type="text" placeholder="Explore Cooks........" />
 >>>>>>> 071bc5d (v5)
+=======
+        <input className="input" name="text" type="text" placeholder="Explore Cooks........" />
+      </div>
+    </StyledWrapper>
+  );
+}
+
+const Input_search2 = () => {
+  return (
+    <StyledWrapper>
+      <div className="input-container">
+        <input className="input" name="text" type="text" placeholder="Explore AI......." />
+>>>>>>> ef737eb (V6)
       </div>
     </StyledWrapper>
   );
@@ -232,3 +246,7 @@ const StyledWrapper = styled.div`
   }`;
 
 export default Input_search;
+<<<<<<< HEAD
+=======
+export  { Input_search2 };
+>>>>>>> ef737eb (V6)

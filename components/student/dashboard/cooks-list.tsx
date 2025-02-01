@@ -1,8 +1,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 
 import * as React from "react";
@@ -27,6 +30,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/components/ui/use-toast";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Cook, MenuItem, CartItem, DayOfWeek, dayMapping } from "@/types";
 import { useState, useEffect } from "react";
 import { NextResponse } from "next/server";
@@ -39,6 +43,8 @@ interface CooksListProps {
 interface CookWithMenu extends Cook {
   menuItems: MenuItem[];
 =======
+=======
+>>>>>>> ef737eb (V6)
 import { MenuItem, CartItem, DayOfWeek, dayMapping } from "@/types";
 import { useState, useEffect } from "react";
 import { NextResponse } from "next/server";
@@ -72,7 +78,10 @@ interface CookWithMenu extends Cook {
 
 interface CooksListProps {
   selectedState: string;
+<<<<<<< HEAD
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 }
 
 interface CartOperationResult {
@@ -81,15 +90,21 @@ interface CartOperationResult {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const getCurrentDayNumber = (): DayOfWeek => {
   const day = new Date().getDay();
   return (day === 0 ? 7 : day) as DayOfWeek;
 =======
+=======
+>>>>>>> ef737eb (V6)
 const getCurrentDayNumber = () => {
   const today = new Date();
   const day = today.getDay() || 7; // Convert Sunday (0) to 7
   return dayMapping[day]; // Returns day name
+<<<<<<< HEAD
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 };
 
 export function CooksList({ selectedState }: CooksListProps) {
@@ -97,6 +112,7 @@ export function CooksList({ selectedState }: CooksListProps) {
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const staticCooks = cooksByState[selectedState] || [];
   const [isLoading, setIsLoading] = useState(true);
+<<<<<<< HEAD
 <<<<<<< HEAD
   const [error, setError] = useState(null);
   const [cooks, setCooks] = useState([]);
@@ -121,6 +137,8 @@ export function CooksList({ selectedState }: CooksListProps) {
       .select(`
         id,
 =======
+=======
+>>>>>>> ef737eb (V6)
   const [error, setError] = useState<string | null>(null);
   const [cooks, setCooks] = useState<Cook[]>([]);
   const [session, setSession] = useState<Session | null>(null);
@@ -147,6 +165,10 @@ export function CooksList({ selectedState }: CooksListProps) {
     const supabase = createClient();
     try {
       setIsLoading(true);
+<<<<<<< HEAD
+=======
+      setCooks([]);
+>>>>>>> ef737eb (V6)
 
       // Simple query to check all regions first
       const { data: allRegions } = await supabase
@@ -155,6 +177,7 @@ export function CooksList({ selectedState }: CooksListProps) {
 
       console.log("All available regions:", allRegions);
 
+<<<<<<< HEAD
       // Try both exact and partial matches
       const { data: cooksData, error: cooksError } = await supabase
         .from("cooks")
@@ -240,6 +263,32 @@ export function CooksList({ selectedState }: CooksListProps) {
       `
         )
         .or(`region.eq.${selectedState},region.ilike.%${selectedState}%`);
+=======
+      let cooksQuery = supabase
+        .from("cooks")
+        .select(`
+          id,
+          cook_id,
+          first_name,
+          last_name,
+          address,
+          rating,
+          certification,
+          profile_image
+        `);
+
+      // Try both exact and partial matches
+      // If not "All States", apply region filter
+      if (selectedState !== "All States") {
+        cooksQuery = cooksQuery.or(`region.eq.${selectedState},region.ilike.%${selectedState}%`);
+      } else {
+        cooksQuery = cooksQuery;
+      }
+
+      const { data: cooksData, error: cooksError } = await cooksQuery;
+
+      console.log("Query params:", selectedState);
+>>>>>>> ef737eb (V6)
 
       console.log("Query params:", selectedState);
       console.log("Found cooks:", cooksData);
@@ -303,7 +352,10 @@ export function CooksList({ selectedState }: CooksListProps) {
     } catch (error) {
       const err = error as Error;
       console.error(err.message);
+<<<<<<< HEAD
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
       setError(err.message);
     } finally {
       setIsLoading(false);
@@ -339,14 +391,19 @@ export function CooksList({ selectedState }: CooksListProps) {
 
     const todayMenu = cook.menuItems.filter(
 <<<<<<< HEAD
+<<<<<<< HEAD
       (item) => item.dayOfWeek === getCurrentDayNumber()
 =======
       (item) => item.day_of_week === getCurrentDayNumber()
 >>>>>>> 071bc5d (v5)
+=======
+      (item) => item.day_of_week === getCurrentDayNumber()
+>>>>>>> ef737eb (V6)
     );
 
     const bundledMenu: CartItem = {
       id: itemId,
+<<<<<<< HEAD
 <<<<<<< HEAD
       cookId: cook.id,
       name: `${cook.name}'s ${dayMapping[getCurrentDayNumber()]} Dabba`,
@@ -357,6 +414,8 @@ export function CooksList({ selectedState }: CooksListProps) {
       mealType: "lunch",
       dayOfWeek: getCurrentDayNumber(),
 =======
+=======
+>>>>>>> ef737eb (V6)
       cook_id: cook.cook_id,
       item_name: `${cook.first_name}'s ${
         dayMapping[getCurrentDayNumber()]
@@ -367,7 +426,10 @@ export function CooksList({ selectedState }: CooksListProps) {
       cuisine_type: todayMenu[0]?.cuisine_type || "indian",
       meal_type: "lunch",
       day_of_week: getCurrentDayNumber(),
+<<<<<<< HEAD
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
       isAvailable: true,
       quantity: newQty,
       menuItems: todayMenu,
@@ -379,10 +441,14 @@ export function CooksList({ selectedState }: CooksListProps) {
     toast({
       title: "Added to cart",
 <<<<<<< HEAD
+<<<<<<< HEAD
       description: `${cook.name}'s ${
 =======
       description: `${cook.first_name}'s ${
 >>>>>>> 071bc5d (v5)
+=======
+      description: `${cook.first_name}'s ${
+>>>>>>> ef737eb (V6)
         dayMapping[getCurrentDayNumber()]
       } Dabba has been added to your cart.`,
     });
@@ -394,10 +460,14 @@ export function CooksList({ selectedState }: CooksListProps) {
       toast({
         title: "Removed from cart",
 <<<<<<< HEAD
+<<<<<<< HEAD
         description: `${cook.name}'s ${
 =======
         description: `${cook.first_name}'s ${
 >>>>>>> 071bc5d (v5)
+=======
+        description: `${cook.first_name}'s ${
+>>>>>>> ef737eb (V6)
           dayMapping[getCurrentDayNumber()]
         } Dabba has been removed from your cart.`,
       });
@@ -412,6 +482,7 @@ export function CooksList({ selectedState }: CooksListProps) {
   };
 
   if (isLoading) return <div>Loading cooks...</div>;
+<<<<<<< HEAD
 <<<<<<< HEAD
   if (error) return <div>Error loading cooks: {error}</div>;
 =======
@@ -474,6 +545,8 @@ export function CooksList({ selectedState }: CooksListProps) {
 =======
 >>>>>>> origin/main
 =======
+=======
+>>>>>>> ef737eb (V6)
 
   const formatAddress = (address: Address): string => {
     return `${address.street}, ${address.city}, ${address.state} ${address.pincode}`;
@@ -512,11 +585,15 @@ export function CooksList({ selectedState }: CooksListProps) {
       </ScrollArea>
     );
   };
+<<<<<<< HEAD
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {cooks.map((cook) => (
+<<<<<<< HEAD
 <<<<<<< HEAD
         <Card key={cook.id} className="flex flex-col">
           <CardHeader>
@@ -564,6 +641,8 @@ export function CooksList({ selectedState }: CooksListProps) {
 <<<<<<< HEAD
           <CardContent className="flex-grow p-6">
 =======
+=======
+>>>>>>> ef737eb (V6)
         <Card key={cook.cook_id} className="flex flex-col">
           <CardHeader className="relative min-h-[200px] flex flex-col justify-end p-6 text-white">
             <div
@@ -600,7 +679,10 @@ export function CooksList({ selectedState }: CooksListProps) {
             </div>
           </CardHeader>
           <CardContent className="pt-2 px-6 pb-1">
+<<<<<<< HEAD
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
             <div className="flex gap-2">
               <Badge variant="secondary">{cook.totalOrders}+ orders</Badge>
               {cook.certification && (
@@ -620,6 +702,7 @@ export function CooksList({ selectedState }: CooksListProps) {
                     {cook.menuItems
                       .filter(
 <<<<<<< HEAD
+<<<<<<< HEAD
                         (item) => item.dayOfWeek === getCurrentDayNumber()
                       )
                       .map((item) => (
@@ -632,6 +715,8 @@ export function CooksList({ selectedState }: CooksListProps) {
                             {item.description}
                           </p>
 =======
+=======
+>>>>>>> ef737eb (V6)
                         (item) => item.day_of_week === getCurrentDayNumber()
                       )
                       .map((item) => (
@@ -655,7 +740,10 @@ export function CooksList({ selectedState }: CooksListProps) {
                               </Badge>
                             </div>
                           </div>
+<<<<<<< HEAD
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                         </div>
                       ))}
                   </div>
@@ -700,6 +788,7 @@ export function CooksList({ selectedState }: CooksListProps) {
           <CardFooter className="mt-2">
             <Button asChild className="w-full">
               <Link href={`/cooks/${cook.id}`}>View Details</Link>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -763,6 +852,8 @@ export function CooksList({ selectedState }: CooksListProps) {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
             </Button>
           </CardFooter>
         </Card>
@@ -771,22 +862,30 @@ export function CooksList({ selectedState }: CooksListProps) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   );
 
   function getTotalPrice(cook: CookWithMenu, quantity: number): number {
     return (
       cook.menuItems
 <<<<<<< HEAD
+<<<<<<< HEAD
         .filter((item) => item.dayOfWeek === getCurrentDayNumber())
 =======
         .filter((item) => item.day_of_week === getCurrentDayNumber())
 >>>>>>> 071bc5d (v5)
+=======
+        .filter((item) => item.day_of_week === getCurrentDayNumber())
+>>>>>>> ef737eb (V6)
         .reduce((total, item) => total + item.price, 0) * quantity
     );
   }
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
   )
@@ -800,3 +899,6 @@ export function CooksList({ selectedState }: CooksListProps) {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+
+>>>>>>> ef737eb (V6)

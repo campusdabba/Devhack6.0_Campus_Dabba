@@ -5,6 +5,7 @@ import { createContext, useContext, useState, useEffect } from "react"
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { CartContextType, CartItem, MenuItem } from '@/types'
 
 
@@ -39,6 +40,11 @@ import { CartContextType, CartItem, MenuItem } from '@/types'
 
 
 >>>>>>> 071bc5d (v5)
+=======
+import { CartContextType, CartItem, MenuItem } from '@/types'
+
+
+>>>>>>> ef737eb (V6)
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
@@ -89,6 +95,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -98,6 +105,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   const updateQuantity = (id: string, quantity: number) => {
     setCart(prev => prev.map(i => 
       i.id === id ? {...i, quantity} : i
@@ -107,6 +116,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a6396a4 (Version lOLZ)
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -115,11 +125,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   const getCartTotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0)
   }
 
   return (
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -139,6 +152,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 =======
     <CartContext.Provider value={{ cart, addToCart, removeFromCart,updateQuantity, clearCart, getCartTotal }}>
 >>>>>>> 071bc5d (v5)
+=======
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart,updateQuantity, clearCart, getCartTotal }}>
+>>>>>>> ef737eb (V6)
       {children}
     </CartContext.Provider>
   )

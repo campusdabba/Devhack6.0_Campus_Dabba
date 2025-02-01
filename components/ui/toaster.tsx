@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -47,6 +48,8 @@ export function Toaster() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 import { Toaster as SonnerToaster } from "sonner"
 
 export function Toaster() {
@@ -62,6 +65,7 @@ export function Toaster() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 =======
 }
@@ -74,3 +78,6 @@ export function Toaster() {
 =======
 }
 >>>>>>> 071bc5d (v5)
+=======
+}
+>>>>>>> ef737eb (V6)

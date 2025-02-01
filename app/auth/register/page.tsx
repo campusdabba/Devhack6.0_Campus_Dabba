@@ -1,8 +1,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 
 import type { Metadata } from "next";
@@ -10,6 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Loader from "@/components/ui/join_us";
 import { RegisterForm } from "@/components/auth/register-form";
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -30,6 +34,8 @@ export const metadata: Metadata = {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
 export default function RegisterPage() {
   return (
@@ -39,8 +45,11 @@ export default function RegisterPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
         <div className="relative z-20 flex justify-center items-center">
           <div className="flex items-center text-5xl font-medium tracking-tight text-center">
             <Loader />
@@ -54,6 +63,7 @@ export default function RegisterPage() {
             height={700}
             className=" object-cover shadow-xl"
           />
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -81,6 +91,8 @@ export default function RegisterPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
         </div>
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
@@ -88,12 +100,16 @@ export default function RegisterPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
               "Join our community of food lovers and home chefs. Start your
               culinary journey today!"
             </p>
             <footer className="text-sm">The CampusDabba Team</footer>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -111,6 +127,8 @@ export default function RegisterPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
           </blockquote>
         </div>
       </div>
@@ -120,8 +138,11 @@ export default function RegisterPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
             <h1 className="text-2xl font-semibold tracking-tight">
               Create an account
             </h1>
@@ -129,6 +150,7 @@ export default function RegisterPage() {
               Enter your details below to create your account
             </p>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             <h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
             <p className="text-sm text-muted-foreground">Enter your details below to create your account</p>
@@ -139,6 +161,8 @@ export default function RegisterPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
           </div>
           <RegisterForm />
           <p className="px-8 text-center text-sm text-muted-foreground">
@@ -146,12 +170,16 @@ export default function RegisterPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
             <Link
               href="/auth/login"
               className="underline underline-offset-4 hover:text-primary"
             >
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
             <Link href="/auth/login" className="underline underline-offset-4 hover:text-primary">
@@ -161,6 +189,8 @@ export default function RegisterPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
               Sign in
             </Link>
           </p>
@@ -170,6 +200,7 @@ export default function RegisterPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   );
 }
 =======
@@ -186,3 +217,7 @@ export default function RegisterPage() {
   );
 }
 >>>>>>> 071bc5d (v5)
+=======
+  );
+}
+>>>>>>> ef737eb (V6)

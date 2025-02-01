@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -24,6 +25,8 @@ import { toast } from "@/components/ui/use-toast"
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -47,6 +50,7 @@ import { toast } from "@/components/ui/use-toast";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a6396a4 (Version lOLZ)
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -55,6 +59,8 @@ import { toast } from "@/components/ui/use-toast";
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
 const settingsFormSchema = z.object({
   marketingEmails: z.boolean().default(false).optional(),
@@ -62,6 +68,7 @@ const settingsFormSchema = z.object({
   theme: z.enum(["light", "dark"], {
     required_error: "You need to select a theme.",
   }),
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -101,6 +108,8 @@ export function SettingsForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 });
 
 type SettingsFormValues = z.infer<typeof settingsFormSchema>;
@@ -125,6 +134,7 @@ export function SettingsForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a6396a4 (Version lOLZ)
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -133,6 +143,8 @@ export function SettingsForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   }
 
   return (
@@ -145,6 +157,7 @@ export function SettingsForm() {
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
               <div className="space-y-0.5">
                 <FormLabel>Marketing emails</FormLabel>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -163,6 +176,8 @@ export function SettingsForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                 <FormDescription>
                   Receive emails about new products, features, and more.
                 </FormDescription>
@@ -175,6 +190,7 @@ export function SettingsForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a6396a4 (Version lOLZ)
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -183,6 +199,8 @@ export function SettingsForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
               </FormControl>
             </FormItem>
           )}
@@ -193,6 +211,7 @@ export function SettingsForm() {
           render={({ field }) => (
             <FormItem className="flex flex-row items-start space-x-3 space-y-0">
               <FormControl>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -212,6 +231,8 @@ export function SettingsForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                 <Checkbox
                   checked={field.value}
                   onCheckedChange={field.onChange}
@@ -225,6 +246,7 @@ export function SettingsForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a6396a4 (Version lOLZ)
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -233,6 +255,8 @@ export function SettingsForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
               </div>
             </FormItem>
           )}
@@ -243,6 +267,7 @@ export function SettingsForm() {
           render={({ field }) => (
             <FormItem className="space-y-1">
               <FormLabel>Theme</FormLabel>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -268,6 +293,11 @@ export function SettingsForm() {
                 Select the theme for the dashboard.
               </FormDescription>
 >>>>>>> 071bc5d (v5)
+=======
+              <FormDescription>
+                Select the theme for the dashboard.
+              </FormDescription>
+>>>>>>> ef737eb (V6)
               <FormMessage />
               <RadioGroup
                 onValueChange={field.onChange}
@@ -298,6 +328,7 @@ export function SettingsForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <span className="block w-full p-2 text-center font-normal">
                       Light
                     </span>
@@ -320,6 +351,11 @@ export function SettingsForm() {
                       Light
                     </span>
 >>>>>>> 071bc5d (v5)
+=======
+                    <span className="block w-full p-2 text-center font-normal">
+                      Light
+                    </span>
+>>>>>>> ef737eb (V6)
                   </FormLabel>
                 </FormItem>
                 <FormItem>
@@ -346,6 +382,7 @@ export function SettingsForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <span className="block w-full p-2 text-center font-normal">
                       Dark
                     </span>
@@ -368,6 +405,11 @@ export function SettingsForm() {
                       Dark
                     </span>
 >>>>>>> 071bc5d (v5)
+=======
+                    <span className="block w-full p-2 text-center font-normal">
+                      Dark
+                    </span>
+>>>>>>> ef737eb (V6)
                   </FormLabel>
                 </FormItem>
               </RadioGroup>
@@ -377,6 +419,7 @@ export function SettingsForm() {
         <Button type="submit">Update preferences</Button>
       </form>
     </Form>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -401,3 +444,7 @@ export function SettingsForm() {
   );
 }
 >>>>>>> 071bc5d (v5)
+=======
+  );
+}
+>>>>>>> ef737eb (V6)

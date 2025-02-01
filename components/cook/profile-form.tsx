@@ -1,8 +1,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 import { ChangeEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -244,6 +247,7 @@ export function CookProfileForm() {
     } finally {
       setIsLoading(false);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/main
@@ -337,6 +341,8 @@ export function CookProfileForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
     }
   }
 
@@ -346,8 +352,11 @@ export function CookProfileForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
         <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}
@@ -384,6 +393,7 @@ export function CookProfileForm() {
                 <Input {...field} disabled />
               </FormControl>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/main
@@ -403,6 +413,8 @@ export function CookProfileForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
             </FormItem>
           )}
         />
@@ -412,8 +424,11 @@ export function CookProfileForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
           name="phone"
           render={({ field }) => (
             <FormItem>
@@ -521,6 +536,7 @@ export function CookProfileForm() {
               <FormMessage />
             </FormItem>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/main
@@ -538,6 +554,8 @@ export function CookProfileForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
           )}
         />
 
@@ -571,12 +589,16 @@ export function CookProfileForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
           name="description"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Description</FormLabel>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -591,6 +613,8 @@ export function CookProfileForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
               <FormControl>
                 <Textarea
                   placeholder="Tell us about your cooking experience and specialties"
@@ -598,6 +622,7 @@ export function CookProfileForm() {
                   {...field}
                 />
               </FormControl>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -615,6 +640,11 @@ export function CookProfileForm() {
                 This will be displayed to students when they view your profile
               </FormDescription>
 >>>>>>> 071bc5d (v5)
+=======
+              <FormDescription>
+                This will be displayed to students when they view your profile
+              </FormDescription>
+>>>>>>> ef737eb (V6)
               <FormMessage />
             </FormItem>
           )}
@@ -622,8 +652,11 @@ export function CookProfileForm() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-medium">Certifications</h3>
@@ -696,6 +729,7 @@ export function CookProfileForm() {
           ))}
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/main
@@ -744,6 +778,8 @@ export function CookProfileForm() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
         <Button type="submit" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -751,6 +787,7 @@ export function CookProfileForm() {
         </Button>
       </form>
     </Form>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -770,3 +807,7 @@ export function CookProfileForm() {
   );
 }
 >>>>>>> 071bc5d (v5)
+=======
+  );
+}
+>>>>>>> ef737eb (V6)

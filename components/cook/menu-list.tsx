@@ -1,8 +1,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -163,10 +166,15 @@ export function MenuList() {
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 
 >>>>>>> 071bc5d (v5)
+=======
+
+
+>>>>>>> ef737eb (V6)
   
   if (loading) {
     return <div className="text-center py-4">Loading menu items...</div>;
@@ -245,6 +253,7 @@ export function MenuList() {
     </div>
   );
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -387,3 +396,5 @@ export function MenuList() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)

@@ -1,8 +1,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 
 import type { Metadata } from "next";
@@ -31,6 +34,7 @@ export default function MenuPage() {
           Manage your weekly Dabbas and Dabba prices
         </p>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/main
@@ -58,6 +62,8 @@ export default function MenuPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
       </div>
       <Separator />
       <Tabs defaultValue="view" className="space-y-4">
@@ -69,8 +75,11 @@ export default function MenuPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
           <MenuList key={refresh ? "refresh" : "initial"} />
         </TabsContent>
         <TabsContent value="add" className="space-y-4">
@@ -83,6 +92,7 @@ export default function MenuPage() {
 
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -103,3 +113,5 @@ export default function MenuPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)

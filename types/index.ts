@@ -5,8 +5,11 @@ export type UserStatus = "pending" | "active" | "suspended"
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7
 
 export interface WeeklySchedule {
@@ -137,12 +140,15 @@ export const dayMapping: Record<DayOfWeek, string> = {
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
 =======
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 export type OrderStatus =
   | "pending"
   | "confirmed"
@@ -166,6 +172,7 @@ export interface User {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   role: UserRole
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -174,12 +181,15 @@ export interface User {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   status: UserStatus
   createdAt: Date
   updatedAt: Date
 }
 
 export interface Cook extends User {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -194,6 +204,11 @@ export interface Cook extends User {
   userrole: "cook"
   description: string
 >>>>>>> 071bc5d (v5)
+=======
+  cook_id: string
+  userrole: "cook"
+  description: string
+>>>>>>> ef737eb (V6)
   address: string
   profilePicture?: string
   certification?: string
@@ -204,6 +219,7 @@ export interface Cook extends User {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   weeklySchedule?: WeeklySchedule
 =======
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -216,6 +232,8 @@ export interface MenuItem {
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> ef737eb (V6)
   weeklySchedule?: WeeklySchedule
 }
 
@@ -223,7 +241,10 @@ export interface MenuItem {
 
 export interface MenuItem {
   id: string
+<<<<<<< HEAD
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   cook_id: string
   item_name: string
   description: string
@@ -233,6 +254,7 @@ export interface MenuItem {
   meal_type: string
   day_of_week: number
   isAvailable: boolean
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -256,6 +278,8 @@ export interface MenuItem {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 }
 
 export interface Order {
@@ -274,14 +298,18 @@ export interface Order {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 export interface CartItem extends MenuItem {
   quantity: number;
   menuItems?: MenuItem[];
 }
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -298,6 +326,8 @@ export interface CartItem extends MenuItem {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 export interface CartContextType {
     cart: CartItem[];
     addToCart: (item: MenuItem) => void;
@@ -310,6 +340,7 @@ export interface CartContextType {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a6396a4 (Version lOLZ)
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -318,3 +349,5 @@ export interface CartContextType {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)

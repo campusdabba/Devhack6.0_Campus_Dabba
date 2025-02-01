@@ -1,8 +1,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -18,6 +21,7 @@ import { createClient } from "@/utils/supabase/client";
 
 const inter = Inter({ subsets: ["latin"] });
 const supabase = createClient();
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -48,6 +52,8 @@ export const metadata: Metadata = {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
 export default function RootLayout({
   children,
@@ -55,8 +61,11 @@ export default function RootLayout({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   children: React.ReactNode;
 }) {
   const [isCook, setIsCook] = useState(false);
@@ -106,6 +115,7 @@ export default function RootLayout({
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   children: React.ReactNode
 }) {
@@ -116,6 +126,8 @@ export default function RootLayout({
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
@@ -127,6 +139,7 @@ export default function RootLayout({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   {isCook ? <CookNav /> : <MainNav />}
 =======
                   <MainNav />
@@ -137,6 +150,9 @@ export default function RootLayout({
 =======
                   {isCook ? <CookNav /> : <MainNav />}
 >>>>>>> 071bc5d (v5)
+=======
+                  {isCook ? <CookNav /> : <MainNav />}
+>>>>>>> ef737eb (V6)
                   <MobileNav />
                 </div>
               </header>
@@ -150,6 +166,7 @@ export default function RootLayout({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   );
 }
 =======
@@ -166,3 +183,7 @@ export default function RootLayout({
   );
 }
 >>>>>>> 071bc5d (v5)
+=======
+  );
+}
+>>>>>>> ef737eb (V6)

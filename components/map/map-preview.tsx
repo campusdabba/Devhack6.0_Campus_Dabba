@@ -27,6 +27,7 @@ export function MapPreview({ address, latitude, longitude, onLocationSelect }: M
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         apiKey: "Enter the key here",
 =======
 <<<<<<< HEAD
@@ -43,6 +44,9 @@ export function MapPreview({ address, latitude, longitude, onLocationSelect }: M
 =======
         apiKey: "Enter the key here",
 >>>>>>> 071bc5d (v5)
+=======
+        apiKey: "Enter the key here",
+>>>>>>> ef737eb (V6)
         version: "weekly",
         libraries: ["places"],
       })

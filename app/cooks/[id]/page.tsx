@@ -1,8 +1,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 import { useState, useEffect } from "react";
 import type { Metadata } from "next";
@@ -16,12 +19,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cooksByState } from "@/lib/data/states";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
+<<<<<<< HEAD
   Cook,
   MenuItem,
 <<<<<<< HEAD
   CartItem,
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   dayMapping,
   WeeklySchedule,
   DayOfWeek,
@@ -32,6 +38,7 @@ import { createClient } from "@/utils/supabase/client";
 
 // Add these helper functions before the component
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 interface CartItem {
@@ -49,6 +56,30 @@ interface CartItem {
 >>>>>>> 071bc5d (v5)
 const { toast } = useToast();
 
+=======
+export interface MenuItem {
+  id: string
+  cook_id: string
+  item_name: string
+  description: string
+  price: number
+  dietary_type: string
+  cuisine_type: string
+  meal_type: string
+  day_of_week: number
+  isAvailable: boolean
+  quantity: number
+}
+
+
+export interface CartItem extends MenuItem {
+  menuItems?: MenuItem[];
+}
+
+const { toast } = useToast();
+
+
+>>>>>>> ef737eb (V6)
 export default function CookProfilePage({
   params,
 }: {
@@ -56,6 +87,7 @@ export default function CookProfilePage({
 }) {
   const [cookData, setCookData] = useState<Cook | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+<<<<<<< HEAD
   const [error, setError] = useState(null);
   const getCurrentDayNumber = (): DayOfWeek => {
     const day = new Date().getDay();
@@ -78,6 +110,39 @@ export default function CookProfilePage({
     return <div>Cook not found</div>;
   }
   const { cart, addToCart, removeFromCart } = useCart();
+=======
+  const { cart, addToCart, removeFromCart } = useCart();
+  const [error, setError] = useState<string | null>(null);
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [cook, setCook] = useState<Cook | null>(null);
+
+  useEffect(() => {
+    const fetchCookData = async () => {
+      setIsLoading(true);
+      try {
+        const supabase = createClient();
+        
+        const { data: cookData, error: cookError } = await supabase
+          .from("cooks")
+          .select("*")
+          .eq("id", params.id)
+          .single();
+
+        if (cookError) throw cookError;
+        if (!cookData) throw new Error("Cook not found");
+
+        setCook(cookData);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load cook data");
+        console.error("Error fetching cook:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCookData();
+  }, [params.id]);
+>>>>>>> ef737eb (V6)
 
   useEffect(() => {
     const newQuantities: Record<string, number> = {};
@@ -87,6 +152,7 @@ export default function CookProfilePage({
     setQuantities(newQuantities);
   }, [cart]);
 
+<<<<<<< HEAD
   // Add getCartItemId helper
   const getCartItemId = (cookId: string, day: number) => `${cookId}-${day}`;
 
@@ -132,12 +198,56 @@ export default function CookProfilePage({
         dayMapping[day as DayOfWeek]
       } Dabba has been added to your cart.`,
     });
+=======
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!cook) return <div>Cook not found</div>;
+
+  // Add getCartItemId helper
+  const getCartItemId = (cookId: string, day: number) => `${cookId}-${day}`;
+
+  const handleQuantityChange = async (day: number, change: number) => {
+    setIsLoading(true);
+    try {
+      if (!cook) return;
+  
+      const itemId = getCartItemId(cook.id, day);
+      const currentQty = quantities[itemId] || 0;
+      const newQty = Math.max(0, currentQty + change);
+  
+      // Update quantities state
+      setQuantities((prev) => ({
+        ...prev,
+        [itemId]: newQty
+      }));
+  
+      // Update cart based on quantity change
+      if (change > 0) {
+        addToCart({ 
+          id: itemId,
+          cook_id: cook.cook_id,
+          day_of_week: day,
+          quantity: 1
+        });
+      } else {
+        removeFromCart(itemId);
+      }
+    } catch (error) {
+      console.error('Error updating quantities:', error);
+    } finally {
+      setIsLoading(false);
+    }
+>>>>>>> ef737eb (V6)
   };
 
   // Add remove handler
   const handleRemoveFromCart = (day: number) => {
     if (!cook) return;
+<<<<<<< HEAD
     const itemId = getCartItemId(cook.id, day);
+=======
+    const itemId = getCartItemId(cook.cook_id, day);
+>>>>>>> ef737eb (V6)
     removeFromCart(itemId);
     const newQuantities = { ...quantities };
     delete newQuantities[itemId];
@@ -150,6 +260,7 @@ export default function CookProfilePage({
     });
   };
 
+<<<<<<< HEAD
   useEffect(() => {
     const fetchCookData = async () => {
       try {
@@ -244,6 +355,8 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
 =======
 >>>>>>> 071bc5d (v5)
 
+=======
+>>>>>>> ef737eb (V6)
   return (
     <div className="container mx-auto py-6">
       <div className="grid gap-6 lg:grid-cols-3">
@@ -254,12 +367,16 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                 src={
                   cook.profilePicture ||
                   "https://source.unsplash.com/random/100x100?chef"
                 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
                 src={cook.profilePicture || "https://source.unsplash.com/random/100x100?chef"}
@@ -269,6 +386,8 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                 alt={cook.name}
                 width={80}
                 height={80}
@@ -280,6 +399,7 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <p className="text-sm text-muted-foreground">
                   {cook.certification}
                 </p>
@@ -294,6 +414,11 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                   {cook.certification}
                 </p>
 >>>>>>> 071bc5d (v5)
+=======
+                <p className="text-sm text-muted-foreground">
+                  {cook.certification}
+                </p>
+>>>>>>> ef737eb (V6)
               </div>
             </div>
 
@@ -330,6 +455,7 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 I am a home chef who loves to cook and bake. I specialize in
                 South Indian cuisine. I use organic ingredients and cook with
                 love.
@@ -346,6 +472,11 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                 South Indian cuisine. I use organic ingredients and cook with
                 love.
 >>>>>>> 071bc5d (v5)
+=======
+                I am a home chef who loves to cook and bake. I specialize in
+                South Indian cuisine. I use organic ingredients and cook with
+                love.
+>>>>>>> ef737eb (V6)
               </p>
             </div>
 
@@ -381,8 +512,11 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
               <TabsTrigger value="menu">Today's Dabba</TabsTrigger>
               <TabsTrigger value="schedule">This week's Dabba</TabsTrigger>
             </TabsList>
@@ -394,8 +528,13 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                       <h3 className="text-xl font-bold">Today's Dabba</h3>
                       <Badge variant="secondary">
                         {cook.menuItems.find(
+<<<<<<< HEAD
                           (item) => item.dayOfWeek === getCurrentDayNumber()
                         )?.dietaryType || "veg"}
+=======
+                          (item) => item.day_of_week === getCurrentDayNumber()
+                        )?.dietary_type || "veg"}
+>>>>>>> ef737eb (V6)
                       </Badge>
                     </div>
 
@@ -403,7 +542,11 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                       <div className="space-y-2">
                         {cook.menuItems
                           .filter(
+<<<<<<< HEAD
                             (item) => item.dayOfWeek === getCurrentDayNumber()
+=======
+                            (item) => item.day_of_week === getCurrentDayNumber()
+>>>>>>> ef737eb (V6)
                           )
                           .map((item) => (
                             <div
@@ -411,7 +554,11 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                               className="flex justify-between items-start border-b pb-2"
                             >
                               <div>
+<<<<<<< HEAD
                                 <h4 className="font-medium">{item.name}</h4>
+=======
+                                <h4 className="font-medium">{item.item_name}</h4>
+>>>>>>> ef737eb (V6)
                                 <p className="text-sm text-muted-foreground">
                                   {item.description}
                                 </p>
@@ -428,7 +575,11 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                         Total: ₹
                         {cook.menuItems
                           .filter(
+<<<<<<< HEAD
                             (item) => item.dayOfWeek === getCurrentDayNumber()
+=======
+                            (item) => item.day_of_week === getCurrentDayNumber()
+>>>>>>> ef737eb (V6)
                           )
                           .reduce((total, item) => total + item.price, 0)}
                       </div>
@@ -486,7 +637,11 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                           className="w-[200px]"
                           onClick={() => {
                             const dayMenu = cook.menuItems.filter(
+<<<<<<< HEAD
                               (item) => item.dayOfWeek === Number(day)
+=======
+                              (item) => item.day_of_week === Number(day)
+>>>>>>> ef737eb (V6)
                             );
                             const bundledMenu: CartItem = {
                               id: `${cook.id}-${day}`,
@@ -497,10 +652,17 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                                 (total, item) => total + item.price,
                                 0
                               ),
+<<<<<<< HEAD
                               dietaryType: dayMenu[0]?.dietaryType || "veg",
                               cuisineType: dayMenu[0]?.cuisineType || "indian",
                               mealType: dayMenu[0]?.mealType || "lunch",
                               dayOfWeek: Number(day) as DayOfWeek,
+=======
+                              dietary_type: dayMenu[0]?.dietary_type || "veg",
+                              cuisine_type: dayMenu[0]?.cuisine_type || "indian",
+                              meal_type: dayMenu[0]?.meal_type || "lunch",
+                              day_of_week: Number(day) as DayOfWeek,
+>>>>>>> ef737eb (V6)
                               isAvailable: true,
                               quantity: 1,
                               menuItems: dayMenu,
@@ -557,8 +719,13 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                             </h3>
                             <Badge variant="secondary">
                               {cook.menuItems.find(
+<<<<<<< HEAD
                                 (item) => item.dayOfWeek === Number(day)
                               )?.dietaryType || "veg"}
+=======
+                                (item) => item.day_of_week === Number(day)
+                              )?.dietary_type || "veg"}
+>>>>>>> ef737eb (V6)
                             </Badge>
                           </div>
 
@@ -566,7 +733,11 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                             <div className="space-y-2">
                               {cook.menuItems
                                 .filter(
+<<<<<<< HEAD
                                   (item) => item.dayOfWeek === Number(day)
+=======
+                                  (item) => item.day_of_week === Number(day)
+>>>>>>> ef737eb (V6)
                                 )
                                 .map((item) => (
                                   <div
@@ -575,7 +746,11 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                                   >
                                     <div>
                                       <h4 className="font-medium">
+<<<<<<< HEAD
                                         {item.name}
+=======
+                                        {item.item_name}
+>>>>>>> ef737eb (V6)
                                       </h4>
                                       <p className="text-sm text-muted-foreground">
                                         {item.description}
@@ -595,7 +770,11 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                               Total: ₹
                               {cook.menuItems
                                 .filter(
+<<<<<<< HEAD
                                   (item) => item.dayOfWeek === Number(day)
+=======
+                                  (item) => item.day_of_week === Number(day)
+>>>>>>> ef737eb (V6)
                                 )
                                 .reduce((total, item) => total + item.price, 0)}
                             </div>
@@ -647,7 +826,11 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                                 className="w-[200px]"
                                 onClick={() => {
                                   const dayMenu = cook.menuItems.filter(
+<<<<<<< HEAD
                                     (item) => item.dayOfWeek === Number(day)
+=======
+                                    (item) => item.day_of_week === Number(day)
+>>>>>>> ef737eb (V6)
                                   );
                                   const bundledMenu: CartItem = {
                                     id: `${cook.id}-${day}`,
@@ -658,12 +841,21 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                                       (total, item) => total + item.price,
                                       0
                                     ),
+<<<<<<< HEAD
                                     dietaryType:
                                       dayMenu[0]?.dietaryType || "veg",
                                     cuisineType:
                                       dayMenu[0]?.cuisineType || "indian",
                                     mealType: dayMenu[0]?.mealType || "lunch",
                                     dayOfWeek: Number(day) as DayOfWeek,
+=======
+                                    dietary_type:
+                                      dayMenu[0]?.dietary_type || "veg",
+                                    cuisine_type:
+                                      dayMenu[0]?.cuisine_type || "indian",
+                                    mealType: dayMenu[0]?.meal_type || "lunch",
+                                    day_of_week: Number(day) as DayOfWeek,
+>>>>>>> ef737eb (V6)
                                     isAvailable: true,
                                     quantity: 1,
                                     menuItems: dayMenu,
@@ -687,6 +879,7 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
                       </TabsContent>
                     ))}
                   </Tabs>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -727,6 +920,8 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                 </CardContent>
               </Card>
             </TabsContent>
@@ -734,6 +929,7 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
         </div>
       </div>
     </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -753,3 +949,7 @@ export default function CookProfilePage({ params }: { params: { id: string } }) 
   );
 }
 >>>>>>> 071bc5d (v5)
+=======
+  );
+}
+>>>>>>> ef737eb (V6)

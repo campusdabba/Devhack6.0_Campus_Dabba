@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { ChangeEvent, useEffect, useState } from "react";
 =======
 import { useEffect, useState } from "react";
@@ -11,6 +12,9 @@ import { useEffect, useState } from "react";
 =======
 import { ChangeEvent, useEffect, useState } from "react";
 >>>>>>> 071bc5d (v5)
+=======
+import { ChangeEvent, useEffect, useState } from "react";
+>>>>>>> ef737eb (V6)
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -42,6 +46,7 @@ const formSchema = z.object({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   password: z.string().optional(),
 =======
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -50,6 +55,9 @@ const formSchema = z.object({
 =======
   password: z.string().optional(),
 >>>>>>> 071bc5d (v5)
+=======
+  password: z.string().optional(),
+>>>>>>> ef737eb (V6)
 });
 
 export default function CompleteProfileSetup() {
@@ -74,8 +82,11 @@ export default function CompleteProfileSetup() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
       form.setValue("password", parsedData.password);
     }
   }, [form]);
@@ -117,6 +128,7 @@ export default function CompleteProfileSetup() {
         data: { publicUrl },
       } = supabase.storage.from("profile-images").getPublicUrl(fileName);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/main
@@ -149,6 +161,8 @@ export default function CompleteProfileSetup() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
       setImageUrl(publicUrl);
       toast({
@@ -162,6 +176,7 @@ export default function CompleteProfileSetup() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         description:
           error instanceof Error ? error.message : "Failed to upload image",
         variant: "destructive",
@@ -178,6 +193,11 @@ export default function CompleteProfileSetup() {
           error instanceof Error ? error.message : "Failed to upload image",
         variant: "destructive",
 >>>>>>> 071bc5d (v5)
+=======
+        description:
+          error instanceof Error ? error.message : "Failed to upload image",
+        variant: "destructive",
+>>>>>>> ef737eb (V6)
       });
     } finally {
       setIsUploading(false);
@@ -186,6 +206,7 @@ export default function CompleteProfileSetup() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -194,6 +215,8 @@ export default function CompleteProfileSetup() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
@@ -201,8 +224,11 @@ export default function CompleteProfileSetup() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
       const {
         data: { user },
@@ -216,6 +242,7 @@ export default function CompleteProfileSetup() {
           email: values.email,
           first_name: values.first_name,
           last_name: values.last_name,
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -233,6 +260,8 @@ export default function CompleteProfileSetup() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
           phone: values.phone,
           profile_image: imageUrl,
           address: {
@@ -242,8 +271,11 @@ export default function CompleteProfileSetup() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
             pincode: values.pincode,
           },
           user_preferences: {
@@ -266,6 +298,7 @@ export default function CompleteProfileSetup() {
 
       localStorage.removeItem("registrationData");
       router.push("/");
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -291,6 +324,8 @@ export default function CompleteProfileSetup() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
       toast({
         title: "Profile Updated",
         description: "Your profile has been successfully updated",
@@ -300,6 +335,7 @@ export default function CompleteProfileSetup() {
       toast({
         title: "Error",
         description: "Failed to update profile",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -313,6 +349,9 @@ export default function CompleteProfileSetup() {
 =======
         variant: "destructive",
 >>>>>>> 071bc5d (v5)
+=======
+        variant: "destructive",
+>>>>>>> ef737eb (V6)
       });
     } finally {
       setIsLoading(false);
@@ -380,8 +419,11 @@ export default function CompleteProfileSetup() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
           <FormField
             control={form.control}
             name="phone"
@@ -396,12 +438,15 @@ export default function CompleteProfileSetup() {
           />
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
 =======
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
           <div className="space-y-2">
             <Label htmlFor="profile-image">Profile Picture</Label>
             <Input
@@ -411,8 +456,11 @@ export default function CompleteProfileSetup() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
               onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 const file = event.target.files?.[0];
                 if (file) {
@@ -425,6 +473,7 @@ export default function CompleteProfileSetup() {
               <img
                 src={imageUrl}
                 alt="Profile preview"
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -442,6 +491,8 @@ export default function CompleteProfileSetup() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
                 className="w-24 h-24 rounded-full object-cover"
               />
             )}
@@ -507,6 +558,7 @@ export default function CompleteProfileSetup() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Button
             type="submit"
             disabled={isLoading || isUploading}
@@ -525,6 +577,11 @@ export default function CompleteProfileSetup() {
             type="submit"
             disabled={isLoading || isUploading}
 >>>>>>> 071bc5d (v5)
+=======
+          <Button
+            type="submit"
+            disabled={isLoading || isUploading}
+>>>>>>> ef737eb (V6)
             className="w-full"
           >
             {isLoading ? "Saving..." : "Complete Profile"}
@@ -536,6 +593,7 @@ export default function CompleteProfileSetup() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 =======
 }
@@ -546,3 +604,6 @@ export default function CompleteProfileSetup() {
 =======
 }
 >>>>>>> 071bc5d (v5)
+=======
+}
+>>>>>>> ef737eb (V6)

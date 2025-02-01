@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -141,6 +142,8 @@ export {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 import { toast as sonnerToast, Toaster as SonnerToaster } from "sonner"
 
 export { SonnerToaster as ToastProvider }
@@ -162,6 +165,7 @@ export const ToastAction = () => null
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const Toast = () => null
 =======
 export const Toast = () => null
@@ -174,3 +178,6 @@ export const Toast = () => null
 =======
 export const Toast = () => null
 >>>>>>> 071bc5d (v5)
+=======
+export const Toast = () => null
+>>>>>>> ef737eb (V6)

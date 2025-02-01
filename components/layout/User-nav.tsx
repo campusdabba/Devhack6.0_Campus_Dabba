@@ -25,6 +25,7 @@ export function UserNav({ onLogout }: { onLogout: () => void }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Link href="/profile">Profile</Link>
 =======
           <Link href="/dashboard">Profile</Link>
@@ -35,6 +36,9 @@ export function UserNav({ onLogout }: { onLogout: () => void }) {
 =======
           <Link href="/profile">Profile</Link>
 >>>>>>> 071bc5d (v5)
+=======
+          <Link href="/profile">Profile</Link>
+>>>>>>> ef737eb (V6)
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/settings">Settings</Link>

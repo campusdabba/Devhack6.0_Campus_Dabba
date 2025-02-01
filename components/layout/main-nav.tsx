@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -22,6 +23,8 @@ import { useToast } from "@/components/ui/use-toast"
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 
 import Link from "next/link";
@@ -36,12 +39,16 @@ import InputSearch from "@/components/ui/search-bar";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 import { UserNav } from "@/components/layout/User-nav";
 import { createClient } from "@/utils/supabase/client";
 import { Session } from "@supabase/supabase-js";
 import Image from "next/image";
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -56,6 +63,8 @@ import { Session } from "@supabase/supabase-js";
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
 const navItems = [
   {
@@ -74,6 +83,7 @@ const navItems = [
     title: "Become a Cook",
     href: "/cook/register",
   },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -109,6 +119,8 @@ export function MainNav() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 ];
 
 export function MainNav() {
@@ -147,6 +159,7 @@ export function MainNav() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a6396a4 (Version lOLZ)
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -155,6 +168,8 @@ export function MainNav() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
   return (
     <div className="mr-4 flex items-center justify-between w-full">
@@ -163,8 +178,11 @@ export function MainNav() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
           <Image
             src="https://ejtjwejiulepzcglswis.supabase.co/storage/v1/object/public/webpage-images//logo.png"
             alt="CampusDabba Logo"
@@ -172,6 +190,7 @@ export function MainNav() {
             height={60}
             className="mr-4 rounded-lg"
           />
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -187,6 +206,8 @@ export function MainNav() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
         </Link>
         <nav className="flex items-center space-x-6 text-sm font-medium">
           {navItems.map((item) => (
@@ -195,6 +216,7 @@ export function MainNav() {
               href={item.href}
               className={cn(
                 "transition-colors hover:text-foreground/80",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -220,6 +242,11 @@ export function MainNav() {
                   ? "text-foreground"
                   : "text-foreground/60"
 >>>>>>> 071bc5d (v5)
+=======
+                pathname === item.href
+                  ? "text-foreground"
+                  : "text-foreground/60"
+>>>>>>> ef737eb (V6)
               )}
             >
               {item.title}
@@ -231,8 +258,11 @@ export function MainNav() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
         {![
           "/search",
           "/auth/login",
@@ -242,6 +272,7 @@ export function MainNav() {
           "/cook/login",
           "/cook/registration",
         ].includes(pathname) && (
+<<<<<<< HEAD
 <<<<<<< HEAD
           <Link href="/chatbot">
 =======
@@ -258,11 +289,15 @@ export function MainNav() {
 =======
           <Link href="/search">
 >>>>>>> 071bc5d (v5)
+=======
+          <Link href="/chatbot">
+>>>>>>> ef737eb (V6)
             <InputSearch />
           </Link>
         )}
       </div>
       <div className="flex items-center space-x-4">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -274,6 +309,8 @@ export function MainNav() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
         <Button variant="outline" size="sm" asChild>
           <Link href="/cart" className="flex items-center gap-2">
             <ShoppingCart className="h-4 w-4" />
@@ -281,6 +318,7 @@ export function MainNav() {
             <span>₹{cartTotal}</span>
           </Link>
         </Button>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -303,6 +341,8 @@ export function MainNav() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
         {session ? (
           <UserNav
             onLogout={async () => {
@@ -329,6 +369,7 @@ export function MainNav() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a6396a4 (Version lOLZ)
 >>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
@@ -337,6 +378,8 @@ export function MainNav() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
               <LogIn className="h-4 w-4 mr-2" />
               Login
             </Link>
@@ -344,6 +387,7 @@ export function MainNav() {
         )}
       </div>
     </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -368,3 +412,7 @@ export function MainNav() {
   );
 }
 >>>>>>> 071bc5d (v5)
+=======
+  );
+}
+>>>>>>> ef737eb (V6)

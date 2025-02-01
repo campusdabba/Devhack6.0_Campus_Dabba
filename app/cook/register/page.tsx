@@ -1,8 +1,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 "use client";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -10,6 +13,7 @@ import Link from "next/link";
 
 import { CookRegistrationForm } from "@/components/cook/registration-form";
 import {Loader_cook} from "@/components/ui/join_us";
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -30,6 +34,8 @@ export const metadata: Metadata = {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
 
 export default function CookRegistrationPage() {
   return (
@@ -39,8 +45,11 @@ export default function CookRegistrationPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
         <div className="relative z-20 flex justify-center items-center">
         <div className="flex items-center text-5xl font-medium tracking-tight text-center">
           <Loader_cook />
@@ -54,6 +63,7 @@ export default function CookRegistrationPage() {
             height={700}
             className=" object-cover shadow-xl"
           />
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -71,10 +81,13 @@ export default function CookRegistrationPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
         </div>
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
             <p className="text-lg">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -99,6 +112,11 @@ export default function CookRegistrationPage() {
               share my passion for cooking with students while earning from
               home."
 >>>>>>> 071bc5d (v5)
+=======
+              "Joining CampusDabba as a home cook has been incredible. I can now
+              share my passion for cooking with students while earning from
+              home."
+>>>>>>> ef737eb (V6)
             </p>
             <footer className="text-sm">Sofia Davis</footer>
           </blockquote>
@@ -110,8 +128,11 @@ export default function CookRegistrationPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
             <h1 className="text-2xl font-semibold tracking-tight">
               Create a cook account
             </h1>
@@ -119,6 +140,7 @@ export default function CookRegistrationPage() {
               Enter your details below to create your account
             </p>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             <h1 className="text-2xl font-semibold tracking-tight">Create a cook account</h1>
             <p className="text-sm text-muted-foreground">Enter your details below to create your account</p>
@@ -129,6 +151,8 @@ export default function CookRegistrationPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
           </div>
           <CookRegistrationForm />
           <p className="px-8 text-center text-sm text-muted-foreground">
@@ -136,12 +160,16 @@ export default function CookRegistrationPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
             <Link
               href="/cook/login"
               className="underline underline-offset-4 hover:text-primary"
             >
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
             <Link href="/cook/login" className="underline underline-offset-4 hover:text-primary">
@@ -151,6 +179,8 @@ export default function CookRegistrationPage() {
 >>>>>>> origin/main
 =======
 >>>>>>> 071bc5d (v5)
+=======
+>>>>>>> ef737eb (V6)
               Login
             </Link>
           </p>
@@ -160,6 +190,7 @@ export default function CookRegistrationPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   );
 }
 =======
@@ -176,3 +207,7 @@ export default function CookRegistrationPage() {
   );
 }
 >>>>>>> 071bc5d (v5)
+=======
+  );
+}
+>>>>>>> ef737eb (V6)

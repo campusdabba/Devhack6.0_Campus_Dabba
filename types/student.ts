@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { CuisineType, DietaryType, User} from "./index"
 
 
@@ -22,6 +23,11 @@ import { CuisineType, DietaryType, User} from "./index"
 
 
 >>>>>>> 071bc5d (v5)
+=======
+import { CuisineType, DietaryType, User} from "./index"
+
+
+>>>>>>> ef737eb (V6)
 export interface Student extends User {
   college: string
   hostelAddress: string
