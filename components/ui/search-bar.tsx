@@ -5,7 +5,19 @@ const Input_search = () => {
   return (
     <StyledWrapper>
       <div className="input-container">
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         <input className="input" name="text" type="text" placeholder="Explore Cooks........" />
+=======
+        <input className="input" name="text" type="text" placeholder="Explore Cooks............." />
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+        <input className="input" name="text" type="text" placeholder="Explore Cooks............." />
+>>>>>>> origin/main
+=======
+        <input className="input" name="text" type="text" placeholder="Explore Cooks........" />
+>>>>>>> 071bc5d (v5)
       </div>
     </StyledWrapper>
   );

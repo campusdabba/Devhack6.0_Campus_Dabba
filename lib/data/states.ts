@@ -2,6 +2,11 @@ import type { Cook, MenuItem } from "@/types"
 
 export const states = [
   "All States",
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 071bc5d (v5)
   "Andhra Pradesh",
   "Arunachal Pradesh",
   "Assam",
@@ -28,6 +33,31 @@ export const states = [
   "Uttarakhand",
   "West Bengal",
 ];
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/main
+  "Maharashtra",
+  "Delhi",
+  "Karnataka",
+  "Tamil Nadu",
+  "Gujarat",
+  "Telangana",
+  "West Bengal",
+  "Uttar Pradesh",
+  "Rajasthan",
+  "Kerala",
+<<<<<<< HEAD
+] as const
+=======
+]
+>>>>>>> a6396a4 (Version lOLZ)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
+=======
+>>>>>>> 071bc5d (v5)
 
 export type State = (typeof states)[number]
 
@@ -75,6 +105,11 @@ export const cooksByState: Record<State, (Cook & { menuItems: MenuItem[] })[]> =
           dayOfWeek: 1,
           isAvailable: true,
         },
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 071bc5d (v5)
         {
           id: "1",
           cookId: "1",
@@ -88,6 +123,13 @@ export const cooksByState: Record<State, (Cook & { menuItems: MenuItem[] })[]> =
           isAvailable: true
         },
         
+<<<<<<< HEAD
+=======
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
+=======
+>>>>>>> 071bc5d (v5)
       ],
     },
   ],

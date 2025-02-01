@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 071bc5d (v5)
 "use client";
 
 import { useState } from "react";
@@ -20,6 +25,30 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { createClient } from "@/utils/supabase/client";
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/main
+"use client"
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Loader2 } from "lucide-react"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+
+import { Button } from "@/components/ui/button"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { toast } from "@/components/ui/use-toast"
+
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
+=======
+>>>>>>> 071bc5d (v5)
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
@@ -33,11 +62,31 @@ const formSchema = z.object({
   password: z.string().min(8, {
     message: "Password must be at least 8 characters.",
   }),
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 071bc5d (v5)
 });
 
 export function CookRegistrationForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/main
+})
+
+export function CookRegistrationForm() {
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
+=======
+>>>>>>> 071bc5d (v5)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,6 +96,11 @@ export function CookRegistrationForm() {
       phone: "",
       password: "",
     },
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 071bc5d (v5)
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -97,14 +151,57 @@ export function CookRegistrationForm() {
 
       // Redirect to the additional information page
       router.push("/cook/registration");
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/main
+  })
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true)
+
+    try {
+      // Here we would typically make an API call to register the cook
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+
+      toast({
+        title: "Registration successful!",
+        description: "Please check your email to verify your account.",
+      })
+
+      router.push("/cook/verify")
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
+=======
+>>>>>>> 071bc5d (v5)
     } catch (error) {
       toast({
         title: "Something went wrong.",
         description: "Please try again later.",
         variant: "destructive",
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       });
     } finally {
       setIsLoading(false);
+=======
+      })
+    } finally {
+      setIsLoading(false)
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+      })
+    } finally {
+      setIsLoading(false)
+>>>>>>> origin/main
+=======
+      });
+    } finally {
+      setIsLoading(false);
+>>>>>>> 071bc5d (v5)
     }
   }
 
@@ -170,5 +267,22 @@ export function CookRegistrationForm() {
         </Button>
       </form>
     </Form>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   );
 }
+=======
+  )
+}
+
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+  )
+}
+
+>>>>>>> origin/main
+=======
+  );
+}
+>>>>>>> 071bc5d (v5)

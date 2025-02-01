@@ -1,7 +1,25 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 071bc5d (v5)
 
 import type { Metadata } from "next"
 
 import { CookProfileForm } from "@/components/cook/profile-form-after"
+<<<<<<< HEAD
+=======
+import type { Metadata } from "next"
+
+import { CookProfileForm } from "@/components/cook/profile-form"
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+import type { Metadata } from "next"
+
+import { CookProfileForm } from "@/components/cook/profile-form"
+>>>>>>> origin/main
+=======
+>>>>>>> 071bc5d (v5)
 import { Separator } from "@/components/ui/separator"
 
 export const metadata: Metadata = {

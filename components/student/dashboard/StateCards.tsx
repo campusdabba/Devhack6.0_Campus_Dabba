@@ -1,5 +1,10 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 071bc5d (v5)
 import { useImageHandler } from '@/components/ui/use-image-handler';
 
 // Add interface for state images
@@ -9,6 +14,13 @@ interface StateImageMap {
 
 
 
+<<<<<<< HEAD
+=======
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
+=======
+>>>>>>> 071bc5d (v5)
 export function StateCards({
   states,
   selectedState,
@@ -19,14 +31,37 @@ export function StateCards({
   onStateSelect: (state: string) => void;
 }) {
   const router = useRouter();
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   const { getImageUrl } = useImageHandler();
   const [stateImages, setStateImages] = useState<StateImageMap>({});
+=======
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
+=======
+  const { getImageUrl } = useImageHandler();
+  const [stateImages, setStateImages] = useState<StateImageMap>({});
+>>>>>>> 071bc5d (v5)
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollPosition = useRef(0);
   const [isPaused, setIsPaused] = useState(false);
   const animationFrameId = useRef<number>();
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   const defaultImageUrl = 'https://ejtjwejiulepzcglswis.supabase.co/storage/v1/object/public/webpage-images//default.avif'
+=======
+
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+
+>>>>>>> origin/main
+=======
+  const defaultImageUrl = 'https://ejtjwejiulepzcglswis.supabase.co/storage/v1/object/public/webpage-images//default.avif'
+>>>>>>> 071bc5d (v5)
   const startAnimation = () => {
     if (animationFrameId.current) {
       cancelAnimationFrame(animationFrameId.current);
@@ -77,6 +112,11 @@ export function StateCards({
     startAnimation();
   };
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 071bc5d (v5)
   useEffect(() => {
     const loadImages = async () => {
       const loadedImages: StateImageMap = {};
@@ -99,6 +139,19 @@ export function StateCards({
       <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent border-b-2 border-orange-400 pb-2">
         Suggestions for you
       </h2>
+<<<<<<< HEAD
+=======
+  return (
+    <div className="w-full overflow-hidden">
+      <h2 className="text-xl font-semibold mb-4 px-6">Suggestions</h2>
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+  return (
+    <div className="w-full overflow-hidden">
+      <h2 className="text-xl font-semibold mb-4 px-6">Suggestions</h2>
+>>>>>>> origin/main
+=======
+>>>>>>> 071bc5d (v5)
       <div
         ref={containerRef}
         className="relative overflow-hidden"
@@ -123,7 +176,19 @@ export function StateCards({
               <div
                 className="absolute inset-0"
                 style={{
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   backgroundImage: `url('${stateImages[state] ?? defaultImageUrl}')`,
+=======
+                  backgroundImage: `url('https://source.unsplash.com/400x200/?${state},landmark')`,
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+                  backgroundImage: `url('https://source.unsplash.com/400x200/?${state},landmark')`,
+>>>>>>> origin/main
+=======
+                  backgroundImage: `url('${stateImages[state] ?? defaultImageUrl}')`,
+>>>>>>> 071bc5d (v5)
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
@@ -139,6 +204,11 @@ export function StateCards({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 071bc5d (v5)
                     // Store state info in localStorage
                     localStorage.setItem("selectedState", state);
                     localStorage.setItem(
@@ -152,6 +222,22 @@ export function StateCards({
                   }}
                   className="px-3 py-1 bg-white/90 text-gray-800 rounded-full text-xs font-medium
             hover:bg-white transition-colors duration-200 mt-2"
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/main
+                    router.push(
+                      `/states/${state.toLowerCase().replace(" ", "-")}`
+                    );
+                  }}
+                  className="px-3 py-1 bg-white/90 text-gray-800 rounded-full text-xs font-medium
+                            hover:bg-white transition-colors duration-200 mt-2"
+<<<<<<< HEAD
+>>>>>>> 3be442bcdc62f9e590e91fd40a9f56038d458aa0
+=======
+>>>>>>> origin/main
+=======
+>>>>>>> 071bc5d (v5)
                 >
                   View Details
                 </button>
