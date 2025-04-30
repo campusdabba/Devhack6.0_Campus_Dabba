@@ -46,7 +46,7 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen bg-background">
       <AdminNav />
-      <main className="flex-1">
+      <main className="flex-1 p-6">
         {children}
       </main>
     </div>

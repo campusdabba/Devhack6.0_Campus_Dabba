@@ -67,16 +67,19 @@ export default function UserProfilePage() {
         if (userError) throw userError;
         setUser(userData);
 
-        // Fetch user's orders
+        // Fetch user's orders with order items
         const { data: ordersData, error: ordersError } = await supabase
           .from('orders')
           .select(`
-            *,
-            items:order_items (
+            id,
+            status,
+            total_amount,
+            created_at,
+            order_items (
               id,
-              name,
               quantity,
-              price
+              price,
+              menu_id
             )
           `)
           .eq('user_id', id)

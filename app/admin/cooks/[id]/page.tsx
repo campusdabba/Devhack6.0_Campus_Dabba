@@ -77,17 +77,13 @@ export default function CookProfilePage() {
           .select(`
             id,
             status,
-            total,
+            total_amount,
             created_at,
             order_items (
               id,
               quantity,
-              price_at_time,
-              menu:menu_id (
-                id,
-                name,
-                price
-              )
+              price,
+              menu_id
             )
           `)
           .eq('cook_id', id)

@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { createClient } from "@/utils/supabase/client";
 import { cn } from "@/lib/utils";
+import { UserNav } from "@/components/layout/User-nav";
 
 const adminNavItems = [
   {
@@ -37,24 +35,6 @@ const adminNavItems = [
 
 export function AdminNav() {
   const pathname = usePathname();
-  const { toast } = useToast();
-  const supabase = createClient();
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast({
-        title: "Error logging out",
-        description: error.message,
-        variant: "destructive",
-      });
-      return;
-    }
-    toast({
-      title: "Logged out successfully",
-      description: "You have been logged out of your account.",
-    });
-  };
 
   return (
     <nav className="border-b">
@@ -76,10 +56,7 @@ export function AdminNav() {
           ))}
         </div>
         <div className="ml-auto flex items-center space-x-4">
-          <Button variant="ghost" size="sm" onClick={handleLogout}>
-            <LogOut className="h-4 w-4 mr-2" />
-            Logout
-          </Button>
+          <UserNav />
         </div>
       </div>
     </nav>
