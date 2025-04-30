@@ -21,7 +21,7 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/components/ui/use-toast";
-import { MenuItem, CartItem, DayOfWeek, dayMapping, Cook, User } from "@/types";
+import { MenuItem, CartItem, DayOfWeek, dayMapping, Cook } from "./types";
 import { useState, useEffect } from "react";
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/client";
@@ -34,8 +34,17 @@ interface Address {
   pincode: string;
 }
 
-interface ExtendedCook extends Cook {
+interface ExtendedCook extends Omit<Cook, 'address'> {
+  cook_id: string;
+  first_name: string;
+  last_name: string;
+  profile_image: string;
+  total_orders: number;
+  certification?: string;
   menuItems: MenuItem[];
+  address: string;
+  created_at: string;
+  totalOrders: number;
 }
 
 interface CooksListProps {
@@ -48,9 +57,9 @@ interface CartOperationResult {
 }
 
 const getCurrentDayNumber = (): DayOfWeek => {
-  const day = new Date().getDay();
-  // Convert 0-6 (Sunday-Saturday) to 1-7
-  return (day === 0 ? 7 : day) as DayOfWeek;
+  const today = new Date();
+  const dayNumber = today.getDay() || 7; // Convert Sunday (0) to 7
+  return dayNumber as DayOfWeek;
 };
 
 const getDayName = (day: DayOfWeek): string => {
@@ -60,15 +69,16 @@ const getDayName = (day: DayOfWeek): string => {
 export function CooksList({ selectedState }: CooksListProps) {
   const { cart, addToCart, removeFromCart } = useCart();
   const [quantities, setQuantities] = useState<Record<string, number>>({});
-  const staticCooks = cooksByState[selectedState] || [];
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [cooks, setCooks] = useState<ExtendedCook[]>([]);
+  const [cooks, setCooks] = useState<Cook[]>([]);
   const [session, setSession] = useState<Session | null>(null);
+  const supabase = createClient();
+
+  // Debug: Log the current day number
+  console.log("Current day number:", getCurrentDayNumber());
 
   useEffect(() => {
-    const supabase = createClient();
-
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -85,7 +95,6 @@ export function CooksList({ selectedState }: CooksListProps) {
   }, []);
 
   const fetchCooks = async () => {
-    const supabase = createClient();
     try {
       setIsLoading(true);
       setCooks([]);
@@ -107,20 +116,25 @@ export function CooksList({ selectedState }: CooksListProps) {
           address,
           rating,
           certification,
-          profile_image
+          profile_image,
+          email,
+          phone,
+          description,
+          isAvailable,
+          region,
+          totalorders,
+          weeklySchedule,
+          cuisineType,
+          latitude,
+          longitude
         `);
 
       // Try both exact and partial matches
-      // If not "All States", apply region filter
       if (selectedState !== "All States") {
         cooksQuery = cooksQuery.or(`region.eq.${selectedState},region.ilike.%${selectedState}%`);
-      } else {
-        cooksQuery = cooksQuery;
       }
 
       const { data: cooksData, error: cooksError } = await cooksQuery;
-
-      console.log("Query params:", selectedState);
 
       console.log("Query params:", selectedState);
       console.log("Found cooks:", cooksData);
@@ -150,42 +164,68 @@ export function CooksList({ selectedState }: CooksListProps) {
 
       const { data: menuData, error: menuError } = await supabase
         .from("dabba_menu")
-        .select("*")
+        .select(`
+          id,
+          cook_id,
+          item_name,
+          description,
+          price,
+          meal_type,
+          dietary_type,
+          day_of_week,
+          created_at
+        `)
         .in("cook_id", cookIdsArray);
 
-      console.log("Menu data:", menuData);
+      console.log("Raw menu data:", menuData);
 
-      if (menuError) throw menuError;
+      if (menuError) {
+        console.error("Menu fetch error:", menuError);
+        throw menuError;
+      }
 
       if (!menuData?.length) {
         console.warn(
           `No menu items found for cook IDs: ${cookIdsArray.join(", ")}`
         );
       }
-      const processedCooks = cooksData.map((cook) => ({
-        id: cook.id,
-        cook_id: cook.cook_id,
-        name: `${cook.first_name} ${cook.last_name}`,
-        email: "",  // Required by User interface
-        phone: "",  // Required by User interface
-        status: "active" as const,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        userrole: "cook" as const,
-        description: "",
-        address: cook.address,
-        profilePicture: cook.profile_image,
-        certification: cook.certification,
-        rating: cook.rating || 0,
-        totalOrders: 0,
-        totalEarnings: 0,
-        isAvailable: true,
-        menuItems: menuData?.filter((item) => item.cook_id === cook.cook_id) || [],
-      }));
 
+      const processedCooks = cooksData.map((cook) => {
+        const cookMenuItems = menuData?.filter((item) => item.cook_id === cook.cook_id) || [];
+        console.log(`Menu items for cook ${cook.cook_id}:`, cookMenuItems);
+
+        // Calculate total price for today's menu
+        const todayMenu = cookMenuItems.filter(item => item.day_of_week === getCurrentDayNumber().toString());
+        const totalPrice = todayMenu.reduce((total, item) => total + parseFloat(item.price), 0);
+
+        return {
+          ...cook,
+          id: cook.id,
+          cook_id: cook.cook_id,
+          first_name: cook.first_name,
+          last_name: cook.last_name,
+          price: totalPrice,
+          profile_image: cook.profile_image,
+          certification: cook.certification,
+          totalOrders: cook.totalorders || 0,
+          menuItems: cookMenuItems.map(item => ({
+            id: item.id,
+            cook_id: item.cook_id,
+            item_name: item.item_name,
+            description: item.description,
+            price: parseFloat(item.price),
+            day_of_week: parseInt(item.day_of_week),
+            dietary_type: item.dietary_type,
+            cuisine_type: "indian", // Default value since not in table
+            meal_type: item.meal_type,
+            isAvailable: true, // Default value since not in table
+            quantity: 0
+          }))
+        };
+      });
+
+      console.log("Final processed cooks with menu items:", processedCooks);
       setCooks(processedCooks);
-
-      console.log("Processed cooks:", processedCooks);
     } catch (error) {
       const err = error as Error;
       console.error(err.message);
@@ -201,16 +241,38 @@ export function CooksList({ selectedState }: CooksListProps) {
 
   useEffect(() => {
     const newQuantities: Record<string, number> = {};
-    cart.forEach((item) => {
+    cart.forEach((item: CartItem) => {
       newQuantities[item.id] = item.quantity;
     });
     setQuantities(newQuantities);
   }, [cart]);
 
+  if (isLoading) {
+    return <div>Loading cooks...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="text-red-500">
+        <p>Error: {error}</p>
+        <button 
+          onClick={() => fetchCooks()} 
+          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  if (cooks.length === 0) {
+    return <div>No cooks found for {selectedState}</div>;
+  }
+
   const getCartItemId = (cookId: string) =>
     `${cookId}-${getCurrentDayNumber()}`;
 
-  const handleQuantityChange = (cook: ExtendedCook, change: number) => {
+  const handleQuantityChange = (cook: Cook, change: number) => {
     const itemId = getCartItemId(cook.id);
     const currentQty = quantities[itemId] || 0;
     const newQty = Math.max(0, currentQty + change);
@@ -229,7 +291,7 @@ export function CooksList({ selectedState }: CooksListProps) {
     const bundledMenu: CartItem = {
       id: itemId,
       cook_id: cook.cook_id,
-      item_name: `${cook.name}'s ${getDayName(getCurrentDayNumber())} Dabba`,
+      item_name: `${cook.first_name} ${cook.last_name}'s ${getDayName(getCurrentDayNumber())} Dabba`,
       description: `${getDayName(getCurrentDayNumber())}'s special dabba`,
       price: todayMenu.reduce((total: number, item: MenuItem) => total + item.price, 0),
       dietary_type: todayMenu[0]?.dietary_type || "veg",
@@ -246,17 +308,17 @@ export function CooksList({ selectedState }: CooksListProps) {
 
     toast({
       title: "Added to cart",
-      description: `${cook.name}'s ${getDayName(getCurrentDayNumber())} Dabba has been added to your cart.`,
+      description: `${cook.first_name} ${cook.last_name}'s ${getDayName(getCurrentDayNumber())} Dabba has been added to your cart.`,
     });
   };
 
-  const handleRemoveFromCart = (cook: ExtendedCook) => {
+  const handleRemoveFromCart = (cook: Cook) => {
     try {
       const cartItemId = `${cook.id}-${getCurrentDayNumber()}`;
       removeFromCart(cartItemId);
       toast({
         title: "Removed from cart",
-        description: `${cook.name}'s ${getDayName(getCurrentDayNumber())} Dabba has been removed from your cart.`,
+        description: `${cook.first_name} ${cook.last_name}'s ${getDayName(getCurrentDayNumber())} Dabba has been removed from your cart.`,
       });
     } catch (error) {
       console.error("Error removing from cart:", error);
@@ -268,16 +330,20 @@ export function CooksList({ selectedState }: CooksListProps) {
     }
   };
 
-  if (isLoading) return <div>Loading cooks...</div>;
-
   const formatAddress = (address: Address): string => {
     return `${address.street}, ${address.city}, ${address.state} ${address.pincode}`;
   };
 
-  const MenuItems = ({ menuItems }: { menuItems: MenuItem[] }) => {
+  const MenuItems = ({ cook }: { cook: Cook }) => {
     const currentDay = getCurrentDayNumber();
-    const todayItems = menuItems.filter(item => item.day_of_week === currentDay);
+    const todayItems = cook.menuItems.filter(item => item.day_of_week === currentDay);
     
+    console.log(`Rendering menu items for cook ${cook.cook_id}:`, {
+      currentDay,
+      allItems: cook.menuItems,
+      todayItems
+    });
+
     if (todayItems.length === 0) {
       return <p className="text-sm text-muted-foreground">No items available today</p>;
     }
@@ -286,8 +352,14 @@ export function CooksList({ selectedState }: CooksListProps) {
       <div className="space-y-2">
         {todayItems.map(item => (
           <div key={item.id} className="flex justify-between items-center">
-            <span className="text-sm">{item.item_name}</span>
-            <span className="text-sm font-medium">₹{item.price}</span>
+            <div>
+              <span className="text-sm font-medium">{item.item_name}</span>
+              <p className="text-xs text-muted-foreground">{item.description}</p>
+            </div>
+            <div className="text-right">
+              <Badge variant="secondary">₹{item.price}</Badge>
+              <Badge variant="outline" className="ml-2">{item.dietary_type}</Badge>
+            </div>
           </div>
         ))}
       </div>
@@ -303,7 +375,7 @@ export function CooksList({ selectedState }: CooksListProps) {
               className="absolute inset-0 bg-cover bg-center"
               style={{
                 backgroundImage: `url(${
-                  cook.profilePicture || "/placeholder-chef.jpg"
+                  cook.profile_image || "/placeholder-chef.jpg"
                 })`,
               }}
             />
@@ -316,7 +388,7 @@ export function CooksList({ selectedState }: CooksListProps) {
                       href={`/cooks/${cook.id}`}
                       className="hover:underline"
                     >
-                      {cook.name}
+                      {cook.first_name} {cook.last_name}
                     </Link>
                   </CardTitle>
                   <CardDescription className="text-gray-200">
@@ -332,7 +404,7 @@ export function CooksList({ selectedState }: CooksListProps) {
           </CardHeader>
           <CardContent className="pt-2 px-6 pb-1">
             <div className="flex gap-2">
-              <Badge variant="secondary">{cook.totalOrders}+ orders</Badge>
+              <Badge variant="secondary">{cook.totalorders}+ orders</Badge>
               {cook.certification && (
                 <Badge variant="outline">{cook.certification}</Badge>
               )}
@@ -341,7 +413,7 @@ export function CooksList({ selectedState }: CooksListProps) {
             <div className="space-y-2">
               <div className="space-y-2 border border-primary p-2 rounded-md">
                 <h4 className="text-xl font-bold text-primary">Dabba:</h4>
-                <MenuItems menuItems={cook.menuItems} />
+                <MenuItems cook={cook} />
               </div>
               <div className="flex justify-between items-center">
                 <p className="font-semibold">
@@ -388,7 +460,7 @@ export function CooksList({ selectedState }: CooksListProps) {
     </div>
   );
 
-  function getTotalPrice(cook: ExtendedCook, quantity: number): number {
+  function getTotalPrice(cook: Cook, quantity: number): number {
     return (
       cook.menuItems
         .filter((item: MenuItem) => item.day_of_week === getCurrentDayNumber())

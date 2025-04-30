@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Check, MapPin, Clock, Truck } from "lucide-react";
+import { Check, MapPin, Clock, Truck, Plus, Minus } from "lucide-react";
 import { useCart } from "@/components/providers/cart-provider";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,21 +10,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cooksByState } from "@/lib/data/states";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { User, dayMapping, WeeklySchedule } from "@/types";
+import { User, WeeklySchedule, DayOfWeek } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
-import { Plus, Minus } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
+import { dayMapping } from "@/components/student/dashboard/types";
 
-export const getCurrentDayNumber = (): number => {
+export const getCurrentDayNumber = (): DayOfWeek => {
   const today = new Date();
-  // getDay() returns 0-6 (Sunday-Saturday)
-  // We'll convert to 1-7 to match common week display patterns
-  const dayNumber = today.getDay() || 7;
-  return dayNumber;
+  const dayNumber = today.getDay() || 7; // Convert Sunday (0) to 7
+  return dayNumber as DayOfWeek;
 };
-
-// Add this type definition
-type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 // Add state for tracking the selected day
 
@@ -38,6 +33,7 @@ const dayNameToNumber: Record<string, number> = {
   friday: 5,
   saturday: 6,
 };
+
 const getDayNumber = (dayName: string | number | undefined): number => {
   if (typeof dayName === "number") {
     return dayName;
@@ -48,19 +44,6 @@ const getDayNumber = (dayName: string | number | undefined): number => {
   }
 
   return dayNameToNumber[dayName.toLowerCase()] || 0;
-};
-export const dayNames: Record<number, string> = {
-  1: "Monday",
-  2: "Tuesday",
-  3: "Wednesday",
-  4: "Thursday",
-  5: "Friday",
-  6: "Saturday",
-  7: "Sunday",
-};
-
-const getDayName = (dayNumber: number): string => {
-  return dayNames[dayNumber] || "Invalid day";
 };
 
 // Add these helper functions before the component
@@ -143,14 +126,18 @@ export default function CookProfilePage({
 }: {
   params: { id: string };
 }) {
-  const [selectedDay, setSelectedDay] = useState<DayOfWeek>(
-    getCurrentDayNumber() as DayOfWeek
-  );
+  const [currentDay, setCurrentDay] = useState<DayOfWeek>(getCurrentDayNumber());
   const [isLoading, setIsLoading] = useState(true);
   const { cart, addToCart, removeFromCart } = useCart();
   const [error, setError] = useState<string | null>(null);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [cook, setCook] = useState<Cook | null>(null);
+
+  useEffect(() => {
+    // Update current day when component mounts
+    setCurrentDay(getCurrentDayNumber());
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -229,13 +216,13 @@ export default function CookProfilePage({
     const bundledMenu: CartItem = {
       id: itemId,
       cook_id: cook.cook_id,
-      item_name: `${cook.first_name}'s ${dayNames[day]} Dabba`,
-      description: `${dayNames[day]}'s special dabba`,
+      item_name: `${cook.first_name}'s ${dayMapping[day]} Dabba`,
+      description: `${dayMapping[day]}'s special dabba`,
       price: dayMenu.reduce((total, item) => total + (item.price || 0), 0),
       dietary_type: dayMenu[0]?.dietary_type || "veg",
       cuisine_type: cook.cuisineType || "indian",
       meal_type: dayMenu[0]?.meal_type || "lunch",
-      day_of_week: day,
+      day_of_week: day.toString(),
       isAvailable: true,
       quantity: newQty,
       menuItems: dayMenu,
@@ -246,7 +233,7 @@ export default function CookProfilePage({
   
     toast({
       title: change > 0 ? "Added to cart" : "Updated cart",
-      description: `${cook.first_name}'s ${dayNames[day]} Dabba has been ${
+      description: `${cook.first_name}'s ${dayMapping[day]} Dabba has been ${
         change > 0 ? "added to" : "updated in"
       } your cart.`,
     });
@@ -264,7 +251,7 @@ export default function CookProfilePage({
   
     toast({
       title: "Removed from cart",
-      description: `${cook.first_name}'s ${dayNames[day]} Dabba has been removed from your cart.`,
+      description: `${cook.first_name}'s ${dayMapping[day]} Dabba has been removed from your cart.`,
     });
   };
 
@@ -414,7 +401,7 @@ export default function CookProfilePage({
                           )
                           .reduce((total, item) => total + item.price, 0)}
                       </div>
-                      {quantities[`${cook.id}-${selectedDay}`] ? (
+                      {quantities[`${cook.id}-${getCurrentDayNumber()}`] ? (
                         <div className="flex items-center gap-2">
                           {quantities[
                             getCartItemId(cook.id, getCurrentDayNumber())
@@ -463,28 +450,26 @@ export default function CookProfilePage({
                           )}
                         </div>
                       ) : (
-                        // Keep existing Add button
                         <Button
                           className="w-[200px]"
                           onClick={() => {
                             const dayMenu = cook.menuItems.filter(
                               (item) =>
-                                getDayNumber(item.day_of_week) === selectedDay
+                                getDayNumber(item.day_of_week) === currentDay
                             );
                             const bundledMenu: CartItem = {
-                              id: `${cook.id}-${selectedDay}`,
+                              id: `${cook.id}-${currentDay}`,
                               cook_id: cook.id,
-                              item_name: `${cook.first_name}'s ${dayNames} Dabba`,
-                              description: `${dayNames}'s special dabba by ${cook.first_name}`,
+                              item_name: `${cook.first_name}'s ${dayMapping[currentDay]} Dabba`,
+                              description: `${dayMapping[currentDay]}'s special dabba by ${cook.first_name}`,
                               price: dayMenu.reduce(
                                 (total, item) => total + item.price,
                                 0
                               ),
                               dietary_type: dayMenu[0]?.dietary_type || "veg",
-                              cuisine_type:
-                                dayMenu[0]?.cuisine_type || "indian",
-                              meal_type: dayMenu[0]?.meal_type || "lunch",
-                              day_of_week: getDayName(selectedDay),
+                              cuisine_type: dayMenu[0]?.cuisine_type || "indian",
+                              meal_type: "lunch",
+                              day_of_week: currentDay.toString(),
                               isAvailable: true,
                               quantity: 1,
                               menuItems: dayMenu,
@@ -492,15 +477,15 @@ export default function CookProfilePage({
                             addToCart(bundledMenu);
                             setQuantities((prev) => ({
                               ...prev,
-                              [`${cook.id}-${selectedDay}`]: 1,
+                              [`${cook.id}-${currentDay}`]: 1,
                             }));
                             toast({
                               title: "Added to cart",
-                              description: `${dayNames}'s Dabba has been added to your cart.`,
+                              description: `${dayMapping[currentDay]}'s Dabba has been added to your cart.`,
                             });
                           }}
                         >
-                          Add {dayNames[selectedDay]}'s Dabba
+                          Add {dayMapping[currentDay]}'s Dabba
                         </Button>
                       )}
                     </div>
