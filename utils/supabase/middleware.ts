@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 
-const publicRoutes = ['/', '/auth/login', '/auth/register', '/browse','/cook/register','/student/register','/search',"/cart",'/checkout','cook/login','/states','/cooks/:id','/chatbot']
+const publicRoutes = ['/', '/auth/login', '/auth/register', '/browse','/cook/register','/student/register','/search',"/cart",'/checkout','cook/login','/states','/cooks/:id','/chatbot', '/auth/admin-register']
 
 
 export async function updateSession(request: NextRequest) {
@@ -45,9 +45,22 @@ const isPublicRoute = publicRoutes.some(route => {
   return route === url
 })
 
+  // Check if the route is an admin route
+  const isAdminRoute = url.startsWith('/admin')
+
   if (!session && !isPublicRoute) {
     // Redirect to login if accessing protected route without session
     return NextResponse.redirect(new URL('/auth/login', request.url))
+  }
+
+  // If it's an admin route, check if the user is an admin
+  if (isAdminRoute && session) {
+    const { data: isAdmin, error } = await supabase
+      .rpc('is_admin', { user_id: session.user.id })
+
+    if (error || !isAdmin) {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
   }
 
   return supabaseResponse

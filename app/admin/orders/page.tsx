@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
 import {
   Card,
   CardContent,
@@ -19,13 +18,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Order {
   id: string;
   status: string;
   total: number;
   created_at: string;
+  user: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
   cook: {
     id: string;
     first_name: string;
@@ -49,22 +54,15 @@ interface Order {
   };
 }
 
-export default function UserOrdersPage() {
+export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-  const router = useRouter();
   const supabase = createClient();
 
   useEffect(() => {
     async function fetchOrders() {
       try {
-        // Get current user
-        const { data: { user }, error: userError } = await supabase.auth.getUser();
-        if (userError) throw userError;
-        if (!user) throw new Error("User not authenticated");
-
-        // Fetch user's orders
         const { data, error } = await supabase
           .from('orders')
           .select(`
@@ -72,7 +70,13 @@ export default function UserOrdersPage() {
             status,
             total,
             created_at,
-            cook:cook_id (
+            user:users!user_id (
+              id,
+              first_name,
+              last_name,
+              email
+            ),
+            cook:cooks!cook_id (
               id,
               first_name,
               last_name
@@ -81,7 +85,7 @@ export default function UserOrdersPage() {
               id,
               quantity,
               price_at_time,
-              menu:menu_id (
+              menu:menus!menu_id (
                 id,
                 name,
                 price
@@ -94,7 +98,6 @@ export default function UserOrdersPage() {
               created_at
             )
           `)
-          .eq('user_id', user.id)
           .order('created_at', { ascending: false });
 
         if (error) throw error;
@@ -114,41 +117,70 @@ export default function UserOrdersPage() {
     fetchOrders();
   }, []);
 
+  const handleStatusUpdate = async (orderId: string, newStatus: string) => {
+    try {
+      const { error } = await supabase
+        .from('orders')
+        .update({ status: newStatus })
+        .eq('id', orderId);
+
+      if (error) throw error;
+
+      setOrders(orders.map(order => 
+        order.id === orderId ? { ...order, status: newStatus } : order
+      ));
+
+      toast({
+        title: "Success",
+        description: "Order status updated successfully",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="container mx-auto py-10">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">My Orders</h1>
-        <Button onClick={() => router.push('/order')}>
-          Place New Order
-        </Button>
-      </div>
+      <h1 className="text-3xl font-bold mb-6">Order Management</h1>
 
       <Card>
         <CardHeader>
-          <CardTitle>Order History</CardTitle>
-          <CardDescription>View your past and current orders</CardDescription>
+          <CardTitle>All Orders</CardTitle>
+          <CardDescription>View and manage all orders</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Order ID</TableHead>
+                <TableHead>Customer</TableHead>
                 <TableHead>Cook</TableHead>
                 <TableHead>Items</TableHead>
                 <TableHead>Total</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Payment</TableHead>
                 <TableHead>Date</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {orders.map((order) => (
                 <TableRow key={order.id}>
                   <TableCell>{order.id}</TableCell>
+                  <TableCell>
+                    <div className="flex flex-col">
+                      <span>{order.user.first_name} {order.user.last_name}</span>
+                      <span className="text-sm text-gray-500">{order.user.email}</span>
+                    </div>
+                  </TableCell>
                   <TableCell>
                     {order.cook.first_name} {order.cook.last_name}
                   </TableCell>
@@ -174,25 +206,43 @@ export default function UserOrdersPage() {
                     </div>
                   </TableCell>
                   <TableCell>{new Date(order.created_at).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    <div className="flex space-x-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleStatusUpdate(order.id, 'preparing')}
+                        disabled={order.status === 'preparing'}
+                      >
+                        Preparing
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleStatusUpdate(order.id, 'ready')}
+                        disabled={order.status === 'ready'}
+                      >
+                        Ready
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleStatusUpdate(order.id, 'delivered')}
+                        disabled={order.status === 'delivered'}
+                      >
+                        Delivered
+                      </Button>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
           {orders.length === 0 && (
-            <div className="text-center py-8">
-              <p className="text-gray-500">No orders found</p>
-              <Button
-                variant="outline"
-                className="mt-4"
-                onClick={() => router.push('/order')}
-              >
-                Place Your First Order
-              </Button>
-            </div>
+            <p className="text-center text-gray-500 py-4">No orders found</p>
           )}
         </CardContent>
       </Card>
     </div>
   );
-}
-
+} 

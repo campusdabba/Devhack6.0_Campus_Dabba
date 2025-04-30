@@ -1,11 +1,11 @@
-
 "use client";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {Loader_login} from "@/components/ui/join_us";
 import { LoginForm } from "@/components/auth/login-form";
-
+import { AdminLoginForm } from "@/components/auth/admin-login-form";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function LoginPage() {
   return (
@@ -39,11 +39,23 @@ export default function LoginPage() {
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
+            <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
             <p className="text-sm text-muted-foreground">
               Enter your credentials to sign in to your account
             </p>
           </div>
-          <LoginForm />
+          <Tabs defaultValue="user" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="user">User Login</TabsTrigger>
+              <TabsTrigger value="admin">Admin Login</TabsTrigger>
+            </TabsList>
+            <TabsContent value="user">
+              <LoginForm />
+            </TabsContent>
+            <TabsContent value="admin">
+              <AdminLoginForm />
+            </TabsContent>
+          </Tabs>
           <p className="px-8 text-center text-sm text-muted-foreground">
             Don't have an account?{" "}
             <Link

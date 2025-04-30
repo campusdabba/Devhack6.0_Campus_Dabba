@@ -4,14 +4,34 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { formatDistance } from "date-fns";
 
-type Order = {
+interface Order {
   id: string;
+  status: string;
+  total: number;
   created_at: string;
-  status: 'pending' | 'preparing' | 'ready' | 'delivered';
-  customer_name: string;
-  items: any[];
-  total_amount: number;
-};
+  user: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
+  order_items: {
+    id: string;
+    quantity: number;
+    price_at_time: number;
+    menu: {
+      id: string;
+      name: string;
+      price: number;
+    };
+  }[];
+  payment: {
+    id: string;
+    status: string;
+    payment_method: string;
+    created_at: string;
+  };
+}
 
 export default function OrderHandlerPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -25,7 +45,34 @@ export default function OrderHandlerPage() {
       if (session?.user) {
         const { data } = await supabase
           .from('orders')
-          .select('*, customers(full_name)')
+          .select(`
+            id,
+            status,
+            total,
+            created_at,
+            user:users!user_id (
+              id,
+              first_name,
+              last_name,
+              email
+            ),
+            order_items (
+              id,
+              quantity,
+              price_at_time,
+              menu:menus!menu_id (
+                id,
+                name,
+                price
+              )
+            ),
+            payment:payments!inner (
+              id,
+              status,
+              payment_method,
+              created_at
+            )
+          `)
           .eq('cook_id', session.user.id)
           .order('created_at', { ascending: false });
           
@@ -99,13 +146,31 @@ export default function OrderHandlerPage() {
           .map(order => (
             <div key={order.id} className="border p-4 rounded-lg shadow-sm">
               <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="font-semibold">Order #{order.id.slice(0, 8)}</h3>
-                  <p className="text-sm text-gray-600">
+                <div className="flex-1">
+                  <h3 className="font-medium">Order #{order.id}</h3>
+                  <p className="text-sm text-gray-500">
                     {formatDistance(new Date(order.created_at), new Date(), { addSuffix: true })}
                   </p>
-                  <p className="mt-2">Customer: {order.customer_name}</p>
-                  <p>Total: ₹{order.total_amount}</p>
+                  <p className="mt-2">Customer: {order.user.first_name} {order.user.last_name}</p>
+                  <p>Email: {order.user.email}</p>
+                  <p>Total: ₹{order.total}</p>
+                  <div className="mt-2">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      order.payment.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      Payment: {order.payment.status}
+                    </span>
+                  </div>
+                  <div className="mt-2">
+                    <h4 className="font-medium">Items:</h4>
+                    <ul className="list-disc list-inside">
+                      {order.order_items.map((item) => (
+                        <li key={item.id}>
+                          {item.menu.name} (x{item.quantity}) - ₹{item.price_at_time}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
                 
                 <div className="flex flex-col gap-2">

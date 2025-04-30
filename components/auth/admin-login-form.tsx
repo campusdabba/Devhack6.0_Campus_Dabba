@@ -6,12 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/client"
+
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {  useToast} from "@/components/ui/use-toast"
-import Link from "next/link"
+import { useToast } from "@/components/ui/use-toast"
 
 const formSchema = z.object({
   email: z.string().email({
@@ -22,7 +22,7 @@ const formSchema = z.object({
   }),
 })
 
-export function LoginForm() {
+export function AdminLoginForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
@@ -42,61 +42,45 @@ export function LoginForm() {
       const { data: { user }, error } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
-      });
+      })
       
       if (error) {
-        console.error('Supabase signIn error:', error);
-
-        if (error.message.includes("Invalid login credentials")) {
-          toast({
-            title: "Invalid credentials",
-            description: "The email or password you entered is incorrect.",
-            variant: "destructive",
-          });
-        } else {
-          toast({
-            title: "Something went wrong.",
-            description: error.message,
-            variant: "destructive",
-          });
-        }
-        return;
+        toast({
+          title: "Invalid credentials",
+          description: "The email or password you entered is incorrect.",
+          variant: "destructive",
+        })
+        return
       }
 
       // Check if user is an admin
-      if (user) {
-        const { data: isAdmin, error: adminError } = await supabase
-          .rpc('is_admin', { user_id: user.id });
+      const { data: isAdmin, error: adminError } = await supabase
+        .rpc('is_admin', { user_id: user?.id })
 
-        if (adminError) {
-          console.error('Admin check error:', adminError);
-        }
-
-        if (isAdmin) {
-          toast({
-            title: "Login successful!",
-            description: "Welcome to the admin dashboard.",
-          });
-          router.push("/admin/dashboard");
-          return;
-        }
+      if (adminError || !isAdmin) {
+        await supabase.auth.signOut()
+        toast({
+          title: "Access Denied",
+          description: "You do not have admin privileges.",
+          variant: "destructive",
+        })
+        return
       }
 
       toast({
         title: "Login successful!",
-        description: "Welcome back to CampusDabba.",
-      });
+        description: "Welcome to the admin dashboard.",
+      })
 
-      router.push("/");
+      router.push("/admin/dashboard")
     } catch (error) {
-      console.error('Error during login:', error);
       toast({
         title: "Something went wrong.",
         description: "An unknown error occurred.",
         variant: "destructive",
-      });
+      })
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   }
 
@@ -110,7 +94,7 @@ export function LoginForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="john@example.com" type="email" {...field} />
+                <Input placeholder="admin@example.com" type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -131,22 +115,9 @@ export function LoginForm() {
         />
         <Button type="submit" className="w-full" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Sign In
+          Sign In as Admin
         </Button>
-        <div className="text-center text-sm">
-          <p className="text-gray-600">
-            Don't have an account?{" "}
-            <Link href="/auth/register" className="text-primary hover:underline">
-              Sign up as a user
-            </Link>
-            {" or "}
-            <Link href="/auth/admin-register" className="text-primary hover:underline">
-              Sign up as an admin
-            </Link>
-          </p>
-        </div>
       </form>
     </Form>
   )
-}
-
+} 
