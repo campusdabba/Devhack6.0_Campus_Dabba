@@ -1,14 +1,21 @@
-export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export type DayOfWeek = "1" | "2" | "3" | "4" | "5" | "6" | "7";
 
 export const dayMapping: Record<DayOfWeek, string> = {
-  1: "Monday",
-  2: "Tuesday",
-  3: "Wednesday",
-  4: "Thursday",
-  5: "Friday",
-  6: "Saturday",
-  7: "Sunday"
+  "1": "Monday",
+  "2": "Tuesday",
+  "3": "Wednesday",
+  "4": "Thursday",
+  "5": "Friday",
+  "6": "Saturday",
+  "7": "Sunday"
 };
+
+export interface Address {
+  street: string;
+  city: string;
+  state: string;
+  pincode: string;
+}
 
 export interface MenuItem {
   id: string;
@@ -16,17 +23,14 @@ export interface MenuItem {
   item_name: string;
   description: string;
   price: number;
-  dietary_type: string;
-  cuisine_type: string;
   meal_type: string;
-  day_of_week: number;
-  isAvailable: boolean;
-  quantity: number;
+  dietary_type: string;
+  day_of_week: DayOfWeek;
+  created_at: string;
 }
 
-export interface CartItem extends MenuItem {
+export interface CartItem extends Omit<MenuItem, 'created_at'> {
   quantity: number;
-  menuItems?: MenuItem[];
 }
 
 export interface Cook {
@@ -37,30 +41,18 @@ export interface Cook {
   email: string;
   phone: string;
   description: string;
-  address: string;
+  address: Address;
   profile_image: string;
-  certification?: string;
+  certification?: Record<string, any>;
   rating: number;
-  totalOrders: number;
+  totalorders: number;
   isAvailable: boolean;
   region: string;
-  totalorders: number;
-  weeklySchedule?: string;
-  cuisineType?: string;
-  latitude?: number;
-  longitude?: number;
+  weeklySchedule?: Record<string, any>;
+  cuisineType?: Record<string, any>;
+  latitude?: string;
+  longitude?: string;
   menuItems: MenuItem[];
-  price?: number;
 }
 
-export interface ExtendedCook extends Omit<Cook, 'address'> {
-  cook_id: string;
-  first_name: string;
-  last_name: string;
-  profile_image: string;
-  total_orders: number;
-  certification?: string;
-  menuItems: MenuItem[];
-  address: string;
-  created_at: string;
-} 
+export type ExtendedCook = Cook; 

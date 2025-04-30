@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { MenuItem, CartItem, DayOfWeek, dayMapping, Cook } from "./types";
 import { useState, useEffect } from "react";
 import { NextResponse } from "next/server";
@@ -59,7 +59,7 @@ interface CartOperationResult {
 const getCurrentDayNumber = (): DayOfWeek => {
   const today = new Date();
   const dayNumber = today.getDay() || 7; // Convert Sunday (0) to 7
-  return dayNumber as DayOfWeek;
+  return dayNumber.toString() as DayOfWeek;
 };
 
 const getDayName = (day: DayOfWeek): string => {
@@ -195,7 +195,7 @@ export function CooksList({ selectedState }: CooksListProps) {
         console.log(`Menu items for cook ${cook.cook_id}:`, cookMenuItems);
 
         // Calculate total price for today's menu
-        const todayMenu = cookMenuItems.filter(item => item.day_of_week === getCurrentDayNumber().toString());
+        const todayMenu = cookMenuItems.filter(item => item.day_of_week === getCurrentDayNumber());
         const totalPrice = todayMenu.reduce((total, item) => total + parseFloat(item.price), 0);
 
         return {
@@ -207,19 +207,17 @@ export function CooksList({ selectedState }: CooksListProps) {
           price: totalPrice,
           profile_image: cook.profile_image,
           certification: cook.certification,
-          totalOrders: cook.totalorders || 0,
+          totalorders: cook.totalorders || 0,
           menuItems: cookMenuItems.map(item => ({
             id: item.id,
             cook_id: item.cook_id,
             item_name: item.item_name,
             description: item.description,
             price: parseFloat(item.price),
-            day_of_week: parseInt(item.day_of_week),
+            day_of_week: item.day_of_week as DayOfWeek,
             dietary_type: item.dietary_type,
-            cuisine_type: "indian", // Default value since not in table
             meal_type: item.meal_type,
-            isAvailable: true, // Default value since not in table
-            quantity: 0
+            created_at: item.created_at
           }))
         };
       });
@@ -295,55 +293,42 @@ export function CooksList({ selectedState }: CooksListProps) {
       description: `${getDayName(getCurrentDayNumber())}'s special dabba`,
       price: todayMenu.reduce((total: number, item: MenuItem) => total + item.price, 0),
       dietary_type: todayMenu[0]?.dietary_type || "veg",
-      cuisine_type: todayMenu[0]?.cuisine_type || "indian",
       meal_type: "lunch",
       day_of_week: getCurrentDayNumber(),
-      isAvailable: true,
-      quantity: newQty,
-      menuItems: todayMenu,
+      quantity: newQty
     };
 
     addToCart(bundledMenu);
     setQuantities((prev) => ({ ...prev, [itemId]: newQty }));
 
-    toast({
-      title: "Added to cart",
-      description: `${cook.first_name} ${cook.last_name}'s ${getDayName(getCurrentDayNumber())} Dabba has been added to your cart.`,
-    });
+    toast(`${cook.first_name} ${cook.last_name}'s ${getDayName(getCurrentDayNumber())} Dabba has been added to your cart.`);
   };
 
   const handleRemoveFromCart = (cook: Cook) => {
     try {
       const cartItemId = `${cook.id}-${getCurrentDayNumber()}`;
       removeFromCart(cartItemId);
-      toast({
-        title: "Removed from cart",
-        description: `${cook.first_name} ${cook.last_name}'s ${getDayName(getCurrentDayNumber())} Dabba has been removed from your cart.`,
-      });
+      toast(`${cook.first_name} ${cook.last_name}'s ${getDayName(getCurrentDayNumber())} Dabba has been removed from your cart.`);
     } catch (error) {
       console.error("Error removing from cart:", error);
-      toast({
-        title: "Error",
-        description: "Failed to remove item from cart",
-        variant: "destructive",
-      });
+      toast("Failed to remove item from cart");
     }
   };
 
   const formatAddress = (address: Address): string => {
-    return `${address.street}, ${address.city}, ${address.state} ${address.pincode}`;
+    if (!address) return "Address not available";
+    const parts = [];
+    if (address.street) parts.push(address.street);
+    if (address.city) parts.push(address.city);
+    if (address.state) parts.push(address.state);
+    if (address.pincode) parts.push(address.pincode);
+    return parts.join(", ") || "Address not available";
   };
 
   const MenuItems = ({ cook }: { cook: Cook }) => {
     const currentDay = getCurrentDayNumber();
     const todayItems = cook.menuItems.filter(item => item.day_of_week === currentDay);
     
-    console.log(`Rendering menu items for cook ${cook.cook_id}:`, {
-      currentDay,
-      allItems: cook.menuItems,
-      todayItems
-    });
-
     if (todayItems.length === 0) {
       return <p className="text-sm text-muted-foreground">No items available today</p>;
     }
@@ -392,7 +377,7 @@ export function CooksList({ selectedState }: CooksListProps) {
                     </Link>
                   </CardTitle>
                   <CardDescription className="text-gray-200">
-                    {typeof cook.address === 'string' ? cook.address : "Address not available"}
+                    {formatAddress(cook.address)}
                   </CardDescription>
                 </div>
                 <div className="flex items-center gap-1 rounded-full bg-white/20 backdrop-blur px-2 py-1 text-sm">
@@ -406,13 +391,13 @@ export function CooksList({ selectedState }: CooksListProps) {
             <div className="flex gap-2">
               <Badge variant="secondary">{cook.totalorders}+ orders</Badge>
               {cook.certification && (
-                <Badge variant="outline">{cook.certification}</Badge>
+                <Badge variant="outline">{Object.keys(cook.certification)[0]}</Badge>
               )}
             </div>
             <Separator className="my-2" />
             <div className="space-y-2">
               <div className="space-y-2 border border-primary p-2 rounded-md">
-                <h4 className="text-xl font-bold text-primary">Dabba:</h4>
+                <h4 className="text-xl font-bold text-primary">Today's Dabba:</h4>
                 <MenuItems cook={cook} />
               </div>
               <div className="flex justify-between items-center">
@@ -468,4 +453,3 @@ export function CooksList({ selectedState }: CooksListProps) {
     );
   }
 }
-
