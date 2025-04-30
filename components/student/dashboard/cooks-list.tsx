@@ -64,7 +64,7 @@ interface CartOperationResult {
 const getCurrentDayNumber = () => {
   const today = new Date();
   const day = today.getDay() || 7; // Convert Sunday (0) to 7
-  return dayMapping[day]; // Returns day name
+  return day; // Return the numeric day
 };
 
 export function CooksList({ selectedState }: CooksListProps) {
@@ -287,32 +287,51 @@ export function CooksList({ selectedState }: CooksListProps) {
   const MenuItems = ({ cook, currentDay }) => {
     console.log("Current day:", currentDay);
     console.log("Menu items:", cook.menuItems);
-    console.log("Day of week from item:", cook.menuItems[0]?.day_of_week);
+    console.log("Day of week from item:", cook.menuItems?.[0]?.day_of_week);
+
+    if (!cook.menuItems || !Array.isArray(cook.menuItems)) {
+      console.log("No menu items available for cook:", cook.id);
+      return (
+        <div className="text-center text-muted-foreground py-4">
+          No menu items available for today
+        </div>
+      );
+    }
+
+    const todayMenu = cook.menuItems.filter((item) => {
+      const matches = item?.day_of_week === currentDay;
+      console.log(`Item ${item?.id}: day_of_week=${item?.day_of_week}, matches=${matches}`);
+      return matches;
+    });
+
+    if (todayMenu.length === 0) {
+      console.log("No menu items for current day:", currentDay);
+      return (
+        <div className="text-center text-muted-foreground py-4">
+          No menu items available for today
+        </div>
+      );
+    }
 
     return (
       <ScrollArea className="h-48">
         <div className="space-y-2 border border-primary p-2 rounded-md">
-          {cook.menuItems
-            .filter((item) => {
-              console.log(`Comparing ${item.day_of_week} with ${currentDay}`);
-              return item.day_of_week === currentDay;
-            })
-            .map((item) => (
-              <div key={item.id} className="mb-4 p-2 border-b last:border-0">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h5 className="font-semibold">{item.item_name}</h5>
-                    <p className="text-sm text-gray-600">{item.description}</p>
-                  </div>
-                  <div className="text-right">
-                    <Badge variant="secondary">₹{item.price}</Badge>
-                    <Badge variant="outline" className="ml-2">
-                      {item.dietary_type}
-                    </Badge>
-                  </div>
+          {todayMenu.map((item) => (
+            <div key={item.id} className="mb-4 p-2 border-b last:border-0">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h5 className="font-semibold">{item.item_name || 'Menu Item'}</h5>
+                  <p className="text-sm text-gray-600">{item.description || 'No description available'}</p>
+                </div>
+                <div className="text-right">
+                  <Badge variant="secondary">₹{item.price || 0}</Badge>
+                  <Badge variant="outline" className="ml-2">
+                    {item.dietary_type || 'veg'}
+                  </Badge>
                 </div>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
       </ScrollArea>
     );
@@ -366,43 +385,8 @@ export function CooksList({ selectedState }: CooksListProps) {
             <Separator className="my-2" />
             <div className="space-y-2">
               <div className="space-y-2 border border-primary p-2 rounded-md">
-                {" "}
-                {/* Added outline */}
                 <h4 className="text-xl font-bold text-primary">Dabba:</h4>
-                <ScrollArea className="h-48">
-                  <div className="space-y-2 border border-primary p-2 rounded-md">
-                    {" "}
-                    {/* Added outline */}
-                    {cook.menuItems
-                      .filter(
-                        (item) => item.day_of_week === getCurrentDayNumber()
-                      )
-                      .map((item) => (
-                        <div
-                          key={item.id}
-                          className="mb-4 p-2 border-b last:border-0"
-                        >
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h5 className="font-semibold">
-                                {item.item_name}
-                              </h5>
-                              <p className="text-sm text-gray-600">
-                                {item.description}
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <Badge variant="secondary">₹{item.price}</Badge>
-                              <Badge variant="outline" className="ml-2">
-                                {item.dietary_type}
-                              </Badge>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                  <ScrollBar orientation="vertical" />
-                </ScrollArea>
+                <MenuItems cook={cook} currentDay={getCurrentDayNumber()} />
               </div>
               <div className="flex justify-between items-center">
                 <p className="font-semibold">
