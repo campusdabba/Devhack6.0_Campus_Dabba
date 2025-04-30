@@ -2,11 +2,36 @@
   command = "npm run build"
   publish = ".next"
 
+[functions]
+  included_files = [
+    "node_modules/@supabase/**/*",
+    "node_modules/next/**/*",
+    "node_modules/react/**/*",
+    "node_modules/react-dom/**/*",
+    "node_modules/@types/**/*",
+    "node_modules/.prisma/**/*"
+  ]
+
 [build.environment]
-  NODE_VERSION = "18"
+  NEXT_PUBLIC_SUPABASE_URL = "https://ejtjwejiulepzcglswis.supabase.co"
+  NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdGp3ZWppdWxlcHpjZ2xzd2lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgwMDExNTcsImV4cCI6MjA1MzU3NzE1N30.QLA7EO0OPzRVb6sSBCUoIAPM0Jb_sB0D830cA80x90w"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-[functions]
-  included_files = ["node_modules/**/*"]
+[[redirects]]
+  from = "/_next/image"
+  query = { q = ":quality", url = ":url", w = ":width" }
+  status = 200
+  to = "/.netlify/images?url=:url&w=:width&q=:quality"
+
+[[redirects]]
+  from = "/_ipx/*"
+  query = { q = ":quality", url = ":url", w = ":width" }
+  status = 200
+  to = "/.netlify/images?url=:url&w=:width&q=:quality"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
