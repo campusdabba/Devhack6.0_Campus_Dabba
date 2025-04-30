@@ -46,23 +46,29 @@ export function UsersTable({ onSelectionChange, selectedUsers = [] }: UsersTable
           return;
         }
 
-        // Try to fetch users directly - RLS will handle the permission check
-        console.log('Fetching users from database...');
+        // Fetch users from users table
+        console.log('Fetching users from users table...');
         const { data, error: usersError } = await supabase
           .from('users')
-          .select('*')
+          .select(`
+            id,
+            email,
+            first_name,
+            last_name,
+            phone,
+            role,
+            created_at,
+            profile_image,
+            address,
+            user_preferences
+          `)
           .order('created_at', { ascending: false });
         
         console.log('Users fetch result:', data);
         
         if (usersError) {
-          if (usersError.code === '42501') { // Permission denied
-            console.log('User is not an admin');
-            setError('Not authorized to view users');
-          } else {
-            console.error('Users fetch error:', usersError);
-            setError(`Error fetching users: ${usersError.message}`);
-          }
+          console.error('Users fetch error:', usersError);
+          setError(`Error fetching users: ${usersError.message}`);
           return;
         }
         
@@ -140,11 +146,11 @@ export function UsersTable({ onSelectionChange, selectedUsers = [] }: UsersTable
                 href={`/admin/users/${user.id}`}
                 className="text-primary hover:underline"
               >
-                {user.first_name} {user.last_name}
+                {`${user.first_name} ${user.last_name}`.trim() || 'N/A'}
               </Link>
             </TableCell>
             <TableCell>{user.email}</TableCell>
-            <TableCell>{user.phone}</TableCell>
+            <TableCell>{user.phone || 'N/A'}</TableCell>
             <TableCell>{user.role || 'user'}</TableCell>
             <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
           </TableRow>

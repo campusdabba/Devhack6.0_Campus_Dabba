@@ -35,45 +35,79 @@ export function AdminLoginForm() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log('Starting admin login process...');
     setIsLoading(true)
     const supabase = await createClient()
 
     try {
+      console.log('Attempting to sign in...');
       const { data: { user }, error } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       })
       
       if (error) {
+        console.error('Sign in error:', error);
         toast({
           title: "Invalid credentials",
           description: "The email or password you entered is incorrect.",
           variant: "destructive",
         })
-        return
+        setIsLoading(false);
+        return;
       }
 
+      if (!user) {
+        console.error('No user returned from sign in');
+        toast({
+          title: "Sign in error",
+          description: "No user returned from authentication.",
+          variant: "destructive",
+        })
+        setIsLoading(false);
+        return;
+      }
+
+      console.log('User signed in, checking admin status...');
       // Check if user is an admin
       const { data: isAdmin, error: adminError } = await supabase
-        .rpc('is_admin', { user_id: user?.id })
+        .rpc('is_admin', { input_user_id: user.id })
 
-      if (adminError || !isAdmin) {
+      console.log('Admin check result:', { isAdmin, adminError });
+
+      if (adminError) {
+        console.error('Admin check error:', adminError);
+        toast({
+          title: "Error",
+          description: "Failed to verify admin status.",
+          variant: "destructive",
+        })
+        setIsLoading(false);
+        return;
+      }
+
+      if (!isAdmin) {
+        console.log('User is not an admin');
         await supabase.auth.signOut()
         toast({
           title: "Access Denied",
           description: "You do not have admin privileges.",
           variant: "destructive",
         })
-        return
+        setIsLoading(false);
+        return;
       }
 
+      console.log('Admin login successful, redirecting...');
       toast({
         title: "Login successful!",
         description: "Welcome to the admin dashboard.",
       })
 
-      router.push("/admin/dashboard")
+      // Force a hard redirect to ensure the middleware runs
+      window.location.href = '/admin/dashboard';
     } catch (error) {
+      console.error('Unexpected error during login:', error);
       toast({
         title: "Something went wrong.",
         description: "An unknown error occurred.",

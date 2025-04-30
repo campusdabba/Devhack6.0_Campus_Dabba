@@ -4,30 +4,13 @@ RETURNS BOOLEAN
 LANGUAGE plpgsql
 SECURITY DEFINER
 AS $$
-DECLARE
-    key_exists BOOLEAN;
-    key_expired BOOLEAN;
-    key_used BOOLEAN;
 BEGIN
-    -- Check if key exists, is not expired, and is not used
-    SELECT 
-        EXISTS (
-            SELECT 1 FROM admin_keys 
-            WHERE key = key_to_verify
-        ),
-        EXISTS (
-            SELECT 1 FROM admin_keys 
-            WHERE key = key_to_verify 
-            AND expires_at < NOW()
-        ),
-        EXISTS (
-            SELECT 1 FROM admin_keys 
-            WHERE key = key_to_verify 
-            AND used = TRUE
-        )
-    INTO key_exists, key_expired, key_used;
-
-    RETURN key_exists AND NOT key_expired AND NOT key_used;
+    RETURN EXISTS (
+        SELECT 1 FROM admin_keys 
+        WHERE key = key_to_verify
+        AND NOT used
+        AND expires_at > NOW()
+    );
 END;
 $$;
 
@@ -84,4 +67,24 @@ BEGIN
     WHERE ak.used = FALSE
     AND ak.expires_at > NOW();
 END;
-$$; 
+$$;
+
+-- Drop existing function first
+DROP FUNCTION IF EXISTS is_admin(UUID);
+
+-- Function to check if a user is an admin
+CREATE OR REPLACE FUNCTION is_admin(input_user_id UUID)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+    RETURN EXISTS (
+        SELECT 1 FROM admins
+        WHERE admins.id = input_user_id
+    );
+END;
+$$;
+
+-- Generate a new admin key
+SELECT generate_admin_key() as new_admin_key; 

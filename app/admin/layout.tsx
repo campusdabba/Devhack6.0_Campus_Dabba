@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { AdminNav } from "@/components/admin/admin-nav";
 
@@ -10,28 +9,39 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
   const supabase = createClient();
 
   useEffect(() => {
     const checkAdmin = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        router.push("/auth/login");
-        return;
-      }
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          window.location.href = "/auth/login";
+          return;
+        }
 
-      const { data: isAdmin, error } = await supabase
-        .rpc('is_admin', { user_id: user.id });
+        const { data: isAdmin, error } = await supabase
+          .rpc('is_admin', { input_user_id: user.id });
 
-      if (error || !isAdmin) {
-        router.push("/");
-        return;
+        if (error) {
+          console.error('Error checking admin status:', error);
+          window.location.href = "/";
+          return;
+        }
+
+        if (!isAdmin) {
+          console.log('User is not an admin');
+          window.location.href = "/";
+          return;
+        }
+      } catch (error) {
+        console.error('Error in admin check:', error);
+        window.location.href = "/";
       }
     };
 
     checkAdmin();
-  }, [router, supabase]);
+  }, [supabase]);
 
   return (
     <div className="min-h-screen bg-background">

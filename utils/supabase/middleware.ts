@@ -49,18 +49,32 @@ const isPublicRoute = publicRoutes.some(route => {
   const isAdminRoute = url.startsWith('/admin')
 
   if (!session && !isPublicRoute) {
-    // Redirect to login if accessing protected route without session
+    console.log('No session found, redirecting to login');
     return NextResponse.redirect(new URL('/auth/login', request.url))
   }
 
   // If it's an admin route, check if the user is an admin
   if (isAdminRoute && session) {
-    const { data: isAdmin, error } = await supabase
-      .rpc('is_admin', { user_id: session.user.id })
+    console.log('Checking admin access for user:', session.user.id);
+    console.log('Current URL:', url);
+    
+    // Check if user is an admin using the RPC function
+    const { data: isAdmin, error: rpcError } = await supabase
+      .rpc('is_admin', { input_user_id: session.user.id });
 
-    if (error || !isAdmin) {
-      return NextResponse.redirect(new URL('/', request.url))
+    console.log('RPC check result:', { isAdmin, rpcError });
+
+    if (rpcError) {
+      console.error('Error checking admin RPC:', rpcError);
+      return NextResponse.redirect(new URL('/', request.url));
     }
+
+    if (!isAdmin) {
+      console.log('Access denied - RPC check failed');
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+
+    console.log('Admin access granted for:', url);
   }
 
   return supabaseResponse

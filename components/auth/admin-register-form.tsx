@@ -143,9 +143,7 @@ export function AdminRegisterForm() {
       const { error: adminError } = await supabase
         .rpc('create_admin', {
           admin_key: values.adminKey,
-          user_id: user.id,
-          admin_name: values.name,
-          admin_email: values.email
+          user_id: user.id
         });
 
       console.log('Admin creation response:', { adminError });
