@@ -1,4 +1,3 @@
-
 # 🚀 Campus Dabba – The Future of Home-Cooked Food Delivery  
 **Bridging Home Cooks and Students with a Dynamic AI-Powered Platform**  
 
@@ -9,6 +8,16 @@ Campus Dabba is a **Next.js-powered** platform that connects students and profes
 ✔️ **Providing healthy, home-cooked alternatives** to commercial food options  
 
 With a **dynamic AI-driven system**, it seamlessly updates orders, schedules, payments, and cook availability in real time.  
+
+---
+
+## 🏢 About Us
+CampusDabba is a startup pre-incubated in IIIT Dharwad's Research Park. We are currently in the development stage and actively hiring developers to join our team. If you're passionate about building innovative food-tech solutions, we'd love to hear from you!
+
+### 📞 Contact Us
+- **Email:** campusdabba@gmail.com
+- **Phone:** +91 9022392820
+- **Careers:** [Join Our Team](https://forms.gle/DKhBZBuZQ3zBzZdu9)
 
 ---
 
@@ -80,10 +89,9 @@ npm run dev
 
 ---
 
-## Github repo Link for the app ( mobile ) code 
-
+## 📱 Mobile App
+Check out our mobile app repository:  
 https://github.com/Campus-Dabba/campus_dabba_mobile
-
 
 ## 🌟 Future Enhancements  
 ✅ AI-powered meal recommendations  
@@ -99,8 +107,9 @@ https://github.com/Campus-Dabba/campus_dabba_mobile
 
 ---
 
-**📢 Join the Movement!**  
-Contribute, suggest features, or become a cook! 🎉  
-
-💌 **Contact:** [contact@campusdabba.com](mailto:arnav.angarkar20@gmail.com)  
-🔗 **Website:** [Campus Dabba](https://campusdabba.com)  - yet to be deployed 
+## 📄 Additional Resources
+- [FAQ](./docs/FAQ.md)
+- [Support](./docs/SUPPORT.md)
+- [Privacy Policy](./docs/PRIVACY.md)
+- [Terms of Service](./docs/TERMS.md)
+- [Careers](./docs/CAREERS.md)

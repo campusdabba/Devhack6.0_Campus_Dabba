@@ -8,26 +8,26 @@ export async function GET(request: Request) {
 
   if (id) {
     // Get single cook with menu items
-    const { data: cook, error: cookError } = await supabase
-      .from('cooks')
-      .select('*')
+  const { data: cook, error: cookError } = await supabase
+    .from('cooks')
+    .select('*')
       .eq('id', id)
-      .single();
+    .single();
 
-    if (cookError) {
-      return NextResponse.json({ error: cookError.message }, { status: 500 });
-    }
+  if (cookError) {
+    return NextResponse.json({ error: cookError.message }, { status: 500 });
+  }
 
-    const { data: menuItems, error: menuError } = await supabase
-      .from('dabba_menu')
-      .select('*')
+  const { data: menuItems, error: menuError } = await supabase
+    .from('dabba_menu')
+    .select('*')
       .eq('cook_id', id);
 
-    if (menuError) {
-      return NextResponse.json({ error: menuError.message }, { status: 500 });
-    }
+  if (menuError) {
+    return NextResponse.json({ error: menuError.message }, { status: 500 });
+  }
 
-    return NextResponse.json({ cook, menuItems });
+  return NextResponse.json({ cook, menuItems });
   } else {
     // Get all cooks
     const { data: cooks, error } = await supabase

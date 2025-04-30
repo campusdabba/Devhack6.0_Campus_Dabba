@@ -199,14 +199,14 @@ export function CooksList({ selectedState }: CooksListProps) {
         const totalPrice = todayMenu.reduce((total, item) => total + parseFloat(item.price), 0);
 
         return {
-          ...cook,
-          id: cook.id,
-          cook_id: cook.cook_id,
-          first_name: cook.first_name,
-          last_name: cook.last_name,
+        ...cook,
+        id: cook.id,
+        cook_id: cook.cook_id,
+        first_name: cook.first_name,
+        last_name: cook.last_name,
           price: totalPrice,
-          profile_image: cook.profile_image,
-          certification: cook.certification,
+        profile_image: cook.profile_image,
+        certification: cook.certification,
           totalorders: cook.totalorders || 0,
           menuItems: cookMenuItems.map(item => ({
             id: item.id,
@@ -337,17 +337,17 @@ export function CooksList({ selectedState }: CooksListProps) {
       <div className="space-y-2">
         {todayItems.map(item => (
           <div key={item.id} className="flex justify-between items-center">
-            <div>
+                  <div>
               <span className="text-sm font-medium">{item.item_name}</span>
               <p className="text-xs text-muted-foreground">{item.description}</p>
-            </div>
-            <div className="text-right">
-              <Badge variant="secondary">₹{item.price}</Badge>
+                  </div>
+                  <div className="text-right">
+                    <Badge variant="secondary">₹{item.price}</Badge>
               <Badge variant="outline" className="ml-2">{item.dietary_type}</Badge>
-            </div>
-          </div>
-        ))}
-      </div>
+                </div>
+              </div>
+            ))}
+        </div>
     );
   };
 

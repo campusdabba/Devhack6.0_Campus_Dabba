@@ -50,7 +50,7 @@ export default function LoginPage() {
               <TabsTrigger value="admin">Admin Login</TabsTrigger>
             </TabsList>
             <TabsContent value="user">
-              <LoginForm />
+          <LoginForm />
             </TabsContent>
             <TabsContent value="admin">
               <AdminLoginForm />

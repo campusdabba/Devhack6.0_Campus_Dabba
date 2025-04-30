@@ -7,6 +7,7 @@ import { StatesFilter } from "@/components/student/dashboard/states-filter";
 import { states } from "@/lib/data/states";
 import { StateCards } from "@/components/student/dashboard/StateCards";
 import { MapPreview } from "@/components/map/map-preview";
+import Link from "next/link";
 
 export default function DashboardPage() {
   const [selectedState, setSelectedState] = useState<string>(states[0]);
@@ -87,22 +88,46 @@ export default function DashboardPage() {
         <div className="container mx-auto flex flex-col md:flex-row justify-between">
           <div className="mb-6 md:mb-0">
             <h3 className="font-semibold text-lg">Contact Us</h3>
-            <p className="mt-2">Email: contact@example.com</p>
-            <p>Phone: (123) 456-7890</p>
+            <p className="mt-2">
+              <a href="mailto:campusdabba@gmail.com" className="hover:underline">
+                Email: campusdabba@gmail.com
+              </a>
+            </p>
+            <p>
+              <a href="tel:+919022392820" className="hover:underline">
+                Phone: +91 9022392820
+              </a>
+            </p>
           </div>
           <div className="mb-6 md:mb-0">
             <h3 className="font-semibold text-lg">Help</h3>
-            <p className="mt-2">FAQ</p>
-            <p>Support</p>
+            <p className="mt-2">
+              <Link href="/faq" className="hover:underline">
+                FAQ
+              </Link>
+            </p>
+            <p>
+              <Link href="/support" className="hover:underline">
+                Support
+              </Link>
+            </p>
           </div>
           <div>
             <h3 className="font-semibold text-lg">About Us</h3>
-            <p className="mt-2">Company Info</p>
-            <p>Careers</p>
+            <p className="mt-2">
+              <Link href="/about" className="hover:underline">
+                Company Info
+              </Link>
+            </p>
+            <p>
+              <Link href="/careers" className="hover:underline">
+                Careers
+              </Link>
+            </p>
           </div>
         </div>
         <div className="mt-6 text-center text-sm text-gray-400">
-          &copy; {new Date().getFullYear()} Campus Dabba. All rights reserved.
+          © {new Date().getFullYear()} Campus Dabba. All rights reserved.
         </div>
       </footer>
     </div>
