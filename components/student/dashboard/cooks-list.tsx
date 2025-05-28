@@ -322,11 +322,17 @@ export function CooksList({ selectedState }: CooksListProps) {
       return;
     }
 
-    setQuantities((prev) => ({ ...prev, [itemId]: newQty }));
-
+    // Check if there are today's menu items before proceeding
     const todayMenu = cook.menuItems.filter(
-      (item: MenuItem) => item.day_of_week === getCurrentDayNumber()
+      (item: MenuItem) => normalizeDayOfWeek(item.day_of_week) === normalizeDayOfWeek(getCurrentDayNumber())
     );
+    
+    if (todayMenu.length === 0) {
+      toast.error(`${cook.first_name} ${cook.last_name} has no items available today`);
+      return;
+    }
+
+    setQuantities((prev) => ({ ...prev, [itemId]: newQty }));
 
     const bundledMenu: CartItem = {
       id: itemId,
@@ -369,20 +375,12 @@ export function CooksList({ selectedState }: CooksListProps) {
 
   const MenuItems = ({ cook }: { cook: Cook }) => {
     const currentDay = getCurrentDayNumber();
-    console.log(`MenuItems component - currentDay: ${currentDay}`);
-    console.log(`Cook ${cook.first_name}'s menu items:`, cook.menuItems);
     
-    // Use the normalized day for filtering
     const todayItems = cook.menuItems.filter(item => {
-      // Add debug for each item
       const normalizedItemDay = normalizeDayOfWeek(item.day_of_week);
       const normalizedCurrentDay = normalizeDayOfWeek(currentDay);
-      console.log(`Item: ${item.item_name}, day: ${item.day_of_week}, normalized: ${normalizedItemDay}, matches: ${normalizedItemDay === normalizedCurrentDay}`);
-      
       return normalizedItemDay === normalizedCurrentDay;
     });
-    
-    console.log(`Today's items for ${cook.first_name}:`, todayItems);
     
     if (todayItems.length === 0) {
       return <p className="text-sm text-muted-foreground">No items available today</p>;
@@ -392,122 +390,139 @@ export function CooksList({ selectedState }: CooksListProps) {
       <div className="space-y-2">
         {todayItems.map(item => (
           <div key={item.id} className="flex justify-between items-center">
-                  <div>
+            <div>
               <span className="text-sm font-medium">{item.item_name}</span>
               <p className="text-xs text-muted-foreground">{item.description}</p>
-                  </div>
-                  <div className="text-right">
-                    <Badge variant="secondary">₹{item.price}</Badge>
+            </div>
+            <div className="text-right">
+              <Badge variant="secondary">₹{item.price}</Badge>
               <Badge variant="outline" className="ml-2">{item.dietary_type}</Badge>
-                </div>
-              </div>
-            ))}
-        </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  // Helper function to check if a cook has items for today
+  const hasTodayItems = (cook: Cook): boolean => {
+    const currentDay = getCurrentDayNumber();
+    return cook.menuItems.some(item => 
+      normalizeDayOfWeek(item.day_of_week) === normalizeDayOfWeek(currentDay)
     );
   };
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {cooks.map((cook) => (
-        <Card key={cook.cook_id} className="flex flex-col">
-          <CardHeader className="relative min-h-[200px] flex flex-col justify-end p-6 text-white">
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: `url(${
-                  cook.profile_image || "/placeholder-chef.jpg"
-                })`,
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/20" />
-            <div className="relative z-10">
-              <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <CardTitle className="text-lg">
-                    <Link
-                      href={`/cooks/${cook.id}`}
-                      className="hover:underline"
-                    >
-                      {cook.first_name} {cook.last_name}
-                    </Link>
-                  </CardTitle>
-                  <CardDescription className="text-gray-200">
-                    {formatAddress(cook.address)}
-                  </CardDescription>
-                </div>
-                <div className="flex items-center gap-1 rounded-full bg-white/20 backdrop-blur px-2 py-1 text-sm">
-                  <Star className="h-4 w-4 fill-white text-white" />
-                  <span>{cook.rating}</span>
-                </div>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-2 px-6 pb-1">
-            <div className="flex gap-2">
-              <Badge variant="secondary">{cook.totalorders}+ orders</Badge>
-              {cook.certification && (
-                <Badge variant="outline">{Object.keys(cook.certification)[0]}</Badge>
-              )}
-            </div>
-            <Separator className="my-2" />
-            <div className="space-y-2">
-              <div className="space-y-2 border border-primary p-2 rounded-md">
-                <h4 className="text-xl font-bold text-primary">Today's Dabba:</h4>
-                <MenuItems cook={cook} />
-              </div>
-              <div className="flex justify-between items-center">
-                <p className="font-semibold">
-                  Total: ₹
-                  {getTotalPrice(cook, quantities[getCartItemId(cook.id)] || 0)}
-                </p>
-                <div className="flex items-center gap-2">
-                  {quantities[getCartItemId(cook.id)] ? (
-                    <>
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        onClick={() => handleRemoveFromCart(cook)}
+      {cooks.map((cook) => {
+        // Check if cook has items for today
+        const hasItemsToday = hasTodayItems(cook);
+        
+        return (
+          <Card key={cook.cook_id} className="flex flex-col">
+            <CardHeader className="relative min-h-[200px] flex flex-col justify-end p-6 text-white">
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${
+                    cook.profile_image || "/placeholder-chef.jpg"
+                  })`,
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/20" />
+              <div className="relative z-10">
+                <div className="flex items-start justify-between">
+                  <div className="space-y-1">
+                    <CardTitle className="text-lg">
+                      <Link
+                        href={`/cooks/${cook.id}`}
+                        className="hover:underline"
                       >
-                        -
-                      </Button>
-                      <span className="w-8 text-center">
-                        {quantities[getCartItemId(cook.id)]}
-                      </span>
-                      <Button
-                        size="icon"
-                        variant="outline"
+                        {cook.first_name} {cook.last_name}
+                      </Link>
+                    </CardTitle>
+                    <CardDescription className="text-gray-200">
+                      {formatAddress(cook.address)}
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center gap-1 rounded-full bg-white/20 backdrop-blur px-2 py-1 text-sm">
+                    <Star className="h-4 w-4 fill-white text-white" />
+                    <span>{cook.rating}</span>
+                  </div>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-2 px-6 pb-1">
+              <div className="flex gap-2">
+                <Badge variant="secondary">{cook.totalorders}+ orders</Badge>
+                {cook.certification && (
+                  <Badge variant="outline">{Object.keys(cook.certification)[0]}</Badge>
+                )}
+              </div>
+              <Separator className="my-2" />
+              <div className="space-y-2">
+                <div className="space-y-2 border border-primary p-2 rounded-md">
+                  <h4 className="text-xl font-bold text-primary">Today's Dabba:</h4>
+                  <MenuItems cook={cook} />
+                </div>
+                <div className="flex justify-between items-center">
+                  <p className="font-semibold">
+                    Total: ₹
+                    {getTotalPrice(cook, quantities[getCartItemId(cook.id)] || 0)}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    {quantities[getCartItemId(cook.id)] ? (
+                      <>
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          onClick={() => handleRemoveFromCart(cook)}
+                        >
+                          -
+                        </Button>
+                        <span className="w-8 text-center">
+                          {quantities[getCartItemId(cook.id)]}
+                        </span>
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          onClick={() => handleQuantityChange(cook, 1)}
+                          disabled={!hasItemsToday}
+                        >
+                          +
+                        </Button>
+                      </>
+                    ) : (
+                      <Button 
                         onClick={() => handleQuantityChange(cook, 1)}
+                        disabled={!hasItemsToday}
+                        title={!hasItemsToday ? "No items available today" : ""}
                       >
-                        +
+                        {hasItemsToday ? "Add Today's Dabba" : "Not Available Today"}
                       </Button>
-                    </>
-                  ) : (
-                    <Button onClick={() => handleQuantityChange(cook, 1)}>
-                      Add Today's Dabba
-                    </Button>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </CardContent>
-          <CardFooter className="mt-2">
-            <Button asChild className="w-full">
-              <Link href={`/cooks/${cook.id}`}>View Details</Link>
-            </Button>
-          </CardFooter>
-        </Card>
-      ))}
+            </CardContent>
+            <CardFooter className="mt-2">
+              <Button asChild className="w-full">
+                <Link href={`/cooks/${cook.id}`}>View Details</Link>
+              </Button>
+            </CardFooter>
+          </Card>
+        );
+      })}
     </div>
   );
 
-  // Update getTotalPrice to use normalized day comparison
   function getTotalPrice(cook: Cook, quantity: number): number {
-    return (
-      cook.menuItems
-        .filter((item: MenuItem) => 
-          normalizeDayOfWeek(item.day_of_week) === normalizeDayOfWeek(getCurrentDayNumber())
-        )
-        .reduce((total: number, item: MenuItem) => total + item.price, 0) * quantity
+    const todayItems = cook.menuItems.filter((item: MenuItem) => 
+      normalizeDayOfWeek(item.day_of_week) === normalizeDayOfWeek(getCurrentDayNumber())
     );
+    
+    if (todayItems.length === 0) return 0;
+    
+    return todayItems.reduce((total: number, item: MenuItem) => total + item.price, 0) * quantity;
   }
 }
