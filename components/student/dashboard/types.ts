@@ -1,6 +1,6 @@
 export type DayOfWeek = "1" | "2" | "3" | "4" | "5" | "6" | "7";
 
-export const dayMapping: Record<DayOfWeek, string> = {
+export const dayMapping: Record<string, string> = {
   "1": "Monday",
   "2": "Tuesday",
   "3": "Wednesday",
@@ -55,4 +55,4 @@ export interface Cook {
   menuItems: MenuItem[];
 }
 
-export type ExtendedCook = Cook; 
+export type ExtendedCook = Cook;
