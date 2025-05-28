@@ -34,6 +34,20 @@ const dayNameToNumber: Record<string, number> = {
   saturday: 6,
 };
 
+// Add the missing getDayName function
+const getDayName = (day: DayOfWeek): string => {
+  const dayNames = {
+    1: "Monday",
+    2: "Tuesday",
+    3: "Wednesday",
+    4: "Thursday",
+    5: "Friday",
+    6: "Saturday",
+    7: "Sunday",
+  };
+  return dayNames[day] || "Unknown";
+};
+
 const getDayNumber = (dayName: string | number | undefined): number => {
   if (typeof dayName === "number") {
     return dayName;
@@ -199,20 +213,20 @@ export default function CookProfilePage({
 
   const handleQuantityChange = async (day: number, change: number) => {
     if (!cook) return;
-  
+
     const itemId = getCartItemId(cook.cook_id, day);
     const currentQty = quantities[itemId] || 0;
     const newQty = currentQty + change;
-  
+
     if (newQty <= 0) {
       handleRemoveFromCart(day);
       return;
     }
-  
+
     const dayMenu = cook.menuItems.filter(
       (item) => getDayNumber(item.day_of_week) === day
     );
-  
+
     const bundledMenu: CartItem = {
       id: itemId,
       cook_id: cook.cook_id,
@@ -227,10 +241,10 @@ export default function CookProfilePage({
       quantity: newQty,
       menuItems: dayMenu,
     };
-  
+
     addToCart(bundledMenu);
     setQuantities((prev) => ({ ...prev, [itemId]: newQty }));
-  
+
     toast({
       title: change > 0 ? "Added to cart" : "Updated cart",
       description: `${cook.first_name}'s ${dayMapping[day]} Dabba has been ${
@@ -238,7 +252,7 @@ export default function CookProfilePage({
       } your cart.`,
     });
   };
-  
+
   const handleRemoveFromCart = (day: number) => {
     if (!cook) return;
     const itemId = getCartItemId(cook.cook_id, day);
@@ -248,14 +262,13 @@ export default function CookProfilePage({
       delete newQuantities[itemId];
       return newQuantities;
     });
-  
+
     toast({
       title: "Removed from cart",
       description: `${cook.first_name}'s ${dayMapping[day]} Dabba has been removed from your cart.`,
     });
   };
 
-  
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!cook) return <div>Cook not found</div>;
@@ -639,9 +652,7 @@ export default function CookProfilePage({
                                     cuisine_type:
                                       dayMenu[0]?.cuisine_type || "indian",
                                     meal_type: dayMenu[0]?.meal_type || "lunch",
-                                    day_of_week: getDayName(
-                                      Number(day) as DayOfWeek
-                                    ),
+                                    day_of_week: day.toString(), // Just use the day number as a string
                                     isAvailable: true,
                                     quantity: 1,
                                     menuItems: dayMenu,
