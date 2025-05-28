@@ -66,6 +66,35 @@ const getDayName = (day: DayOfWeek): string => {
   return dayMapping[day] || "Unknown";
 };
 
+// Add a helper function to normalize day values for comparison
+const normalizeDayOfWeek = (day: string | number | undefined): string => {
+  if (!day) return "";
+  
+  // If it's already a number string (1-7), return as is
+  if (typeof day === "string" && /^[1-7]$/.test(day)) {
+    return day;
+  }
+  
+  // Convert number to string
+  if (typeof day === "number") {
+    return day.toString();
+  }
+  
+  // Handle day names (Monday, Tuesday, etc.)
+  const dayNameMap: Record<string, string> = {
+    "monday": "1",
+    "tuesday": "2", 
+    "wednesday": "3",
+    "thursday": "4",
+    "friday": "5",
+    "saturday": "6",
+    "sunday": "7"
+  };
+  
+  const lowercaseDay = day.toString().toLowerCase();
+  return dayNameMap[lowercaseDay] || day.toString();
+};
+
 export function CooksList({ selectedState }: CooksListProps) {
   const { cart, addToCart, removeFromCart } = useCart();
   const [quantities, setQuantities] = useState<Record<string, number>>({});
@@ -178,6 +207,12 @@ export function CooksList({ selectedState }: CooksListProps) {
         .in("cook_id", cookIdsArray);
 
       console.log("Raw menu data:", menuData);
+      
+      // Add debug logging for day_of_week values
+      if (menuData && menuData.length > 0) {
+        console.log("Sample day_of_week values:", menuData.map(item => item.day_of_week));
+        console.log("Current day for comparison:", getCurrentDayNumber());
+      }
 
       if (menuError) {
         console.error("Menu fetch error:", menuError);
@@ -194,8 +229,13 @@ export function CooksList({ selectedState }: CooksListProps) {
         const cookMenuItems = menuData?.filter((item) => item.cook_id === cook.cook_id) || [];
         console.log(`Menu items for cook ${cook.cook_id}:`, cookMenuItems);
 
-        // Calculate total price for today's menu
-        const todayMenu = cookMenuItems.filter(item => item.day_of_week === getCurrentDayNumber());
+        // Use normalized day values when filtering
+        const currentDay = getCurrentDayNumber();
+        const todayMenu = cookMenuItems.filter(item => 
+          normalizeDayOfWeek(item.day_of_week) === normalizeDayOfWeek(currentDay)
+        );
+        
+        console.log(`Today's menu for ${cook.first_name}:`, todayMenu);
         const totalPrice = todayMenu.reduce((total, item) => total + parseFloat(item.price), 0);
 
         return {
@@ -217,7 +257,9 @@ export function CooksList({ selectedState }: CooksListProps) {
             day_of_week: item.day_of_week as DayOfWeek,
             dietary_type: item.dietary_type,
             meal_type: item.meal_type,
-            created_at: item.created_at
+            created_at: item.created_at,
+            // Add a normalized day for easier comparison
+            normalizedDay: normalizeDayOfWeek(item.day_of_week)
           }))
         };
       });
@@ -327,7 +369,20 @@ export function CooksList({ selectedState }: CooksListProps) {
 
   const MenuItems = ({ cook }: { cook: Cook }) => {
     const currentDay = getCurrentDayNumber();
-    const todayItems = cook.menuItems.filter(item => item.day_of_week === currentDay);
+    console.log(`MenuItems component - currentDay: ${currentDay}`);
+    console.log(`Cook ${cook.first_name}'s menu items:`, cook.menuItems);
+    
+    // Use the normalized day for filtering
+    const todayItems = cook.menuItems.filter(item => {
+      // Add debug for each item
+      const normalizedItemDay = normalizeDayOfWeek(item.day_of_week);
+      const normalizedCurrentDay = normalizeDayOfWeek(currentDay);
+      console.log(`Item: ${item.item_name}, day: ${item.day_of_week}, normalized: ${normalizedItemDay}, matches: ${normalizedItemDay === normalizedCurrentDay}`);
+      
+      return normalizedItemDay === normalizedCurrentDay;
+    });
+    
+    console.log(`Today's items for ${cook.first_name}:`, todayItems);
     
     if (todayItems.length === 0) {
       return <p className="text-sm text-muted-foreground">No items available today</p>;
@@ -445,10 +500,13 @@ export function CooksList({ selectedState }: CooksListProps) {
     </div>
   );
 
+  // Update getTotalPrice to use normalized day comparison
   function getTotalPrice(cook: Cook, quantity: number): number {
     return (
       cook.menuItems
-        .filter((item: MenuItem) => item.day_of_week === getCurrentDayNumber())
+        .filter((item: MenuItem) => 
+          normalizeDayOfWeek(item.day_of_week) === normalizeDayOfWeek(getCurrentDayNumber())
+        )
         .reduce((total: number, item: MenuItem) => total + item.price, 0) * quantity
     );
   }
