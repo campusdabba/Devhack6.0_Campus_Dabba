@@ -10,6 +10,8 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
+import { loadRazorpay, initializeRazorpayCheckout } from '@/utils/razorpay';
+import { useRouter } from 'next/navigation';
 
 type AddressData = {
   street: string;
@@ -29,6 +31,13 @@ type UserInfo = {
   created_at: string;
 };
 
+type CartItem = {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+};
+
 export default function CheckoutPage() {
   const { cart, getCartTotal } = useCart();
   const { toast } = useToast();
@@ -43,6 +52,7 @@ export default function CheckoutPage() {
   });
   const [paymentMethod, setPaymentMethod] = useState("upi");
   const supabase = createClient();
+  const router = useRouter();
 
   const [activeSection, setActiveSection] = useState<'user' | 'address' | 'payment'>('user');
 
@@ -118,31 +128,74 @@ export default function CheckoutPage() {
       return;
     }
 
-    // Save new address to user profile if using new address
-    if (useNewAddress) {
-      try {
-        const { error } = await supabase
-          .from('users')
-          .update({ address: newAddress })
-          .eq('id', user.id);
-
-        if (error) throw error;
-      } catch (error) {
-        console.error("Error saving address:", error);
+    try {
+      // Load Razorpay script
+      const isLoaded = await loadRazorpay();
+      if (!isLoaded) {
         toast({
           title: "Error",
-          description: "Failed to save address",
+          description: "Razorpay SDK failed to load",
           variant: "destructive",
         });
         return;
       }
-    }
 
-    // Placeholder for payment gateway
-    toast({
-      title: "Redirecting to payment gateway",
-      description: "You will be redirected to complete the payment",
-    });
+      // Create Razorpay order
+      const response = await fetch('/api/razorpay/create-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: total,
+        }),
+      });
+
+      const order = await response.json();
+      if (!order.id) {
+        throw new Error('Failed to create order');
+      }
+
+      // Initialize Razorpay checkout
+      await initializeRazorpayCheckout({
+        amount: total,
+        orderId: order.id,
+        prefillEmail: user.email,
+        prefillContact: user.phone,
+        onSuccess: async (response) => {
+          // Handle successful payment
+          toast({
+            title: "Payment successful",
+            description: "Your order has been placed successfully",
+          });
+
+          // Save new address to user profile if using new address
+          if (useNewAddress) {
+            try {
+              const { error } = await supabase
+                .from('users')
+                .update({ address: newAddress })
+                .eq('id', user.id);
+
+              if (error) throw error;
+            } catch (error) {
+              console.error("Error saving address:", error);
+            }
+          }
+
+          // Redirect to success page
+          router.push('/payment-success');
+        }
+      });
+
+    } catch (error) {
+      console.error('Payment failed:', error);
+      toast({
+        title: "Payment failed",
+        description: "There was an error processing your payment. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const canProceedToAddress = () => {
@@ -340,7 +393,7 @@ export default function CheckoutPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {cart.map((item) => (
+              {cart.map((item: CartItem) => (
                 <div key={item.id} className="flex justify-between">
                   <span>{item.name} × {item.quantity}</span>
                   <span>₹{item.price * item.quantity}</span>
@@ -360,7 +413,6 @@ export default function CheckoutPage() {
                 <span>Total</span>
                 <span>₹{total.toFixed(2)}</span>
               </div>
-              < Link href="/payment" >
               <Button 
                 className="w-full" 
                 onClick={handlePayment}
@@ -368,7 +420,6 @@ export default function CheckoutPage() {
               >
                 Proceed to Payment
               </Button>
-              </Link>
             </div>
           </CardContent>
         </Card>

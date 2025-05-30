@@ -34,7 +34,7 @@ interface Address {
   pincode: string;
 }
 
-interface ExtendedCook extends Omit<Cook, 'address'> {
+interface ExtendedCook {
   cook_id: string;
   first_name: string;
   last_name: string;
@@ -45,6 +45,17 @@ interface ExtendedCook extends Omit<Cook, 'address'> {
   address: string;
   created_at: string;
   totalOrders: number;
+  rating: number;
+  id: string;
+  email: string;
+  phone: string;
+  description?: string;
+  isAvailable: boolean;
+  region?: string;
+  weeklySchedule?: Record<string, any>;
+  cuisineType?: string[];
+  latitude?: string;
+  longitude?: string;
 }
 
 interface CooksListProps {
@@ -128,14 +139,8 @@ export function CooksList({ selectedState }: CooksListProps) {
       setIsLoading(true);
       setCooks([]);
 
-      // Simple query to check all regions first
-      const { data: allRegions } = await supabase
-        .from("cooks")
-        .select("region");
-
-      console.log("All available regions:", allRegions);
-
-      let cooksQuery = supabase
+      // Fetch cooks
+      let query = supabase
         .from("cooks")
         .select(`
           id,
@@ -158,118 +163,65 @@ export function CooksList({ selectedState }: CooksListProps) {
           longitude
         `);
 
-      // Try both exact and partial matches
-      if (selectedState !== "All States") {
-        cooksQuery = cooksQuery.or(`region.eq.${selectedState},region.ilike.%${selectedState}%`);
+      // Only filter by region if a specific state is selected
+      if (selectedState && selectedState !== "All States") {
+        query = query.ilike('region', `%${selectedState}%`);
       }
 
-      const { data: cooksData, error: cooksError } = await cooksQuery;
+      const { data: cooksData, error: cooksError } = await query;
 
-      console.log("Query params:", selectedState);
       console.log("Found cooks:", cooksData);
 
       if (cooksError) {
-        console.error("Supabase error:", cooksError);
+        console.error("Error fetching cooks:", cooksError);
         setError("Error fetching cooks");
         return;
       }
 
       if (!cooksData || cooksData.length === 0) {
-        console.log("No cooks found in data:", cooksData);
+        console.log("No cooks found");
         setError("No cooks found for this location");
         return;
       }
 
-      // Fetch menu items with debug logging
-      const cookIds = cooksData.map((cook) => cook.cook_id);
-      const cookIdsArray = Array.isArray(cookIds) ? cookIds : [cookIds];
+      // Fetch menu items for all cooks
+      const { data: menuData, error: menuError } = await supabase
+        .from("dabba_menu")
+        .select("*")
+        .in('cook_id', cooksData.map(cook => cook.cook_id));
 
-      if (!cookIdsArray.length) {
-        console.error("No cook IDs to query");
+      if (menuError) {
+        console.error("Error fetching menu items:", menuError);
+        setError("Error fetching menu items");
         return;
       }
 
-      console.log("Fetching menu items for cook IDs:", cookIdsArray);
-
-      const { data: menuData, error: menuError } = await supabase
-        .from("dabba_menu")
-        .select(`
-          id,
-          cook_id,
-          item_name,
-          description,
-          price,
-          meal_type,
-          dietary_type,
-          day_of_week,
-          created_at
-        `)
-        .in("cook_id", cookIdsArray);
-
-      console.log("Raw menu data:", menuData);
-      
-      // Add debug logging for day_of_week values
-      if (menuData && menuData.length > 0) {
-        console.log("Sample day_of_week values:", menuData.map(item => item.day_of_week));
-        console.log("Current day for comparison:", getCurrentDayNumber());
-      }
-
-      if (menuError) {
-        console.error("Menu fetch error:", menuError);
-        throw menuError;
-      }
-
-      if (!menuData?.length) {
-        console.warn(
-          `No menu items found for cook IDs: ${cookIdsArray.join(", ")}`
-        );
-      }
-
-      const processedCooks = cooksData.map((cook) => {
-        const cookMenuItems = menuData?.filter((item) => item.cook_id === cook.cook_id) || [];
-        console.log(`Menu items for cook ${cook.cook_id}:`, cookMenuItems);
-
-        // Use normalized day values when filtering
-        const currentDay = getCurrentDayNumber();
-        const todayMenu = cookMenuItems.filter(item => 
-          normalizeDayOfWeek(item.day_of_week) === normalizeDayOfWeek(currentDay)
-        );
+      // Process cooks with their menu items
+      const processedCooks = cooksData.map(cook => {
+        const cookMenuItems = menuData?.filter(item => item.cook_id === cook.cook_id) || [];
         
-        console.log(`Today's menu for ${cook.first_name}:`, todayMenu);
-        const totalPrice = todayMenu.reduce((total, item) => total + parseFloat(item.price), 0);
-
         return {
-        ...cook,
-        id: cook.id,
-        cook_id: cook.cook_id,
-        first_name: cook.first_name,
-        last_name: cook.last_name,
-          price: totalPrice,
-        profile_image: cook.profile_image,
-        certification: cook.certification,
-          totalorders: cook.totalorders || 0,
+          ...cook,
           menuItems: cookMenuItems.map(item => ({
             id: item.id,
             cook_id: item.cook_id,
             item_name: item.item_name,
             description: item.description,
             price: parseFloat(item.price),
-            day_of_week: item.day_of_week as DayOfWeek,
+            day_of_week: item.day_of_week,
             dietary_type: item.dietary_type,
             meal_type: item.meal_type,
-            created_at: item.created_at,
-            // Add a normalized day for easier comparison
-            normalizedDay: normalizeDayOfWeek(item.day_of_week)
+            created_at: item.created_at
           }))
         };
       });
 
-      console.log("Final processed cooks with menu items:", processedCooks);
+      console.log("Processed cooks with menu items:", processedCooks);
       setCooks(processedCooks);
-    } catch (error) {
-      const err = error as Error;
-      console.error(err.message);
-      setError(err.message);
+      setError(null);
+    } catch (error: any) {
+      console.error("Error in fetchCooks:", error);
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
