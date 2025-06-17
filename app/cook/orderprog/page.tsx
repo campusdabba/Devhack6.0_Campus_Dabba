@@ -38,12 +38,9 @@ export default function OrderHandlerPage() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        console.log('🔍 [OrderProg] Starting fetchOrders...');
         const { data: { session } } = await supabase.auth.getSession();
         
         if (session?.user) {
-          console.log('✅ [OrderProg] Session found, user ID:', session.user.id);
-          
           // First get the cook record for the authenticated user
           const { data: cookData, error: cookError } = await supabase
             .from('cooks')
@@ -51,22 +48,17 @@ export default function OrderHandlerPage() {
             .eq('auth_user_id', session.user.id)
             .single();
 
-          console.log('🍳 [OrderProg] Cook query result:', { cookData, cookError });
-
           if (cookError) {
-            console.error('❌ [OrderProg] Error fetching cook data:', cookError);
+            console.error('Error fetching cook data:', cookError);
             return;
           }
 
           if (!cookData) {
-            console.error('❌ [OrderProg] Cook record not found for user:', session.user.id);
+            console.error('Cook record not found for user:', session.user.id);
             return;
           }
 
-          console.log('✅ [OrderProg] Cook found with ID:', cookData.id);
-
           // Now fetch orders using the cook ID
-          console.log('🔍 [OrderProg] Fetching orders for cook ID:', cookData.id);
           const { data, error } = await supabase
             .from('orders')
             .select(`
@@ -92,30 +84,22 @@ export default function OrderHandlerPage() {
             .eq('cook_id', cookData.id)
             .order('created_at', { ascending: false });
             
-          console.log('📦 [OrderProg] Orders query result:', { data, error, cookId: cookData.id });
-            
           if (error) {
-            console.error('❌ [OrderProg] Error fetching orders:', error);
+            console.error('Error fetching orders:', error);
             return;
           }
-          
-          console.log(`📊 [OrderProg] Found ${data?.length || 0} orders`);
           
           // Try to fetch user details, but fallback to basic info if it fails
           const ordersWithUsers = await Promise.all(
             (data || []).map(async (order) => {
               try {
-                console.log(`🔍 [OrderProg] Fetching user data for user_id: ${order.user_id}`);
                 const { data: userData, error: userError } = await supabase
                   .from('users')
                   .select('id, first_name, last_name, email')
                   .eq('id', order.user_id)
                   .single();
                 
-                if (userError) {
-                  console.log(`⚠️ [OrderProg] User fetch error for ${order.user_id}:`, userError);
-                  throw userError;
-                }
+                if (userError) throw userError;
                 
                 return {
                   ...order,
@@ -132,7 +116,6 @@ export default function OrderHandlerPage() {
                 };
               } catch (error) {
                 // Fallback to basic user info if user fetch fails
-                console.log(`🔄 [OrderProg] Using fallback user info for ${order.user_id}`);
                 return {
                   ...order,
                   user: { 
@@ -150,7 +133,6 @@ export default function OrderHandlerPage() {
             })
           );
           
-          console.log('🔄 [OrderProg] Transformed data with user info:', ordersWithUsers);
           setOrders(ordersWithUsers as Order[]);
         }
       } catch (error) {
