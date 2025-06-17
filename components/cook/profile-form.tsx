@@ -194,9 +194,12 @@ export function CookProfileForm() {
 
       const { error } = await supabase.from("cooks").upsert({
         id: user.id,
+        user_id: user.id,
+        auth_user_id: user.id,
         email: values.email,
         first_name: values.first_name,
         last_name: values.last_name,
+        name: `${values.first_name} ${values.last_name}`, // For backward compatibility
         phone: values.phone,
         profile_image: finalImageUrl,
         address: {
@@ -205,10 +208,20 @@ export function CookProfileForm() {
           state: values.state,
           pincode: values.pincode,
         },
-        cuisineType: values.cuisineType,
+        city: values.city,
+        state: values.state,
+        pincode: values.pincode,
+        cuisine_type: values.cuisineType, // Use new column name
+        cuisineType: values.cuisineType, // Keep old column for compatibility
         description: values.description,
         certification: values.certification,
         region: values.state,
+        is_available: true, // Use new column name
+        isAvailable: true, // Keep old column for compatibility
+        total_orders: 0, // Use new column name
+        totalorders: 0, // Keep old column for compatibility
+        rating: 0.00,
+        created_at: new Date().toISOString(),
       });
 
       if (error) {

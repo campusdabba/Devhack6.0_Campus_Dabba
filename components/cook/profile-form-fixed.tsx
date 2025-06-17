@@ -216,11 +216,15 @@ export function CookProfileForm() {
       }
 
       // Insert cook profile
-      const { error } = await supabase.from("cooks").upsert({
+      const cookData = {
         id: user.id,
+        user_id: user.id,
+        auth_user_id: user.id,
+        cook_id: user.id,
         email: values.email,
         first_name: values.first_name,
         last_name: values.last_name,
+        name: `${values.first_name} ${values.last_name}`,
         phone: values.phone,
         profile_image: finalImageUrl,
         address: {
@@ -229,11 +233,31 @@ export function CookProfileForm() {
           state: values.state,
           pincode: values.pincode,
         },
-        cuisineType: values.cuisineType,
-        description: values.description,
+        city: values.city,
+        state: values.state,
+        pincode: values.pincode,
         region: values.state,
+        cuisineType: values.cuisineType,
+        cuisine_type: values.cuisineType,
+        description: values.description,
         rating: 0.0,
-      });
+        total_orders: 0,
+        totalorders: 0,
+        is_available: true,
+        isAvailable: true,
+        certification: [],
+        specialties: [],
+        business_name: null,
+        password: null,
+        latitude: values.latitude || null,
+        longitude: values.longitude || null,
+        weeklySchedule: null,
+        created_at: new Date().toISOString(),
+      };
+
+      console.log('Creating cook with data:', cookData);
+
+      const { error } = await supabase.from("cooks").upsert(cookData);
 
       if (error) {
         console.error("Insert error:", error);

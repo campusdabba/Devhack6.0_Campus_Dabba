@@ -230,10 +230,14 @@ export function CookProfileForm() {
       const { error } = await supabase
         .from("cooks")
         .update({
-          cook_id: user.id, // Explicitly set the id from auth
+          id: user.id, // Use 'id' as primary identifier
+          user_id: user.id, 
+          auth_user_id: user.id,
+          cook_id: user.id, // Keep for backward compatibility
           email: values.email,
           first_name: values.first_name,
           last_name: values.last_name,
+          name: `${values.first_name} ${values.last_name}`, // For compatibility
           phone: values.phone,
           profile_image: finalImageUrl,
           address: {
@@ -242,11 +246,21 @@ export function CookProfileForm() {
             state: values.state,
             pincode: values.pincode,
           },
-          cuisineType: values.cuisineType,
+          city: values.city, // Store city separately too
+          state: values.state, // Store state separately too
+          pincode: values.pincode, // Store pincode separately too
+          cuisine_type: values.cuisineType, // New column format
+          cuisineType: values.cuisineType, // Old column format
           description: values.description,
           certification: values.certification,
           password: values.password,
           region: values.state,
+          is_available: true, // New column format
+          isAvailable: true, // Old column format
+          total_orders: 0, // New column format
+          totalorders: 0, // Old column format
+          rating: 0.00,
+          created_at: new Date().toISOString(),
         })
         .eq("cook_id", user.id) // Match the existing record using cook_id
         .single();
