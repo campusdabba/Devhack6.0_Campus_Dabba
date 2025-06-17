@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 
-import { CookProfileForm } from "@/components/cook/profile-form"
+import { CookProfileForm } from "@/components/cook/profile-form-fixed"
 
 
 export const metadata: Metadata = {

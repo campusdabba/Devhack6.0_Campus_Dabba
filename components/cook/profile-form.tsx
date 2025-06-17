@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
-import { CuisineType } from "@/types";
+import { CuisineType } from "@/types/index";
 import { createClient } from "@/utils/supabase/client";
 
 const INDIAN_STATES = [
@@ -74,7 +74,7 @@ const formSchema = z.object({
   latitude: z.number().optional(),
   longitude: z.number().optional(),
   profile_picture: z.string().optional(),
-  cuisineType: z.string(),
+  cuisineType: z.string().min(1, "Please select a cuisine type"),
   description: z.string().min(50, {
     message: "Bio must be at least 50 characters.",
   }),
@@ -192,31 +192,24 @@ export function CookProfileForm() {
         finalImageUrl = publicUrl;
       }
 
-      const { error } = await supabase.from("cooks").upsert(
-        {
-          cook_id: user.id, // Explicitly set the id from auth
-          email: values.email,
-          first_name: values.first_name,
-          last_name: values.last_name,
-          phone: values.phone,
-          profile_image: finalImageUrl,
-          address: {
-            street: values.street,
-            city: values.city,
-            state: values.state,
-            pincode: values.pincode,
-          },
-          cuisineType: values.cuisineType,
-          description: values.description,
-          certification: values.certification,
-          password: values.password,
-          region: values.state,
+      const { error } = await supabase.from("cooks").upsert({
+        id: user.id,
+        email: values.email,
+        first_name: values.first_name,
+        last_name: values.last_name,
+        phone: values.phone,
+        profile_image: finalImageUrl,
+        address: {
+          street: values.street,
+          city: values.city,
+          state: values.state,
+          pincode: values.pincode,
         },
-        {
-          onConflict: "id",
-          returning: "minimal",
-        }
-      );
+        cuisineType: values.cuisineType,
+        description: values.description,
+        certification: values.certification,
+        region: values.state,
+      });
 
       if (error) {
         console.error("Update error:", error);

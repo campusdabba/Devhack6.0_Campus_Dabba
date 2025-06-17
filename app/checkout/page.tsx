@@ -39,7 +39,7 @@ type CartItem = {
 };
 
 export default function CheckoutPage() {
-  const { cart, getCartTotal } = useCart();
+  const { cart, getCartTotal, clearCart } = useCart();
   const { toast } = useToast();
   const [user, setUser] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
@@ -163,28 +163,83 @@ export default function CheckoutPage() {
         prefillEmail: user.email,
         prefillContact: user.phone,
         onSuccess: async (response) => {
-          // Handle successful payment
-          toast({
-            title: "Payment successful",
-            description: "Your order has been placed successfully",
-          });
+          // Verify payment and create order in database
+          try {
+            const verifyResponse = await fetch('/api/razorpay/verify-payment', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                user_id: user.id,
+                cart_items: cart,
+                delivery_address: selectedAddress,
+                payment_method: paymentMethod,
+                subtotal: subtotal,
+                tax_amount: tax,
+                delivery_fee: 0,
+                total_amount: total
+              }),
+            });
 
-          // Save new address to user profile if using new address
-          if (useNewAddress) {
-            try {
-              const { error } = await supabase
-                .from('users')
-                .update({ address: newAddress })
-                .eq('id', user.id);
+            console.log('Verify response status:', verifyResponse.status);
+            console.log('Verify response headers:', verifyResponse.headers.get('content-type'));
 
-              if (error) throw error;
-            } catch (error) {
-              console.error("Error saving address:", error);
+            if (!verifyResponse.ok) {
+              const errorText = await verifyResponse.text();
+              console.error('API Error Response:', errorText);
+              throw new Error(`API Error: ${verifyResponse.status} - ${errorText}`);
             }
-          }
 
-          // Redirect to success page
-          router.push('/payment-success');
+            const contentType = verifyResponse.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+              const responseText = await verifyResponse.text();
+              console.error('Non-JSON response:', responseText);
+              throw new Error('Server returned non-JSON response');
+            }
+
+            const verifyResult = await verifyResponse.json();
+
+            if (verifyResult.success) {
+              // Handle successful payment
+              toast({
+                title: "Payment successful",
+                description: "Your order has been placed successfully",
+              });
+
+              // Save new address to user profile if using new address
+              if (useNewAddress) {
+                try {
+                  const { error } = await supabase
+                    .from('users')
+                    .update({ address: newAddress })
+                    .eq('id', user.id);
+
+                  if (error) throw error;
+                } catch (error) {
+                  console.error("Error saving address:", error);
+                }
+              }
+
+              // Clear cart after successful order
+              clearCart();
+
+              // Redirect to success page with order details
+              router.push(`/payment-success?order_id=${verifyResult.order_id}&payment_id=${verifyResult.payment_id}`);
+            } else {
+              throw new Error(verifyResult.error || 'Payment verification failed');
+            }
+          } catch (verifyError: any) {
+            console.error('Payment verification failed:', verifyError);
+            toast({
+              title: "Payment verification failed",
+              description: "Your payment was processed but we couldn't confirm your order. Please contact support.",
+              variant: "destructive",
+            });
+          }
         }
       });
 
@@ -193,6 +248,70 @@ export default function CheckoutPage() {
       toast({
         title: "Payment failed",
         description: "There was an error processing your payment. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Test function to create order without payment
+  const handleTestOrder = async () => {
+    if (!user) {
+      toast({
+        title: "Please login first",
+        description: "You need to be logged in to complete the checkout",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const selectedAddress = useNewAddress ? newAddress : user.address;
+    if (!selectedAddress?.street || !selectedAddress?.city || 
+        !selectedAddress?.state || !selectedAddress?.pincode) {
+      toast({
+        title: "Missing address",
+        description: "Please fill in all address fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const testResponse = await fetch('/api/razorpay/test-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: user.id,
+          cart_items: cart,
+          delivery_address: selectedAddress,
+          payment_method: 'test',
+          subtotal: subtotal,
+          tax_amount: tax,
+          delivery_fee: 0,
+          total_amount: total
+        }),
+      });
+
+      const result = await testResponse.json();
+
+      if (result.success) {
+        toast({
+          title: "Test order created",
+          description: "Test order has been created successfully",
+        });
+
+        clearCart();
+        router.push(`/payment-success?order_id=${result.order_id}&payment_id=${result.payment_id}`);
+      } else {
+        throw new Error(result.error || 'Test order creation failed');
+      }
+
+    } catch (error: any) {
+      console.error('Test order failed:', error);
+      toast({
+        title: "Test order failed",
+        description: error.message || "There was an error creating test order.",
         variant: "destructive",
       });
     }
@@ -419,6 +538,16 @@ export default function CheckoutPage() {
                 disabled={activeSection !== 'payment'}
               >
                 Proceed to Payment
+              </Button>
+              
+              {/* Test button for development */}
+              <Button 
+                className="w-full mt-2" 
+                variant="outline"
+                onClick={handleTestOrder}
+                disabled={activeSection !== 'payment'}
+              >
+                🧪 Test Order (Skip Payment)
               </Button>
             </div>
           </CardContent>

@@ -80,6 +80,22 @@ export function LoginForm() {
           router.push("/admin/dashboard");
           return;
         }
+
+        // Check if user is a cook
+        const { data: cookData, error: cookError } = await supabase
+          .from('cooks')
+          .select('id')
+          .eq('id', user.id)
+          .single();
+
+        if (!cookError && cookData) {
+          toast({
+            title: "Login successful!",
+            description: "Welcome to your cook dashboard.",
+          });
+          router.push("/cook/dashboard");
+          return;
+        }
       }
 
       toast({

@@ -1,20 +1,32 @@
 "use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { CheckCircle2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 export default function PaymentSuccessPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [countdown, setCountdown] = useState(5);
+  
+  const orderId = searchParams.get('order_id');
+  const paymentId = searchParams.get('payment_id');
 
   useEffect(() => {
-    // Redirect to home page after 3 seconds
-    const timer = setTimeout(() => {
-      router.push('/');
-    }, 3000);
+    // Countdown timer
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          router.push('/orders');
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(timer);
   }, [router]);
 
   return (
@@ -31,9 +43,41 @@ export default function PaymentSuccessPage() {
             <p className="text-gray-500">
               Thank you for your order. Your payment has been processed successfully.
             </p>
-            <p className="text-sm text-gray-400">
-              Redirecting to home page in a few seconds...
-            </p>
+            
+            {orderId && (
+              <div className="bg-gray-100 p-3 rounded-lg w-full">
+                <p className="text-sm text-gray-600">Order ID:</p>
+                <p className="font-mono text-sm font-semibold">{orderId}</p>
+              </div>
+            )}
+            
+            {paymentId && (
+              <div className="bg-gray-100 p-3 rounded-lg w-full">
+                <p className="text-sm text-gray-600">Payment ID:</p>
+                <p className="font-mono text-sm font-semibold">{paymentId}</p>
+              </div>
+            )}
+            
+            <div className="space-y-2">
+              <p className="text-sm text-gray-400">
+                Redirecting to your orders in {countdown} seconds...
+              </p>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => router.push('/orders')}
+                  size="sm"
+                >
+                  View Orders
+                </Button>
+                <Button 
+                  onClick={() => router.push('/')}
+                  variant="outline"
+                  size="sm"
+                >
+                  Continue Shopping
+                </Button>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>

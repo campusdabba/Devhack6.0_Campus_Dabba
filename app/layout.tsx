@@ -32,7 +32,7 @@ export default function RootLayout({
           const { data: cook } = await supabase
             .from("cooks")
             .select("*")
-            .eq("cook_id", session.user.id)
+            .eq("id", session.user.id)
             .single();
           setIsCook(!!cook);
         }
@@ -45,7 +45,7 @@ export default function RootLayout({
     // Initial session check
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        checkCookStatus(session.user.id);
+        checkCookStatus();
       } 
     });
 
@@ -54,7 +54,7 @@ export default function RootLayout({
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
-        await checkCookStatus(session.user.id);
+        await checkCookStatus();
       } else {
         setIsCook(false);
       }
