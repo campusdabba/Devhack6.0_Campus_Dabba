@@ -10,10 +10,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cooksByState } from "@/lib/data/states";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { User, WeeklySchedule, DayOfWeek } from "@/types";
+import { User } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
 import { createClient } from "@/utils/supabase/client";
 import { dayMapping } from "@/components/student/dashboard/types";
+
+export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 export const getCurrentDayNumber = (): DayOfWeek => {
   const today = new Date();
@@ -101,7 +103,6 @@ export interface Cook {
   totalOrders: number;
   totalEarnings: number;
   isAvailable: boolean;
-  weeklySchedule?: WeeklySchedule;
   menuItems?: MenuItem[];
 }
 
@@ -131,7 +132,13 @@ const filterMenuItemsByDay = (
 ) => {
   return menuItems.filter((item) => {
     const itemDayNumber = getDayNumber(item.day_of_week);
-    return itemDayNumber === currentDay;
+    // Filter out items with zero or negative price, or empty names/descriptions
+    return (
+      itemDayNumber === currentDay &&
+      item.price > 0 &&
+      item.item_name?.trim().length > 0 &&
+      item.description?.trim().length > 0
+    );
   });
 };
 
@@ -202,7 +209,7 @@ export default function CookProfilePage({
   // Effect for cart quantities
   useEffect(() => {
     const newQuantities: Record<string, number> = {};
-    cart.forEach((item) => {
+    cart.forEach((item: any) => {
       newQuantities[item.id] = item.quantity;
     });
     setQuantities(newQuantities);
@@ -212,7 +219,7 @@ export default function CookProfilePage({
   const getCartItemId = (cookId: string, day: number) => `${cookId}-${day}`;
 
   const handleQuantityChange = async (day: number, change: number) => {
-    if (!cook) return;
+    if (!cook || !cook.menuItems) return;
 
     const itemId = getCartItemId(cook.cook_id, day);
     const currentQty = quantities[itemId] || 0;
@@ -224,7 +231,7 @@ export default function CookProfilePage({
     }
 
     const dayMenu = cook.menuItems.filter(
-      (item) => getDayNumber(item.day_of_week) === day
+      (item) => getDayNumber(item.day_of_week) === day && item.price > 0
     );
 
     const bundledMenu: CartItem = {
@@ -406,11 +413,11 @@ export default function CookProfilePage({
                     <div className="flex justify-between items-center mt-2">
                       <div className="text-lg font-semibold">
                         Total: ₹
-                        {cook.menuItems
+                        {(cook.menuItems || [])
                           .filter(
                             (item) =>
                               getDayNumber(item.day_of_week) ===
-                              getCurrentDayNumber()
+                              getCurrentDayNumber() && item.price > 0
                           )
                           .reduce((total, item) => total + item.price, 0)}
                       </div>
@@ -466,19 +473,32 @@ export default function CookProfilePage({
                         <Button
                           className="w-[200px]"
                           onClick={() => {
-                            const dayMenu = cook.menuItems.filter(
+                            const dayMenu = (cook.menuItems || []).filter(
                               (item) =>
-                                getDayNumber(item.day_of_week) === currentDay
+                                getDayNumber(item.day_of_week) === currentDay && item.price > 0
                             );
+                            
+                            // Don't allow adding if no valid items or total price is 0
+                            const totalPrice = dayMenu.reduce(
+                              (total, item) => total + item.price,
+                              0
+                            );
+                            
+                            if (dayMenu.length === 0 || totalPrice <= 0) {
+                              toast({
+                                title: "Cannot add to cart",
+                                description: "No valid menu items available for this day.",
+                                variant: "destructive",
+                              });
+                              return;
+                            }
+
                             const bundledMenu: CartItem = {
                               id: `${cook.id}-${currentDay}`,
                               cook_id: cook.id,
                               item_name: `${cook.first_name}'s ${dayMapping[currentDay]} Dabba`,
                               description: `${dayMapping[currentDay]}'s special dabba by ${cook.first_name}`,
-                              price: dayMenu.reduce(
-                                (total, item) => total + item.price,
-                                0
-                              ),
+                              price: totalPrice,
                               dietary_type: dayMenu[0]?.dietary_type || "veg",
                               cuisine_type: dayMenu[0]?.cuisine_type || "indian",
                               meal_type: "lunch",
@@ -538,7 +558,7 @@ export default function CookProfilePage({
                               {dayName}'s Menu
                             </h3>
                             <Badge variant="secondary">
-                              {cook.menuItems.find(
+                              {(cook.menuItems || []).find(
                                 (item) =>
                                   getDayNumber(item.day_of_week) === Number(day)
                               )?.dietary_type || "veg"}
@@ -547,11 +567,11 @@ export default function CookProfilePage({
 
                           <ScrollArea className="h-[250px]">
                             <div className="space-y-2">
-                              {cook.menuItems
+                              {(cook.menuItems || [])
                                 .filter(
                                   (item) =>
                                     getDayNumber(item.day_of_week) ===
-                                    Number(day)
+                                    Number(day) && item.price > 0
                                 )
                                 .map((item) => (
                                   <div
@@ -578,11 +598,11 @@ export default function CookProfilePage({
                           <div className="flex justify-between items-center mt-2">
                             <div className="text-lg font-semibold">
                               Total: ₹
-                              {cook.menuItems
+                              {(cook.menuItems || [])
                                 .filter(
                                   (item) =>
                                     getDayNumber(item.day_of_week) ===
-                                    Number(day)
+                                    Number(day) && item.price > 0
                                 )
                                 .reduce((total, item) => total + item.price, 0)}
                             </div>
@@ -633,20 +653,33 @@ export default function CookProfilePage({
                               <Button
                                 className="w-[200px]"
                                 onClick={() => {
-                                  const dayMenu = cook.menuItems.filter(
+                                  const dayMenu = (cook.menuItems || []).filter(
                                     (item) =>
                                       getDayNumber(item.day_of_week) ===
-                                      Number(day)
+                                      Number(day) && item.price > 0
                                   );
+                                  
+                                  // Don't allow adding if no valid items or total price is 0
+                                  const totalPrice = dayMenu.reduce(
+                                    (total, item) => total + item.price,
+                                    0
+                                  );
+                                  
+                                  if (dayMenu.length === 0 || totalPrice <= 0) {
+                                    toast({
+                                      title: "Cannot add to cart",
+                                      description: "No valid menu items available for this day.",
+                                      variant: "destructive",
+                                    });
+                                    return;
+                                  }
+
                                   const bundledMenu: CartItem = {
                                     id: `${cook.id}-${day}`,
                                     cook_id: cook.id,
                                     item_name: `${cook.first_name}'s ${dayName} Dabba`,
                                     description: `${dayName}'s special dabba by ${cook.first_name}`,
-                                    price: dayMenu.reduce(
-                                      (total, item) => total + item.price,
-                                      0
-                                    ),
+                                    price: totalPrice,
                                     dietary_type:
                                       dayMenu[0]?.dietary_type || "veg",
                                     cuisine_type:

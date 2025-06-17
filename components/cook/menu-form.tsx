@@ -50,53 +50,81 @@ interface MenuItem {
   item_name: string;
   description: string;
   price: number;
-  meal_type: string;
-  dietary_type: string;
+  meal_type: "breakfast" | "lunch" | "dinner";
+  dietary_type: "veg" | "non-veg" | "vegan";
   day_of_week: string;
 }
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-  description: z.string().min(10, {
-    message: "Description must be at least 10 characters.",
-  }),
-  price: z.string().regex(/^\d+(\.\d{1,2})?$/, {
-    message: "Please enter a valid price.",
-  }),
-  mealType: z.enum(["breakfast", "lunch", "dinner"]), // Add proper enum values
-  dietaryType: z.enum(["veg", "non-veg"]),
+  name: z.string()
+    .min(2, {
+      message: "Name must be at least 2 characters.",
+    })
+    .refine((val) => val.trim().length >= 2, {
+      message: "Name cannot be empty or contain only spaces.",
+    }),
+  description: z.string()
+    .min(10, {
+      message: "Description must be at least 10 characters.",
+    })
+    .refine((val) => val.trim().length >= 10, {
+      message: "Description cannot be empty or contain only spaces.",
+    }),
+  price: z.string()
+    .regex(/^\d+(\.\d{1,2})?$/, {
+      message: "Please enter a valid price.",
+    })
+    .refine((val) => parseFloat(val) > 0, {
+      message: "Price must be greater than zero.",
+    }),
+  mealType: z.enum(["breakfast", "lunch", "dinner"]),
+  dietaryType: z.enum(["veg", "non-veg", "vegan"]),
   dayOfWeek: z.string(),
 });
+
+type FormData = z.infer<typeof formSchema>;
 
 export function MenuForm({ initialData, onSuccess, isEditing }: MenuFormProps) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: initialData?.item_name || "",
       description: initialData?.description || "",
       price: initialData?.price?.toString() || "",
-      mealType: initialData?.meal_type || "lunch",
-      dietaryType: initialData?.dietary_type || "veg",
+      mealType: (initialData?.meal_type as "breakfast" | "lunch" | "dinner") || "lunch",
+      dietaryType: (initialData?.dietary_type as "veg" | "non-veg" | "vegan") || "veg",
       dayOfWeek: Object.keys(DAY_MAPPING).find(key => DAY_MAPPING[key as keyof typeof DAY_MAPPING] === initialData?.day_of_week) || "1",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: FormData) {
     setIsLoading(true);
 
     try {
+      // Additional client-side validation
+      const price = parseFloat(values.price);
+      if (price <= 0) {
+        throw new Error("Price must be greater than zero");
+      }
+
+      if (values.name.trim().length < 2) {
+        throw new Error("Item name cannot be empty");
+      }
+
+      if (values.description.trim().length < 10) {
+        throw new Error("Description must be at least 10 characters long");
+      }
+
       const supabase = createClient();
       if (isEditing && initialData) {
         const { error } = await supabase
           .from("dabba_menu")
           .update({
-            item_name: values.name,
-            description: values.description,
-            price: parseFloat(values.price),
+            item_name: values.name.trim(),
+            description: values.description.trim(),
+            price: price,
             meal_type: values.mealType.toLowerCase(),
             dietary_type: values.dietaryType.toLowerCase(),
             day_of_week: DAY_MAPPING[values.dayOfWeek],
@@ -107,60 +135,56 @@ export function MenuForm({ initialData, onSuccess, isEditing }: MenuFormProps) {
 
         toast({
           title: "Success",
-          description: "Dabba edited successfully",
+          description: "Dabba updated successfully",
         });
 
+      } else {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
+        if (!user) throw new Error("No user found");
+
+        const dayOfWeek = DAY_MAPPING[values.dayOfWeek as keyof typeof DAY_MAPPING];
+
+        const menuItem = {
+          cook_id: user.id,
+          item_name: values.name.trim(),
+          description: values.description.trim(),
+          price: price,
+          meal_type: values.mealType.toLowerCase(),
+          dietary_type: values.dietaryType.toLowerCase(),
+          day_of_week: dayOfWeek,
+        };
+
+        // Add validation before insert
+        if (!Object.values(DAY_MAPPING).includes(menuItem.day_of_week)) {
+          throw new Error(`Invalid day: ${menuItem.day_of_week}`);
+        }
+
+        // Debug final payload
+        console.log("Final payload:", menuItem);
+
+        const { error } = await supabase.from("dabba_menu").insert([menuItem]).select();
+
+        if (error) throw error;
+
+        toast({
+          title: "Success",
+          description: "Dabba added successfully",
+        });
+
+        form.reset();
       }
-      else {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) throw new Error("No user found");
-
-      const dayOfWeek =
-        DAY_MAPPING[values.dayOfWeek as keyof typeof DAY_MAPPING];
-
-      const menuItem = {
-        cook_id: user.id,
-        item_name: values.name,
-        description: values.description,
-        price: parseFloat(values.price),
-        meal_type: values.mealType.toLowerCase(),
-        dietary_type: values.dietaryType.toLowerCase(),
-        day_of_week: DAY_MAPPING[values.dayOfWeek] || "Monday",
-      };
-
-      // Add validation before insert
-      if (!Object.values(DAY_MAPPING).includes(menuItem.day_of_week)) {
-        throw new Error(`Invalid day: ${menuItem.day_of_week}`);
-      }
-
-      // Debug final payload
-      console.log("Final payload:", menuItem);
-
-      const { error } = await supabase.from("dabba_menu").insert([menuItem]).select();
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Dabba added successfully",
-      });
-
-      form.reset();
-
-    }
+      
       onSuccess();
       
-
     } catch (error) {
       console.error("Error:", error);
       toast({
         title: "Error",
         description:
-          error instanceof Error ? error.message : "Failed to add dabba",
+          error instanceof Error ? error.message : "Failed to save dabba",
         variant: "destructive",
       });
     } finally {
@@ -312,7 +336,7 @@ export function MenuForm({ initialData, onSuccess, isEditing }: MenuFormProps) {
         </div>
         <Button type="submit" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Add Menu Item
+          {isEditing ? "Update Menu Item" : "Add Menu Item"}
         </Button>
       </form>
     </Form>
