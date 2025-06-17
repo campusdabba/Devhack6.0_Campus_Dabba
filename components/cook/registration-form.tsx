@@ -60,8 +60,9 @@ export function CookRegistrationForm() {
         options: {
           data: {
             first_name: values.name.split(" ")[0],
-            last_name: values.name.split(" ")[1],
+            last_name: values.name.split(" ")[1] || "",
             phone: values.phone,
+            role: "cook",
           },
         },
       });

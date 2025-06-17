@@ -116,7 +116,7 @@ export function CooksList({ selectedState }: CooksListProps) {
   const supabase = createClient();
 
   // Debug: Log the current day number
-  console.log("Current day number:", getCurrentDayNumber());
+  const currentDay = getCurrentDayNumber();
 
   useEffect(() => {
     // Get initial session
@@ -142,35 +142,14 @@ export function CooksList({ selectedState }: CooksListProps) {
       // Fetch cooks
       let query = supabase
         .from("cooks")
-        .select(`
-          id,
-          cook_id,
-          first_name,
-          last_name,
-          address,
-          rating,
-          certification,
-          profile_image,
-          email,
-          phone,
-          description,
-          isAvailable,
-          region,
-          totalorders,
-          weeklySchedule,
-          cuisineType,
-          latitude,
-          longitude
-        `);
+        .select("*");
 
-      // Only filter by region if a specific state is selected
+      // Filter by region if a specific state is selected
       if (selectedState && selectedState !== "All States") {
         query = query.ilike('region', `%${selectedState}%`);
       }
 
       const { data: cooksData, error: cooksError } = await query;
-
-      console.log("Found cooks:", cooksData);
 
       if (cooksError) {
         console.error("Error fetching cooks:", cooksError);
@@ -179,16 +158,22 @@ export function CooksList({ selectedState }: CooksListProps) {
       }
 
       if (!cooksData || cooksData.length === 0) {
-        console.log("No cooks found");
         setError("No cooks found for this location");
         return;
       }
 
       // Fetch menu items for all cooks
+      // Try both cook.id and cook.cook_id to handle different schema versions
+      const cookIds = cooksData.map(cook => cook.id || cook.cook_id);
+      console.log("Cook IDs for menu query:", cookIds);
+      
       const { data: menuData, error: menuError } = await supabase
         .from("dabba_menu")
         .select("*")
-        .in('cook_id', cooksData.map(cook => cook.cook_id));
+        .in('cook_id', cookIds);
+
+      console.log("Menu query result:", { menuData, menuError });
+      console.log("Found menu items:", menuData?.length || 0);
 
       if (menuError) {
         console.error("Error fetching menu items:", menuError);
@@ -198,10 +183,18 @@ export function CooksList({ selectedState }: CooksListProps) {
 
       // Process cooks with their menu items
       const processedCooks = cooksData.map(cook => {
-        const cookMenuItems = menuData?.filter(item => item.cook_id === cook.cook_id) || [];
+        const cookId = cook.id || cook.cook_id;
+        console.log(`Processing cook ${cookId}:`, cook);
+        const cookMenuItems = menuData?.filter(item => item.cook_id === cookId) || [];
+        console.log(`Found ${cookMenuItems.length} menu items for cook ${cookId}`);
         
         return {
           ...cook,
+          cook_id: cookId, // Ensure we have a cook_id field
+          totalorders: cook.total_orders || cook.totalorders || 0,
+          isAvailable: cook.is_available !== undefined ? cook.is_available : cook.isAvailable !== undefined ? cook.isAvailable : true,
+          region: cook.region || (cook.address && typeof cook.address === 'object' ? cook.address.state : undefined),
+          cuisineType: cook.cuisine_type || cook.cuisineType,
           menuItems: cookMenuItems.map(item => ({
             id: item.id,
             cook_id: item.cook_id,
@@ -216,7 +209,6 @@ export function CooksList({ selectedState }: CooksListProps) {
         };
       });
 
-      console.log("Processed cooks with menu items:", processedCooks);
       setCooks(processedCooks);
       setError(null);
     } catch (error: any) {
@@ -240,16 +232,24 @@ export function CooksList({ selectedState }: CooksListProps) {
   }, [cart]);
 
   if (isLoading) {
-    return <div>Loading cooks...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <span className="ml-2">Loading cooks...</span>
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div className="text-red-500">
-        <p>Error: {error}</p>
+      <div className="p-6 text-center">
+        <div className="text-red-500 mb-4">
+          <p className="text-lg font-semibold">Error loading cooks</p>
+          <p className="text-sm">{error}</p>
+        </div>
         <button 
           onClick={() => fetchCooks()} 
-          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+          className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
         >
           Retry
         </button>
@@ -258,7 +258,22 @@ export function CooksList({ selectedState }: CooksListProps) {
   }
 
   if (cooks.length === 0) {
-    return <div>No cooks found for {selectedState}</div>;
+    return (
+      <div className="p-6 text-center">
+        <p className="text-lg text-muted-foreground mb-2">No cooks found</p>
+        <p className="text-sm text-muted-foreground">
+          {selectedState && selectedState !== "All States" 
+            ? `No cooks available in ${selectedState}` 
+            : "No cooks available at the moment"}
+        </p>
+        <button 
+          onClick={() => fetchCooks()} 
+          className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
+        >
+          Refresh
+        </button>
+      </div>
+    );
   }
 
   const getCartItemId = (cookId: string) =>

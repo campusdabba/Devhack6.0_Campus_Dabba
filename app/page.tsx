@@ -1,43 +1,19 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
+import { useState } from "react";
 import { CooksList } from "@/components/student/dashboard/cooks-list";
 import { StatesFilter } from "@/components/student/dashboard/states-filter";
 import { states } from "@/lib/data/states";
 import { StateCards } from "@/components/student/dashboard/StateCards";
 import { MapPreview } from "@/components/map/map-preview";
+import { RoleBasedRedirect } from "@/components/auth/role-based-redirect";
 import Link from "next/link";
 
 export default function DashboardPage() {
   const [selectedState, setSelectedState] = useState<string>(states[0]);
-  const router = useRouter();
-  const supabase = createClient();
-
-  useEffect(() => {
-    const checkUserRole = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (session?.user) {
-        // Check if user is a cook
-        const { data: cook } = await supabase
-          .from("cooks")
-          .select("*")
-          .eq("cook_id", session.user.id)
-          .single();
-
-        if (cook) {
-          router.push("/cook/dashboard");
-          return;
-        }
-      }
-    };
-
-    checkUserRole();
-  }, [router]);
 
   return (
-    <div className="space-y-6">
+    <RoleBasedRedirect>
+      <div className="space-y-6">
       {/* Header Section with Background */}
       <div className="relative h-32 mb-4 rounded-lg overflow-hidden">
         <div
@@ -131,5 +107,6 @@ export default function DashboardPage() {
         </div>
       </footer>
     </div>
+    </RoleBasedRedirect>
   );
 }

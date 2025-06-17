@@ -17,7 +17,7 @@ import { Session } from "@supabase/supabase-js";
 const navItems = [
   { title: "Profile", href: "/cook/profile" },
   { title: "MyDabba", href: "/cook/menu" },
-  { title: "Orders", href: "/cook/orderprog" },
+  { title: "Orders", href: "/cook/orders" },
   { title: "Payments", href: "/cook/payments" },
 ];
 
@@ -101,7 +101,7 @@ export function CookNav() {
         <Button variant="outline" size="sm" asChild>
           <Link href="/cook/orderprog" className="flex items-center gap-2">
             <ShoppingCart className="h-4 w-4" />
-            <span>Active Orders</span>
+            <span>Manage Orders</span>
           </Link>
         </Button>
         {session ? (

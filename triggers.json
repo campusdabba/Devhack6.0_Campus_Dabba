@@ -1,0 +1,142 @@
+[
+  {
+    "table_name": "subscription",
+    "trigger_name": "tr_check_filters",
+    "action_timing": "BEFORE",
+    "event": "INSERT",
+    "action_statement": "EXECUTE FUNCTION realtime.subscription_check_filters()"
+  },
+  {
+    "table_name": "subscription",
+    "trigger_name": "tr_check_filters",
+    "action_timing": "BEFORE",
+    "event": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION realtime.subscription_check_filters()"
+  },
+  {
+    "table_name": "objects",
+    "trigger_name": "update_objects_updated_at",
+    "action_timing": "BEFORE",
+    "event": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION storage.update_updated_at_column()"
+  },
+  {
+    "table_name": "key",
+    "trigger_name": "key_encrypt_secret_trigger_raw_key",
+    "action_timing": "BEFORE",
+    "event": "INSERT",
+    "action_statement": "EXECUTE FUNCTION pgsodium.key_encrypt_secret_raw_key()"
+  },
+  {
+    "table_name": "key",
+    "trigger_name": "key_encrypt_secret_trigger_raw_key",
+    "action_timing": "BEFORE",
+    "event": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION pgsodium.key_encrypt_secret_raw_key()"
+  },
+  {
+    "table_name": "users",
+    "trigger_name": "on_auth_user_created",
+    "action_timing": "AFTER",
+    "event": "INSERT",
+    "action_statement": "EXECUTE FUNCTION handle_new_user()"
+  },
+  {
+    "table_name": "orders",
+    "trigger_name": "update_orders_updated_at",
+    "action_timing": "BEFORE",
+    "event": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION update_updated_at_column()"
+  },
+  {
+    "table_name": "prefixes",
+    "trigger_name": "prefixes_delete_hierarchy",
+    "action_timing": "AFTER",
+    "event": "DELETE",
+    "action_statement": "EXECUTE FUNCTION storage.delete_prefix_hierarchy_trigger()"
+  },
+  {
+    "table_name": "objects",
+    "trigger_name": "objects_insert_create_prefix",
+    "action_timing": "BEFORE",
+    "event": "INSERT",
+    "action_statement": "EXECUTE FUNCTION storage.objects_insert_prefix_trigger()"
+  },
+  {
+    "table_name": "objects",
+    "trigger_name": "objects_update_create_prefix",
+    "action_timing": "BEFORE",
+    "event": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION storage.objects_insert_prefix_trigger()"
+  },
+  {
+    "table_name": "objects",
+    "trigger_name": "objects_delete_delete_prefix",
+    "action_timing": "AFTER",
+    "event": "DELETE",
+    "action_statement": "EXECUTE FUNCTION storage.delete_prefix_hierarchy_trigger()"
+  },
+  {
+    "table_name": "prefixes",
+    "trigger_name": "prefixes_create_hierarchy",
+    "action_timing": "BEFORE",
+    "event": "INSERT",
+    "action_statement": "EXECUTE FUNCTION storage.prefixes_insert_trigger()"
+  },
+  {
+    "table_name": "users",
+    "trigger_name": "update_users_updated_at",
+    "action_timing": "BEFORE",
+    "event": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION update_updated_at_column()"
+  },
+  {
+    "table_name": "orders",
+    "trigger_name": "update_cook_orders_on_new_order",
+    "action_timing": "AFTER",
+    "event": "INSERT",
+    "action_statement": "EXECUTE FUNCTION update_cook_orders_count()"
+  },
+  {
+    "table_name": "orders",
+    "trigger_name": "update_cook_orders_on_status_change",
+    "action_timing": "AFTER",
+    "event": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION update_cook_order_status_count()"
+  },
+  {
+    "table_name": "orders",
+    "trigger_name": "order_created_trigger",
+    "action_timing": "AFTER",
+    "event": "INSERT",
+    "action_statement": "EXECUTE FUNCTION update_cook_order_stats()"
+  },
+  {
+    "table_name": "cook_payments",
+    "trigger_name": "payment_completed_trigger",
+    "action_timing": "AFTER",
+    "event": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION update_cook_earnings()"
+  },
+  {
+    "table_name": "cook_ratings",
+    "trigger_name": "rating_added_trigger",
+    "action_timing": "AFTER",
+    "event": "INSERT",
+    "action_statement": "EXECUTE FUNCTION update_cook_rating()"
+  },
+  {
+    "table_name": "cook_ratings",
+    "trigger_name": "rating_added_trigger",
+    "action_timing": "AFTER",
+    "event": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION update_cook_rating()"
+  },
+  {
+    "table_name": "orders",
+    "trigger_name": "order_status_changed_trigger",
+    "action_timing": "AFTER",
+    "event": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION update_order_status_stats()"
+  }
+]
