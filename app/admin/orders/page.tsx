@@ -24,6 +24,9 @@ interface Order {
   id: string;
   status: string;
   total: number;
+  payment_status: string;
+  payment_method: string;
+  payment_id: string;
   created_at: string;
   user: {
     id: string;
@@ -40,18 +43,12 @@ interface Order {
     id: string;
     quantity: number;
     price_at_time: number;
-    menu: {
+    dabba_menu: {
       id: string;
       name: string;
       price: number;
     };
   }[];
-  payment: {
-    id: string;
-    status: string;
-    payment_method: string;
-    created_at: string;
-  };
 }
 
 export default function AdminOrdersPage() {
@@ -69,6 +66,9 @@ export default function AdminOrdersPage() {
             id,
             status,
             total,
+            payment_status,
+            payment_method,
+            payment_id,
             created_at,
             user:users!user_id (
               id,
@@ -85,17 +85,11 @@ export default function AdminOrdersPage() {
               id,
               quantity,
               price_at_time,
-              menu:menus!menu_id (
+              dabba_menu:menu_id (
                 id,
                 name,
                 price
               )
-            ),
-            payment:payments!inner (
-              id,
-              status,
-              payment_method,
-              created_at
             )
           `)
           .order('created_at', { ascending: false });
@@ -188,7 +182,7 @@ export default function AdminOrdersPage() {
                     <ul className="list-disc list-inside">
                       {order.order_items.map((item) => (
                         <li key={item.id}>
-                          {item.menu.name} (x{item.quantity}) - ₹{item.price_at_time}
+                          {item.dabba_menu.name} (x{item.quantity}) - ₹{item.price_at_time}
                         </li>
                       ))}
                     </ul>
@@ -197,11 +191,11 @@ export default function AdminOrdersPage() {
                   <TableCell className="capitalize">{order.status}</TableCell>
                   <TableCell>
                     <div className="flex flex-col">
-                      <span className={`capitalize ${order.payment.status === 'completed' ? 'text-green-600' : 'text-yellow-600'}`}>
-                        {order.payment.status}
+                      <span className={`capitalize ${order.payment_status === 'paid' ? 'text-green-600' : 'text-yellow-600'}`}>
+                        {order.payment_status}
                       </span>
                       <span className="text-sm text-gray-500">
-                        {order.payment.payment_method}
+                        {order.payment_method}
                       </span>
                     </div>
                   </TableCell>

@@ -8,6 +8,9 @@ interface Order {
   id: string;
   status: string;
   total: number;
+  payment_status: string;
+  payment_method: string;
+  payment_id: string;
   created_at: string;
   user: {
     id: string;
@@ -19,18 +22,12 @@ interface Order {
     id: string;
     quantity: number;
     price_at_time: number;
-    menu: {
+    dabba_menu: {
       id: string;
       name: string;
       price: number;
     };
   }[];
-  payment: {
-    id: string;
-    status: string;
-    payment_method: string;
-    created_at: string;
-  };
 }
 
 export default function OrderHandlerPage() {
@@ -49,6 +46,9 @@ export default function OrderHandlerPage() {
             id,
             status,
             total,
+            payment_status,
+            payment_method,
+            payment_id,
             created_at,
             user:users!user_id (
               id,
@@ -60,17 +60,11 @@ export default function OrderHandlerPage() {
               id,
               quantity,
               price_at_time,
-              menu:menus!menu_id (
+              dabba_menu:menu_id (
                 id,
                 name,
                 price
               )
-            ),
-            payment:payments!inner (
-              id,
-              status,
-              payment_method,
-              created_at
             )
           `)
           .eq('cook_id', session.user.id)
@@ -156,9 +150,9 @@ export default function OrderHandlerPage() {
                   <p>Total: ₹{order.total}</p>
                   <div className="mt-2">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      order.payment.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                      order.payment_status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                     }`}>
-                      Payment: {order.payment.status}
+                      Payment: {order.payment_status}
                     </span>
                   </div>
                   <div className="mt-2">
@@ -166,7 +160,7 @@ export default function OrderHandlerPage() {
                     <ul className="list-disc list-inside">
                       {order.order_items.map((item) => (
                         <li key={item.id}>
-                          {item.menu.name} (x{item.quantity}) - ₹{item.price_at_time}
+                          {item.dabba_menu.name} (x{item.quantity}) - ₹{item.price_at_time}
                         </li>
                       ))}
                     </ul>
