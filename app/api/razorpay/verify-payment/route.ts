@@ -92,16 +92,16 @@ export async function POST(request: Request) {
       .insert({
         user_id,
         cook_id,
-        status: 'confirmed',
+        status: 'pending', // Use valid status from orders.json
         total: total_amount.toString(),
         subtotal: subtotal.toString(),
         tax_amount: tax_amount.toString(),
         delivery_fee: delivery_fee.toString(),
         total_amount: total_amount.toString(),
         delivery_address,
-        payment_method,
+        payment_method: 'online', // Use valid payment method from orders.json
         payment_id: razorpay_payment_id,
-        payment_status: 'completed',
+        payment_status: 'paid', // Payment verified successfully, so mark as paid
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       })

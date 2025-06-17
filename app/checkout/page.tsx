@@ -276,6 +276,13 @@ export default function CheckoutPage() {
     }
 
     try {
+      console.log('Creating test order with data:', {
+        user_id: user.id,
+        cart_items: cart,
+        delivery_address: selectedAddress,
+        total_amount: total
+      });
+
       const testResponse = await fetch('/api/razorpay/test-order', {
         method: 'POST',
         headers: {
@@ -285,7 +292,7 @@ export default function CheckoutPage() {
           user_id: user.id,
           cart_items: cart,
           delivery_address: selectedAddress,
-          payment_method: 'test',
+          payment_method: 'online', // Use valid payment method
           subtotal: subtotal,
           tax_amount: tax,
           delivery_fee: 0,
@@ -293,7 +300,16 @@ export default function CheckoutPage() {
         }),
       });
 
+      console.log('Test order response status:', testResponse.status);
+      
+      if (!testResponse.ok) {
+        const errorText = await testResponse.text();
+        console.error('Test order API error:', errorText);
+        throw new Error(`API Error: ${testResponse.status} - ${errorText}`);
+      }
+
       const result = await testResponse.json();
+      console.log('Test order result:', result);
 
       if (result.success) {
         toast({

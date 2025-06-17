@@ -53,9 +53,9 @@ export async function POST(request: Request) {
         delivery_fee: delivery_fee.toString(),
         total_amount: total_amount.toString(),
         delivery_address,
-        payment_method,
+        payment_method: 'online', // Use valid payment method instead of 'test'
         payment_id: 'test_payment_' + Date.now(),
-        payment_status: 'completed',
+        payment_status: 'paid', // Use valid payment status: 'pending', 'paid', 'failed', 'refunded'
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       })
