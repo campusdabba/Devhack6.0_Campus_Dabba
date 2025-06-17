@@ -37,40 +37,124 @@ export default function OrderHandlerPage() {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (session?.user) {
-        const { data } = await supabase
-          .from('orders')
-          .select(`
-            id,
-            status,
-            total,
-            payment_status,
-            payment_method,
-            payment_id,
-            created_at,
-            user:users!user_id (
-              id,
-              first_name,
-              last_name,
-              email
-            ),
-            order_items (
-              id,
-              quantity,
-              price_at_time,
-              dabba_menu:menu_id (
-                id,
-                name,
-                price
-              )
-            )
-          `)
-          .eq('cook_id', session.user.id)
-          .order('created_at', { ascending: false });
+      try {
+        console.log('🔍 [OrderProg] Starting fetchOrders...');
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.user) {
+          console.log('✅ [OrderProg] Session found, user ID:', session.user.id);
           
-        if (data) setOrders(data);
+          // First get the cook record for the authenticated user
+          const { data: cookData, error: cookError } = await supabase
+            .from('cooks')
+            .select('id')
+            .eq('auth_user_id', session.user.id)
+            .single();
+
+          console.log('🍳 [OrderProg] Cook query result:', { cookData, cookError });
+
+          if (cookError) {
+            console.error('❌ [OrderProg] Error fetching cook data:', cookError);
+            return;
+          }
+
+          if (!cookData) {
+            console.error('❌ [OrderProg] Cook record not found for user:', session.user.id);
+            return;
+          }
+
+          console.log('✅ [OrderProg] Cook found with ID:', cookData.id);
+
+          // Now fetch orders using the cook ID
+          console.log('🔍 [OrderProg] Fetching orders for cook ID:', cookData.id);
+          const { data, error } = await supabase
+            .from('orders')
+            .select(`
+              id,
+              status,
+              total,
+              payment_status,
+              payment_method,
+              payment_id,
+              created_at,
+              user_id,
+              order_items (
+                id,
+                quantity,
+                price_at_time,
+                dabba_menu:menu_id (
+                  id,
+                  name,
+                  price
+                )
+              )
+            `)
+            .eq('cook_id', cookData.id)
+            .order('created_at', { ascending: false });
+            
+          console.log('📦 [OrderProg] Orders query result:', { data, error, cookId: cookData.id });
+            
+          if (error) {
+            console.error('❌ [OrderProg] Error fetching orders:', error);
+            return;
+          }
+          
+          console.log(`📊 [OrderProg] Found ${data?.length || 0} orders`);
+          
+          // Try to fetch user details, but fallback to basic info if it fails
+          const ordersWithUsers = await Promise.all(
+            (data || []).map(async (order) => {
+              try {
+                console.log(`🔍 [OrderProg] Fetching user data for user_id: ${order.user_id}`);
+                const { data: userData, error: userError } = await supabase
+                  .from('users')
+                  .select('id, first_name, last_name, email')
+                  .eq('id', order.user_id)
+                  .single();
+                
+                if (userError) {
+                  console.log(`⚠️ [OrderProg] User fetch error for ${order.user_id}:`, userError);
+                  throw userError;
+                }
+                
+                return {
+                  ...order,
+                  user: userData || { 
+                    id: order.user_id, 
+                    first_name: 'Customer', 
+                    last_name: `${order.user_id.slice(-4)}`, 
+                    email: `customer-${order.user_id.slice(-4)}@example.com` 
+                  },
+                  order_items: order.order_items.map(item => ({
+                    ...item,
+                    dabba_menu: Array.isArray(item.dabba_menu) ? item.dabba_menu[0] : item.dabba_menu
+                  }))
+                };
+              } catch (error) {
+                // Fallback to basic user info if user fetch fails
+                console.log(`🔄 [OrderProg] Using fallback user info for ${order.user_id}`);
+                return {
+                  ...order,
+                  user: { 
+                    id: order.user_id, 
+                    first_name: 'Customer', 
+                    last_name: `${order.user_id.slice(-4)}`, 
+                    email: `customer-${order.user_id.slice(-4)}@example.com` 
+                  },
+                  order_items: order.order_items.map(item => ({
+                    ...item,
+                    dabba_menu: Array.isArray(item.dabba_menu) ? item.dabba_menu[0] : item.dabba_menu
+                  }))
+                };
+              }
+            })
+          );
+          
+          console.log('🔄 [OrderProg] Transformed data with user info:', ordersWithUsers);
+          setOrders(ordersWithUsers as Order[]);
+        }
+      } catch (error) {
+        console.error('Error in fetchOrders:', error);
       }
     };
 
