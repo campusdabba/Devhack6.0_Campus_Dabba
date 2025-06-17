@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Loader2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
-export default function PaymentSuccessPage() {
+function PaymentSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [countdown, setCountdown] = useState(5);
@@ -83,4 +83,32 @@ export default function PaymentSuccessPage() {
       </Card>
     </div>
   );
-} 
+}
+
+function PaymentSuccessLoading() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md">
+        <CardContent className="p-8">
+          <div className="text-center space-y-6">
+            <div className="flex justify-center">
+              <Loader2 className="h-16 w-16 text-green-500 animate-spin" />
+            </div>
+            <div className="space-y-2">
+              <h1 className="text-2xl font-bold text-gray-900">Loading...</h1>
+              <p className="text-gray-600">Please wait while we process your payment details.</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export default function PaymentSuccessPage() {
+  return (
+    <Suspense fallback={<PaymentSuccessLoading />}>
+      <PaymentSuccessContent />
+    </Suspense>
+  );
+}

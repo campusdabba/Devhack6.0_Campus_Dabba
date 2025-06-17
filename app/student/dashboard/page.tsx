@@ -1,4 +1,5 @@
-import type { Metadata } from "next"
+"use client";
+
 import { useState } from "react";
 import { DashboardContent } from "@/components/student/dashboard/dashboard-content"
 import { CooksList } from "@/components/student/dashboard/cooks-list";
@@ -11,11 +12,6 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-
-export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Browse home-cooked meals from cooks in your area",
-}
 
 export default function DashboardPage() {
   const [selectedState, setSelectedState] = useState("All States");
