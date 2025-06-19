@@ -19,6 +19,7 @@ const navItems = [
   { title: "MyDabba", href: "/cook/menu" },
   { title: "Orders", href: "/cook/orders" },
   { title: "Payments", href: "/cook/payments" },
+  { title: "Settings", href: "/cook/settings" },
 ];
 
 export function CookNav() {
