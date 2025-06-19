@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createClient } from "@/utils/supabase/client";
 import {
   Table,
   TableBody,
@@ -22,27 +23,54 @@ export function CooksTable({ onSelectionChange, selectedCooks = [] }: CooksTable
   const [cooks, setCooks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const supabase = createClient();
 
   useEffect(() => {
     async function fetchCooks() {
       try {
-        console.log('Fetching cooks via API...');
+        console.log('Starting to fetch cooks...');
         
-        const response = await fetch('/api/admin/cooks');
+        // First check if user is authenticated
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        console.log('Auth user:', user);
         
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        if (authError) {
+          console.error('Auth error:', authError);
+          setError(`Authentication error: ${authError.message}`);
+          return;
+        }
+
+        if (!user) {
+          console.log('No authenticated user found');
+          setError('Not authenticated');
+          return;
+        }
+
+        // Try to fetch cooks directly - RLS will handle the permission check
+        console.log('Fetching cooks from database...');
+        const { data, error: cooksError } = await supabase
+          .from('cooks')
+          .select('*')
+          .order('created_at', { ascending: false });
+        
+        console.log('Cooks fetch result:', data);
+        
+        if (cooksError) {
+          if (cooksError.code === '42501') { // Permission denied
+            console.log('User is not an admin');
+            setError('Not authorized to view cooks');
+          } else {
+            console.error('Cooks fetch error:', cooksError);
+            setError(`Error fetching cooks: ${cooksError.message}`);
+          }
+          return;
         }
         
-        const data = await response.json();
-        console.log('Fetched cooks:', data.cooks);
-        
-        setCooks(data.cooks || []);
-        setError(null);
-      } catch (err: any) {
-        console.error('Error fetching cooks:', err);
-        setError(err.message);
+        setCooks(data || []);
+        console.log('Cooks set successfully');
+      } catch (error: any) {
+        console.error('Unexpected error:', error);
+        setError(`Error: ${error.message}`);
       } finally {
         setLoading(false);
       }
@@ -57,10 +85,6 @@ export function CooksTable({ onSelectionChange, selectedCooks = [] }: CooksTable
       : [...selectedCooks, cookId];
     
     onSelectionChange?.(newSelection);
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
   };
 
   if (loading) {
@@ -99,9 +123,7 @@ export function CooksTable({ onSelectionChange, selectedCooks = [] }: CooksTable
           <TableHead>Email</TableHead>
           <TableHead>Phone</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead>Specialties</TableHead>
-          <TableHead>Created</TableHead>
-          <TableHead>Actions</TableHead>
+          <TableHead>Created At</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -114,40 +136,20 @@ export function CooksTable({ onSelectionChange, selectedCooks = [] }: CooksTable
               />
             </TableCell>
             <TableCell>
-              {cook.first_name && cook.last_name 
-                ? `${cook.first_name} ${cook.last_name}` 
-                : cook.full_name || 'N/A'}
-            </TableCell>
-            <TableCell>{cook.email || 'N/A'}</TableCell>
-            <TableCell>{cook.phone || 'N/A'}</TableCell>
-            <TableCell>
-              <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                cook.is_verified 
-                  ? 'bg-green-100 text-green-800' 
-                  : 'bg-yellow-100 text-yellow-800'
-              }`}>
-                {cook.is_verified ? 'Verified' : 'Pending'}
-              </span>
-            </TableCell>
-            <TableCell>
-              {cook.specialties ? (
-                Array.isArray(cook.specialties) 
-                  ? cook.specialties.join(', ')
-                  : cook.specialties
-              ) : 'N/A'}
-            </TableCell>
-            <TableCell>{formatDate(cook.created_at)}</TableCell>
-            <TableCell>
               <Link 
                 href={`/admin/cooks/${cook.id}`}
-                className="text-blue-600 hover:text-blue-800"
+                className="text-primary hover:underline"
               >
-                View
+                {cook.first_name} {cook.last_name}
               </Link>
             </TableCell>
+            <TableCell>{cook.email}</TableCell>
+            <TableCell>{cook.phone}</TableCell>
+            <TableCell>{cook.status || 'pending'}</TableCell>
+            <TableCell>{new Date(cook.created_at).toLocaleDateString()}</TableCell>
           </TableRow>
         ))}
       </TableBody>
     </Table>
   );
-}
+} 

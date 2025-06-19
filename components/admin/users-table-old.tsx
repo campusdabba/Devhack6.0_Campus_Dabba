@@ -32,12 +32,7 @@ export function UsersTable({ onSelectionChange, selectedUsers = [], roleFilter }
         // Build API URL with role filter
         const params = new URLSearchParams();
         if (roleFilter && roleFilter !== 'all') {
-          if (roleFilter === 'exclude-cook') {
-            // Special filter to exclude cooks
-            params.append('exclude', 'cook');
-          } else {
-            params.append('role', Array.isArray(roleFilter) ? roleFilter[0] : roleFilter);
-          }
+          params.append('role', Array.isArray(roleFilter) ? roleFilter[0] : roleFilter);
         }
         
         const response = await fetch(`/api/admin/users?${params.toString()}`);
@@ -54,46 +49,90 @@ export function UsersTable({ onSelectionChange, selectedUsers = [], roleFilter }
         let filteredUsers = data.users || [];
         
         if (roleFilter && roleFilter !== 'all') {
-          if (roleFilter === 'exclude-cook') {
-            // Exclude users with cook role
-            filteredUsers = filteredUsers.filter((user: any) => {
-              if (!user.role) return true;
-              
+          filteredUsers = filteredUsers.filter((user: any) => {
+            if (!user.role) return false;
+            
+            if (Array.isArray(roleFilter)) {
+              // Check if user has any of the specified roles
               if (Array.isArray(user.role)) {
-                return !user.role.includes('cook');
+                return roleFilter.some(r => user.role.includes(r));
               } else {
-                return user.role !== 'cook';
+                return roleFilter.includes(user.role);
               }
-            });
-          } else {
-            filteredUsers = filteredUsers.filter((user: any) => {
-              if (!user.role) return false;
-              
-              if (Array.isArray(roleFilter)) {
-                // Check if user has any of the specified roles
-                if (Array.isArray(user.role)) {
-                  return roleFilter.some(r => user.role.includes(r));
-                } else {
-                  return roleFilter.includes(user.role);
-                }
+            } else {
+              // Single role filter
+              if (Array.isArray(user.role)) {
+                return user.role.includes(roleFilter);
               } else {
-                // Single role filter
-                if (Array.isArray(user.role)) {
-                  return user.role.includes(roleFilter);
-                } else {
-                  return user.role === roleFilter;
-                }
+                return user.role === roleFilter;
               }
-            });
-          }
+            }
+          });
         }
         
         console.log('Filtered users:', filteredUsers);
         setUsers(filteredUsers);
-        setError(null);
-      } catch (err: any) {
-        console.error('Error fetching users:', err);
-        setError(err.message);
+      } catch (error: any) {
+        console.error('Error fetching users:', error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchUsers();
+  }, [roleFilter]);
+
+        // Fetch only from users table
+        console.log('Fetching users from users table only...');
+        console.log('Role filter:', roleFilter);
+        
+        let query = supabase
+          .from('users')
+          .select(`
+            id,
+            email,
+            first_name,
+            last_name,
+            phone,
+            role,
+            created_at,
+            profile_image,
+            address,
+            user_preferences
+          `);
+
+        // Apply role filter if specified
+        if (roleFilter) {
+          console.log('Applying role filter:', roleFilter);
+          if (Array.isArray(roleFilter)) {
+            // Handle array of roles (e.g., ['customer', 'student'])
+            query = query.in('role', roleFilter);
+          } else {
+            // Handle single role
+            query = query.eq('role', roleFilter);
+          }
+        } else {
+          console.log('No role filter applied - fetching all users');
+        }
+
+        const { data, error } = await query.order('created_at', { ascending: false });
+        
+        console.log('Users fetch result:', data);
+        console.log('Users fetch result count:', data?.length);
+        console.log('Users fetch error:', error);
+        
+        if (error) {
+          console.error('Users fetch error:', error);
+          setError(`Error fetching users: ${error.message}`);
+          return;
+        }
+        
+        setUsers(data || []);
+        console.log('Users set successfully:', (data || []).length);
+      } catch (error: any) {
+        console.error('Unexpected error:', error);
+        setError(`Error: ${error.message}`);
       } finally {
         setLoading(false);
       }
@@ -108,17 +147,6 @@ export function UsersTable({ onSelectionChange, selectedUsers = [], roleFilter }
       : [...selectedUsers, userId];
     
     onSelectionChange?.(newSelection);
-  };
-
-  const formatRole = (role: any) => {
-    if (Array.isArray(role)) {
-      return role.join(', ');
-    }
-    return role || 'N/A';
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
   };
 
   if (loading) {
@@ -155,10 +183,9 @@ export function UsersTable({ onSelectionChange, selectedUsers = [], roleFilter }
           </TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Email</TableHead>
-          <TableHead>Role</TableHead>
           <TableHead>Phone</TableHead>
-          <TableHead>Created</TableHead>
-          <TableHead>Actions</TableHead>
+          <TableHead>Role</TableHead>
+          <TableHead>Created At</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -171,27 +198,20 @@ export function UsersTable({ onSelectionChange, selectedUsers = [], roleFilter }
               />
             </TableCell>
             <TableCell>
-              {user.first_name && user.last_name 
-                ? `${user.first_name} ${user.last_name}` 
-                : user.full_name || 'N/A'}
-            </TableCell>
-            <TableCell>{user.email || 'N/A'}</TableCell>
-            <TableCell>
-              <span className="capitalize">{formatRole(user.role)}</span>
-            </TableCell>
-            <TableCell>{user.phone || 'N/A'}</TableCell>
-            <TableCell>{formatDate(user.created_at)}</TableCell>
-            <TableCell>
               <Link 
                 href={`/admin/users/${user.id}`}
-                className="text-blue-600 hover:text-blue-800"
+                className="text-primary hover:underline"
               >
-                View
+                {`${user.first_name} ${user.last_name}`.trim() || 'N/A'}
               </Link>
             </TableCell>
+            <TableCell>{user.email}</TableCell>
+            <TableCell>{user.phone || 'N/A'}</TableCell>
+            <TableCell>{user.role || 'user'}</TableCell>
+            <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
           </TableRow>
         ))}
       </TableBody>
     </Table>
   );
-}
+} 

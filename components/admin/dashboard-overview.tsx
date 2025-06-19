@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createClient } from "@/utils/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function DashboardOverview() {
@@ -13,52 +12,28 @@ export function DashboardOverview() {
   });
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<string[]>([]);
-  const supabase = createClient();
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        // Fetch total users
-        const { count: usersCount, error: usersError } = await supabase
-          .from('users')
-          .select('*', { count: 'exact', head: true });
-
-        if (usersError) {
-          setErrors(prev => [...prev, `Error fetching users: ${usersError.message}`]);
+        // Use API route to fetch stats (which uses admin client server-side)
+        const response = await fetch('/api/admin/stats');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-
-        // Fetch total cooks
-        const { count: cooksCount, error: cooksError } = await supabase
-          .from('cooks')
-          .select('*', { count: 'exact', head: true });
-
-        if (cooksError) {
-          setErrors(prev => [...prev, `Error fetching cooks: ${cooksError.message}`]);
-        }
-
-        // Fetch total orders
-        const { count: ordersCount, error: ordersError } = await supabase
-          .from('orders')
-          .select('*', { count: 'exact', head: true });
-
-        if (ordersError) {
-          setErrors(prev => [...prev, `Error fetching orders: ${ordersError.message}`]);
-        }
-
-        // Fetch total payments
-        const { count: paymentsCount, error: paymentsError } = await supabase
-          .from('payments')
-          .select('*', { count: 'exact', head: true });
-
-        if (paymentsError) {
-          setErrors(prev => [...prev, `Error fetching payments: ${paymentsError.message}`]);
+        
+        const data = await response.json();
+        
+        if (data.error) {
+          setErrors(prev => [...prev, `API Error: ${data.error}`]);
+          return;
         }
 
         setStats({
-          totalUsers: usersCount || 0,
-          totalCooks: cooksCount || 0,
-          totalOrders: ordersCount || 0,
-          totalPayments: paymentsCount || 0
+          totalUsers: data.users || 0,
+          totalCooks: data.cooks || 0,
+          totalOrders: data.orders || 0,
+          totalPayments: data.payments || 0
         });
       } catch (error: any) {
         setErrors(prev => [...prev, `Error: ${error.message}`]);

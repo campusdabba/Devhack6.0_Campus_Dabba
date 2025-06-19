@@ -60,56 +60,29 @@ export default function AdminOrdersPage() {
   useEffect(() => {
     async function fetchOrders() {
       try {
-        const { data, error } = await supabase
-          .from('orders')
-          .select(`
-            id,
-            status,
-            total,
-            payment_status,
-            payment_method,
-            payment_id,
-            created_at,
-            user:users!user_id (
-              id,
-              first_name,
-              last_name,
-              email
-            ),
-            cook:cooks!cook_id (
-              id,
-              first_name,
-              last_name
-            ),
-            order_items (
-              id,
-              quantity,
-              price_at_time,
-              dabba_menu:menu_id (
-                id,
-                name,
-                price
-              )
-            )
-          `)
-          .order('created_at', { ascending: false });
-
-        if (error) throw error;
-        setOrders(data || []);
+        const response = await fetch('/api/admin/orders')
+        
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || `HTTP error! status: ${response.status}`)
+        }
+        
+        const data = await response.json()
+        setOrders(data.orders || [])
       } catch (error: any) {
-        console.error('Error fetching orders:', error);
+        console.error('Error fetching orders:', error)
         toast({
           title: "Error",
           description: error.message,
           variant: "destructive",
-        });
+        })
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     }
 
-    fetchOrders();
-  }, []);
+    fetchOrders()
+  }, [])
 
   const handleStatusUpdate = async (orderId: string, newStatus: string) => {
     try {
