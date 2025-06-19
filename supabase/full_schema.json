@@ -1,0 +1,1091 @@
+[
+  {
+    "table_schema": "auth",
+    "table_name": "identities",
+    "constraint_type": "UNIQUE",
+    "column_name": "provider_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "identities",
+    "foreign_column_name": "provider"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "identities",
+    "constraint_type": "UNIQUE",
+    "column_name": "provider_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "identities",
+    "foreign_column_name": "provider_id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "identities",
+    "constraint_type": "UNIQUE",
+    "column_name": "provider",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "identities",
+    "foreign_column_name": "provider"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "identities",
+    "constraint_type": "UNIQUE",
+    "column_name": "provider",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "identities",
+    "foreign_column_name": "provider_id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "instances",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "instances",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "mfa_amr_claims",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "mfa_amr_claims",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "audit_log_entries",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "audit_log_entries",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "flow_state",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "flow_state",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "identities",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "identities",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "mfa_amr_claims",
+    "constraint_type": "UNIQUE",
+    "column_name": "session_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "mfa_amr_claims",
+    "foreign_column_name": "authentication_method"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "mfa_amr_claims",
+    "constraint_type": "UNIQUE",
+    "column_name": "session_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "mfa_amr_claims",
+    "foreign_column_name": "session_id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "mfa_amr_claims",
+    "constraint_type": "UNIQUE",
+    "column_name": "authentication_method",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "mfa_amr_claims",
+    "foreign_column_name": "authentication_method"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "mfa_amr_claims",
+    "constraint_type": "UNIQUE",
+    "column_name": "authentication_method",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "mfa_amr_claims",
+    "foreign_column_name": "session_id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "mfa_challenges",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "mfa_challenges",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "mfa_factors",
+    "constraint_type": "UNIQUE",
+    "column_name": "last_challenged_at",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "mfa_factors",
+    "foreign_column_name": "last_challenged_at"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "mfa_factors",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "mfa_factors",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "one_time_tokens",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "one_time_tokens",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "refresh_tokens",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "refresh_tokens",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "refresh_tokens",
+    "constraint_type": "UNIQUE",
+    "column_name": "token",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "refresh_tokens",
+    "foreign_column_name": "token"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "saml_providers",
+    "constraint_type": "UNIQUE",
+    "column_name": "entity_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "saml_providers",
+    "foreign_column_name": "entity_id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "saml_providers",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "saml_providers",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "saml_relay_states",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "saml_relay_states",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "schema_migrations",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "version",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "schema_migrations",
+    "foreign_column_name": "version"
+  },
+  {
+    "table_schema": "realtime",
+    "table_name": "schema_migrations",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "version",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "schema_migrations",
+    "foreign_column_name": "version"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "sessions",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "sessions",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "sso_domains",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "sso_domains",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "sso_providers",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "sso_providers",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "users",
+    "constraint_type": "UNIQUE",
+    "column_name": "phone",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "phone"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "users",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "users",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "users",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "users",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_bank_details",
+    "constraint_type": "UNIQUE",
+    "column_name": "account_number",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cook_bank_details",
+    "foreign_column_name": "account_number"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_bank_details",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "cook_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cook_bank_details",
+    "foreign_column_name": "cook_id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_orders",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cook_orders",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_payments",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cook_payments",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_profiles",
+    "constraint_type": "UNIQUE",
+    "column_name": "aadhaar",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cook_profiles",
+    "foreign_column_name": "aadhaar"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_profiles",
+    "constraint_type": "UNIQUE",
+    "column_name": "pan",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cook_profiles",
+    "foreign_column_name": "pan"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_profiles",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "cook_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cook_profiles",
+    "foreign_column_name": "cook_id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_ratings",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cook_ratings",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cooks",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cooks",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "dabba_menu",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "dabba_menu",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "menu",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "menu",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "payments",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "student_profiles",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "student_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "student_profiles",
+    "foreign_column_name": "student_id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscriptions",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "subscriptions",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "users",
+    "constraint_type": "UNIQUE",
+    "column_name": "email",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "users",
+    "foreign_column_name": "email"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "users",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "users",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "users",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "users",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "realtime",
+    "table_name": "messages",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "realtime",
+    "foreign_table_name": "messages",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "realtime",
+    "table_name": "messages",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "realtime",
+    "foreign_table_name": "messages",
+    "foreign_column_name": "inserted_at"
+  },
+  {
+    "table_schema": "realtime",
+    "table_name": "messages",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "inserted_at",
+    "foreign_table_schema": "realtime",
+    "foreign_table_name": "messages",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "realtime",
+    "table_name": "messages",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "inserted_at",
+    "foreign_table_schema": "realtime",
+    "foreign_table_name": "messages",
+    "foreign_column_name": "inserted_at"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "schema_migrations",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "version",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "schema_migrations",
+    "foreign_column_name": "version"
+  },
+  {
+    "table_schema": "realtime",
+    "table_name": "schema_migrations",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "version",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "schema_migrations",
+    "foreign_column_name": "version"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "buckets",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "buckets",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "migrations",
+    "constraint_type": "UNIQUE",
+    "column_name": "name",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "migrations",
+    "foreign_column_name": "name"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "migrations",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "migrations",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "objects",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "objects",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "s3_multipart_uploads_parts",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "s3_multipart_uploads_parts",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "s3_multipart_uploads",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "s3_multipart_uploads",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "identities",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "user_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "mfa_amr_claims",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "session_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "sessions",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "mfa_challenges",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "factor_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "mfa_factors",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "mfa_factors",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "user_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "one_time_tokens",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "user_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "refresh_tokens",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "session_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "sessions",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "saml_providers",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "sso_provider_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "sso_providers",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "saml_relay_states",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "flow_state_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "flow_state",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "saml_relay_states",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "sso_provider_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "sso_providers",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "sessions",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "user_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "auth",
+    "table_name": "sso_domains",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "sso_provider_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "sso_providers",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_payments",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "order_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cook_orders",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cooks",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "user_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_ratings",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "customer_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_ratings",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "customer_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "student_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "student_profiles",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "student_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscriptions",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "student_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "users",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "objects",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "bucket_id",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "buckets",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "s3_multipart_uploads",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "bucket_id",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "buckets",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "s3_multipart_uploads_parts",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "bucket_id",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "buckets",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "s3_multipart_uploads_parts",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "upload_id",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "s3_multipart_uploads",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "prefixes",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "bucket_id",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "prefixes",
+    "foreign_column_name": "level"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "prefixes",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "bucket_id",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "prefixes",
+    "foreign_column_name": "name"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "prefixes",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "bucket_id",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "prefixes",
+    "foreign_column_name": "bucket_id"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "prefixes",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "level",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "prefixes",
+    "foreign_column_name": "level"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "prefixes",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "level",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "prefixes",
+    "foreign_column_name": "name"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "prefixes",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "level",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "prefixes",
+    "foreign_column_name": "bucket_id"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "prefixes",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "name",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "prefixes",
+    "foreign_column_name": "level"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "prefixes",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "name",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "prefixes",
+    "foreign_column_name": "name"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "prefixes",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "name",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "prefixes",
+    "foreign_column_name": "bucket_id"
+  },
+  {
+    "table_schema": "storage",
+    "table_name": "prefixes",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "bucket_id",
+    "foreign_table_schema": "storage",
+    "foreign_table_name": "buckets",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "orders",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "orders",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "orders",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "user_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "settings",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "settings",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "order_items",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "order_items",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "order_items",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "order_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "orders",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "order_items",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "menu_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "dabba_menu",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "order_items",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "cook_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cooks",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cooks",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "auth_user_id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admin_keys",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "admin_keys",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admin_keys",
+    "constraint_type": "UNIQUE",
+    "column_name": "key",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "admin_keys",
+    "foreign_column_name": "key"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admin_keys",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "used_by",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admins",
+    "constraint_type": "PRIMARY KEY",
+    "column_name": "id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "admins",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admins",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_orders",
+    "constraint_type": "UNIQUE",
+    "column_name": "cook_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cook_orders",
+    "foreign_column_name": "cook_id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "order_items",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "menu_item_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "dabba_menu",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "orders",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "cook_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cooks",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_bank_details",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "cook_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cooks",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_orders",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "cook_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cooks",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_payments",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "cook_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cooks",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cook_profiles",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "cook_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cooks",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "dabba_menu",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "cook_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cooks",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "menu",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "cook_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cooks",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "cook_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cooks",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscriptions",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "cook_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "cooks",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "cooks",
+    "constraint_type": "FOREIGN KEY",
+    "column_name": "id",
+    "foreign_table_schema": "auth",
+    "foreign_table_name": "users",
+    "foreign_column_name": "id"
+  }
+]

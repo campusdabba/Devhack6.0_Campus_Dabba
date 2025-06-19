@@ -1,4 +1,5 @@
 "use client";
+
 import { ChangeEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,7 +28,6 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
-import { CuisineType } from "@/types";
 import { createClient } from "@/utils/supabase/client";
 
 const INDIAN_STATES = [
@@ -84,10 +84,9 @@ const formSchema = z.object({
         name: z.string(),
         issuer: z.string(),
         date: z.string(),
-        url: z.string().url().optional(),
+        url: z.string().optional(),
       })
-    )
-    .default([]),
+    ),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -103,9 +102,19 @@ export function CookProfileForm() {
   const [certifications, setCertifications] = useState<
     FormValues["certification"]
   >([]);
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      first_name: "",
+      last_name: "",
+      email: "",
+      phone: "",
+      street: "",
+      city: "",
+      state: "",
+      pincode: "",
+      cuisineType: "",
+      description: "",
       certification: [],
     },
   });
@@ -130,18 +139,23 @@ export function CookProfileForm() {
         if (cookError) throw cookError;
 
         if (cookData) {
-          form.setValue("first_name", cookData.first_name);
-          form.setValue("last_name", cookData.last_name);
-          form.setValue("email", cookData.email);
-          form.setValue("phone", cookData.phone);
-          form.setValue("street", cookData.address.street);
-          form.setValue("city", cookData.address.city);
-          form.setValue("state", cookData.address.state);
-          form.setValue("profile_image", cookData.profile_image);
-          setImageUrl(cookData.profile_image);
-          form.setValue("pincode", cookData.address.pincode);
-          form.setValue("cuisineType", cookData.cuisineType);
-          form.setValue("description", cookData.description);
+          form.setValue("first_name", cookData.first_name || "");
+          form.setValue("last_name", cookData.last_name || "");
+          form.setValue("email", cookData.email || "");
+          form.setValue("phone", cookData.phone || "");
+          
+          // Handle address properly - it might be a JSON object or individual fields
+          const address = cookData.address || {};
+          form.setValue("street", address.street || cookData.street || "");
+          form.setValue("city", address.city || cookData.city || "");
+          form.setValue("state", address.state || cookData.state || "");
+          form.setValue("pincode", address.pincode || cookData.pincode || "");
+          
+          form.setValue("profile_image", cookData.profile_image || "");
+          setImageUrl(cookData.profile_image || "");
+          form.setValue("cuisineType", cookData.cuisineType || cookData.cuisine_type || "");
+          form.setValue("description", cookData.description || "");
+          
           if (cookData.certification) {
             setCertifications(cookData.certification);
             form.setValue("certification", cookData.certification);
@@ -198,7 +212,7 @@ export function CookProfileForm() {
     form.setValue("longitude", lng);
   };
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: FormValues) {
     setLoading(true);
 
     try {
