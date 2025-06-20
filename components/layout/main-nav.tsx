@@ -3,15 +3,13 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ShoppingCart, LogIn, LogOut } from "lucide-react";
-import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/providers/cart-provider";
+import { useAuth } from "@/components/providers/auth-provider";
 import { useToast } from "@/components/ui/use-toast";
 import InputSearch from "@/components/ui/search-bar";
 import { UserNav } from "@/components/layout/User-nav";
-import { createClient } from "@/utils/supabase/client";
-import { Session } from "@supabase/supabase-js";
 import Image from "next/image";
 
 const navItems = [
@@ -38,33 +36,26 @@ export function MainNav() {
   const router = useRouter();
   const { toast } = useToast();
   const { cart, getCartTotal } = useCart();
-  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const { user, isAdmin, signOut } = useAuth();
+  
+  const cartItemCount = cart.reduce((total: number, item: any) => total + item.quantity, 0);
   const cartTotal = getCartTotal();
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Add state for login status
-  const [session, setSession] = useState<Session | null>(null);
-  const supabase = createClient();
-  // This is a mock function. In a real app, you'd check the authentication state.
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    toast({
-      title: "Logged out successfully",
-      description: "You have been logged out of your account.",
-    });
-    router.push("/login");
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Logged out successfully",
+        description: "You have been logged out of your account.",
+      });
+      router.push("/login");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to log out. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -119,31 +110,22 @@ export function MainNav() {
             <span>₹{cartTotal}</span>
           </Link>
         </Button>
-        {session ? (
-          <UserNav
-            onLogout={async () => {
-              const { error } = await supabase.auth.signOut();
-              if (error) {
-                toast({
-                  title: "Error logging out",
-                  description: error.message,
-                  variant: "destructive",
-                });
-                return;
-              }
-              toast({
-                title: "Logged out successfully",
-                description: "You have been logged out of your account.",
-              });
-              setSession(null);
-              router.push("/auth/login");
-            }}
-          />
+        {user ? (
+          <UserNav />
         ) : (
           <Button variant="ghost" size="sm" asChild>
             <Link href="/auth/login">
               <LogIn className="h-4 w-4 mr-2" />
               Login
+            </Link>
+          </Button>
+        )}
+        
+        {/* Admin link for admin users */}
+        {isAdmin && (
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/admin/dashboard">
+              Admin
             </Link>
           </Button>
         )}

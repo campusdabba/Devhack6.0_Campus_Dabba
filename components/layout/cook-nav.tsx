@@ -4,15 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { ShoppingCart, LogIn } from "lucide-react";
-import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/providers/cart-provider";
+import { useAuth } from "@/components/providers/auth-provider";
 import { useToast } from "@/components/ui/use-toast";
 import {Input_search2} from "@/components/ui/search-bar";
 import { UserNav } from "@/components/layout/User-nav";
-import { createClient } from "@/utils/supabase/client";
-import { Session } from "@supabase/supabase-js";
 
 const navItems = [
   { title: "Profile", href: "/cook/profile" },
@@ -27,35 +25,10 @@ export function CookNav() {
   const router = useRouter();
   const { toast } = useToast();
   const { cart, getCartTotal } = useCart();
-  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const { user } = useAuth();
+  
+  const cartItemCount = cart.reduce((total: number, item: any) => total + item.quantity, 0);
   const cartTotal = getCartTotal();
-  const [session, setSession] = useState<Session | null>(null);
-  const supabase = createClient();
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    toast({
-      title: "Logged out successfully",
-      description: "You have been logged out of your account.",
-    });
-    router.push("/");
-  };
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <div className="mr-4 flex items-center justify-between w-full">
@@ -105,26 +78,8 @@ export function CookNav() {
             <span>Manage Orders</span>
           </Link>
         </Button>
-        {session ? (
-          <UserNav
-            onLogout={async () => {
-              const { error } = await supabase.auth.signOut();
-              if (error) {
-                toast({
-                  title: "Error logging out",
-                  description: error.message,
-                  variant: "destructive",
-                });
-                return;
-              }
-              toast({
-                title: "Logged out successfully",
-                description: "You have been logged out of your account.",
-              });
-              setSession(null);
-              router.push("/cook/login");
-            }}
-          />
+        {user ? (
+          <UserNav />
         ) : (
           <Button variant="ghost" size="sm" asChild>
             <Link href="/cook/login">

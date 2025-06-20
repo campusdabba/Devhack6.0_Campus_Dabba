@@ -9,160 +9,99 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { LogOut, UserCircle } from "lucide-react";
+import { LogOut, UserCircle, Settings } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import { createClient } from "@/utils/supabase/client";
-import { useEffect, useState } from "react";
-
-interface User {
-  id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  role?: string;
-}
+import { useAuth } from "@/components/providers/auth-provider";
 
 export function UserNav() {
   const router = useRouter();
   const { toast } = useToast();
-  const supabase = createClient();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const { data: { user: authUser } } = await supabase.auth.getUser();
-        if (!authUser) return;
-
-        // Check if user is an admin
-        const { data: isAdmin } = await supabase
-          .rpc('is_admin', { input_user_id: authUser.id });
-
-        if (isAdmin) {
-          const { data: adminData } = await supabase
-            .from('users')
-            .select('first_name, last_name')
-            .eq('id', authUser.id)
-            .single();
-          
-          setUser({
-            id: authUser.id,
-            email: authUser.email || '',
-            first_name: adminData?.first_name || '',
-            last_name: adminData?.last_name || '',
-            role: 'admin'
-          });
-          return;
-        }
-
-        // Check if user is a cook
-        const { data: cook } = await supabase
-          .from('cooks')
-          .select('*')
-          .eq('cook_id', authUser.id)
-          .single();
-
-        if (cook) {
-          setUser({
-            id: authUser.id,
-            email: authUser.email || '',
-            first_name: cook.first_name,
-            last_name: cook.last_name,
-            role: 'cook'
-          });
-          return;
-        }
-
-        // If not admin or cook, get user details
-        const { data: userData } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', authUser.id)
-          .single();
-
-        if (userData) {
-          setUser({
-            id: authUser.id,
-            email: authUser.email || '',
-            first_name: userData.first_name,
-            last_name: userData.last_name,
-            role: 'user'
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchUser();
-  }, []);
+  const { user, signOut, isCook, isAdmin } = useAuth();
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
+    try {
+      await signOut();
+      toast({
+        title: "Logged out successfully",
+        description: "You have been logged out of your account.",
+      });
+      router.push("/auth/login");
+    } catch (error) {
       toast({
         title: "Error logging out",
-        description: error.message,
+        description: "Failed to log out. Please try again.",
         variant: "destructive",
       });
-      return;
     }
-    toast({
-      title: "Logged out successfully",
-      description: "You have been logged out of your account.",
-    });
-    router.push("/auth/login");
   };
 
-  if (loading) {
-    return (
-      <Button variant="ghost" size="sm" disabled>
-        <UserCircle className="h-5 w-5" />
-      </Button>
-    );
-  }
+  if (!user) return null;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm">
-          <UserCircle className="h-5 w-5" />
+        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+          <UserCircle className="h-6 w-6" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>
-          {user ? (
-            <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">
-                {user.first_name} {user.last_name}
-              </p>
-              <p className="text-xs leading-none text-muted-foreground">
-                {user.email}
-              </p>
-            </div>
-          ) : (
-            "My Account"
-          )}
+      <DropdownMenuContent className="w-56" align="end" forceMount>
+        <DropdownMenuLabel className="font-normal">
+          <div className="flex flex-col space-y-1">
+            <p className="text-sm font-medium leading-none">
+              {user.email}
+            </p>
+            <p className="text-xs leading-none text-muted-foreground">
+              {user.email}
+            </p>
+          </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        
+        {/* Profile Links */}
         <DropdownMenuItem asChild>
-          <Link href={user?.role === 'admin' ? '/admin/dashboard' : user?.role === 'cook' ? '/cook/profile' : '/profile'}>
+          <Link href="/profile">
+            <UserCircle className="mr-2 h-4 w-4" />
             Profile
           </Link>
         </DropdownMenuItem>
+        
         <DropdownMenuItem asChild>
-          <Link href={user?.role === 'admin' ? '/admin/settings' : user?.role === 'cook' ? '/cook/settings' : '/settings'}>
+          <Link href="/settings">
+            <Settings className="mr-2 h-4 w-4" />
             Settings
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+        
+        {/* Cook-specific links */}
+        {isCook && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link href="/cook/dashboard">
+                Cook Dashboard
+              </Link>
+            </DropdownMenuItem>
+          </>
+        )}
+        
+        {/* Admin-specific links */}
+        {isAdmin && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link href="/admin/dashboard">
+                Admin Dashboard
+              </Link>
+            </DropdownMenuItem>
+          </>
+        )}
+        
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          Log out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
