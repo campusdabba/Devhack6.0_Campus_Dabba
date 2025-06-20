@@ -13,7 +13,7 @@ import {Input_search2} from "@/components/ui/search-bar";
 import { UserNav } from "@/components/layout/User-nav";
 
 const navItems = [
-  { title: "Profile", href: "/cook/profile" },
+  { title: "Dashboard", href: "/cook/dashboard" },
   { title: "MyDabba", href: "/cook/menu" },
   { title: "Orders", href: "/cook/orders" },
   { title: "Payments", href: "/cook/payments" },
