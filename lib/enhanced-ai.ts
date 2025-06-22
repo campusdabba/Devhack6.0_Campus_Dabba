@@ -1,8 +1,8 @@
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import { aiDataService, AIContext } from './ai-data-service';
 
-// Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'AIzaSyBpr2QDT4hgyNfQecLpxl4HiiJtQ8bw5sM');
+// Initialize Gemini AI with secure server-side API key
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 const safetySettings = [
   {
