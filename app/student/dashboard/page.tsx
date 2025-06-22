@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { DashboardContent } from "@/components/student/dashboard/dashboard-content"
 import { CooksList } from "@/components/student/dashboard/cooks-list";
-import { NearbyCooksMap } from "@/components/student/dashboard/nearby-cooks-map";
+import { NearbyCooksMap } from "@/components/student/dashboard/enhanced-nearby-cooks-map-v2";
 import { states } from "@/lib/data/states";
 import { 
   Select, 

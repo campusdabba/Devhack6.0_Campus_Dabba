@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import {  useToast} from "@/components/ui/use-toast"
+import { useAuth } from "@/components/providers/auth-provider"
 import Link from "next/link"
 
 const formSchema = z.object({
@@ -26,6 +27,7 @@ export function LoginForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
+  const { forceRefresh } = useAuth()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -77,6 +79,7 @@ export function LoginForm() {
             title: "Login successful!",
             description: "Welcome to the admin dashboard.",
           });
+          forceRefresh(); // Force auth state refresh
           router.push("/admin/dashboard");
           return;
         }
@@ -93,6 +96,7 @@ export function LoginForm() {
             title: "Login successful!",
             description: "Welcome to your cook dashboard.",
           });
+          forceRefresh(); // Force auth state refresh
           router.push("/cook/dashboard");
           return;
         }
@@ -103,6 +107,7 @@ export function LoginForm() {
         description: "Welcome back to CampusDabba.",
       });
 
+      forceRefresh(); // Force auth state refresh
       router.push("/");
     } catch (error) {
       console.error('Error during login:', error);

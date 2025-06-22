@@ -8,8 +8,9 @@ import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
+import { useAuth } from "@/components/providers/auth-provider"
 
-const navItems = [
+const defaultNavItems = [
   {
     title: "Home",
     href: "/",
@@ -28,9 +29,23 @@ const navItems = [
   },
 ]
 
+const cookNavItems = [
+  { title: "Dashboard", href: "/cook/dashboard" },
+  { title: "MyDabba", href: "/cook/menu" },
+  { title: "Orders", href: "/cook/orders" },
+  { title: "Payments", href: "/cook/payments" },
+  { title: "Settings", href: "/cook/settings" },
+]
+
 export function MobileNav() {
   const [open, setOpen] = React.useState(false)
   const pathname = usePathname()
+  const { isCook, refreshCounter } = useAuth()
+  
+  // Choose navigation items based on user role
+  const navItems = isCook ? cookNavItems : defaultNavItems
+  
+  console.log('[MobileNav] Rendering with:', { isCook, refreshCounter, itemCount: navItems.length });
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

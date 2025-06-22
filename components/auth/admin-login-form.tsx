@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
+import { useAuth } from "@/components/providers/auth-provider"
 
 const formSchema = z.object({
   email: z.string().email({
@@ -26,6 +27,7 @@ export function AdminLoginForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
+  const { forceRefresh } = useAuth()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -104,7 +106,8 @@ export function AdminLoginForm() {
         description: "Welcome to the admin dashboard.",
       })
 
-      // Force a hard redirect to ensure the middleware runs
+      // Force auth state refresh and redirect
+      forceRefresh();
       window.location.href = '/admin/dashboard';
     } catch (error) {
       console.error('Unexpected error during login:', error);

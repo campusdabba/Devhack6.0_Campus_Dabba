@@ -1,111 +1,245 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CardContent } from "@/components/ui/card";
-import { Send } from "lucide-react";
-import { motion } from "framer-motion";
+import { Send, Loader2, Bot, User } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import ReactMarkdown from "react-markdown";
 
-const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
-const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`;
-
-const hardcodedResponses = {
-    "maharashtra": `Maharashtra Dabba Menu\nMonday – Poha, Chapati, Pithla, Bhakri, Koshimbir\nTuesday – Upma, Varan Bhaat, Batata Bhaji, Thecha\nWednesday – Thalipeeth, Bharli Vangi, Masoor Amti\nThursday – Misal Pav, Zunka Bhakri, Kanda Bhaji\nFriday – Sabudana Khichdi, Puran Poli, Matki Usal\nSaturday – Kanda Poha, Aluchi Patal Bhaji, Solkadhi\nSunday – Pav Bhaji, Ukdiche Modak, Masala Bhaat`,
-    "what is the delhi state cook's menu for this week?": `Delhi Dabba Menu\nMonday – Aloo Paratha, Rajma Chawal, Boondi Raita\nTuesday – Chole Bhature, Paneer Butter Masala, Jeera Rice\nWednesday – Bedmi Puri, Aloo Subzi, Kachumber Salad\nThursday – Chana Kulcha, Bhindi Fry, Dal Tadka\nFriday – Methi Thepla, Aloo Gobhi, Masala Chaach\nSaturday – Soya Chaap, Baingan Bharta, Roti\nSunday – Pindi Chole, Amritsari Kulcha, Kheer`,
-    "karnataka": `Karnataka Dabba Menu\nMonday – Thatte Idli, Bisi Bele Bath, Kosambari\nTuesday – Neer Dosa, Sagu, Rasam Rice\nWednesday – Ragi Mudde, Bassaru, Mangalore Buns\nThursday – Khara Bath, Mysore Masala Dosa, Coconut Chutney\nFriday – Set Dosa, Vegetable Kurma, Curd Rice\nSaturday – Maddur Vada, Tomato Bath, Puliyogare\nSunday – Rava Idli, Kharabath, Jolad Roti`,
-    "tamil nadu": `Tamil Nadu Dabba Menu\nMonday – Pongal, Sambar, Coconut Chutney\nTuesday – Idiyappam, Kurma, Rasam Rice\nWednesday – Kothu Parotta, Kootu, Mor Kuzhambu\nThursday – Appam, Kadala Curry, Lemon Rice\nFriday – Rava Kesari, Kara Kuzhambu, Dosa\nSaturday – Medu Vada, Keerai Masiyal, Curd Rice\nSunday – Mini Tiffin (Idli, Dosa, Pongal, Vada)`,
-    "gujarat": `Gujarat Dabba Menu\nMonday – Thepla, Sev Tameta, Khichdi Kadhi\nTuesday – Dhokla, Undhiyu, Bhakhri\nWednesday – Handvo, Ringna Bateta Nu Shaak, Dal Dhokli\nThursday – Khandvi, Patra, Rotla, Chaas\nFriday – Methi Thepla, Gujarati Kadhi, Suki Bhaji\nSaturday – Puran Poli, Kathiawadi Dal, Bajra Roti\nSunday – Fafda Jalebi, Aloo Shaak, Khakhra`,
-    "telangana": `Telangana Dabba Menu\nMonday – Ragi Sangati, Natukodi Pulusu, Pappu\nTuesday – Pesarattu, Tomato Pappu, Chapati\nWednesday – Sakinalu, Bagara Baingan, Jonna Roti\nThursday – Punugulu, Majjiga Pulusu, Lemon Rice\nFriday – Sarva Pindi, Miryala Rasam, Curd Rice\nSaturday – Kodi Vepudu, Mudda Pappu, Roti\nSunday – Hyderabadi Dum Biryani, Shahi Tukda`,
-    "west bengal": `West Bengal Dabba Menu\nMonday – Luchi, Aloo Dum, Cholar Dal\nTuesday – Shukto, Dal, Bhaja, Rice\nWednesday – Begun Bharta, Bhapa Ilish, Moong Dal\nThursday – Radha Ballavi, Chana Dal, Alu Phoolkopir Tarkari\nFriday – Chingri Malai Curry, Basanti Pulao\nSaturday – Macher Jhol, Alu Posto, Dal\nSunday – Kosha Mangsho, Luchi, Mishti Doi`,
-    "uttar pradesh": `Uttar Pradesh Dabba Menu\nMonday – Poori, Aloo Sabzi, Boondi Raita\nTuesday – Chole Bhature, Kachumber Salad\nWednesday – Baati Chokha, Dal, Chutney\nThursday – Bedmi Puri, Aloo Sabzi, Jalebi\nFriday – Kachori, Matar Paneer, Tandoori Roti\nSaturday – Tehri, Boondi Raita, Achar\nSunday – Nihari, Sheermal, Kheer`,
-    "rajasthan": `Rajasthan Dabba Menu\nMonday – Dal Baati Churma, Gatte ki Sabzi\nTuesday – Missi Roti, Ker Sangri, Bajra Khichdi\nWednesday – Pyaaz Kachori, Aloo Sabzi, Chaas\nThursday – Bajre ki Roti, Lahsun Chutney, Gatte Pulav\nFriday – Moong Dal Halwa, Kadhi, Methi Thepla\nSaturday – Ghewar, Panchmel Dal, Roti\nSunday – Rajasthani Thali, Malpua, Daal Bati`,
-    "kerala": `Kerala Dabba Menu\nMonday – Puttu, Kadala Curry, Banana\nTuesday – Appam, Vegetable Stew, Coconut Chutney\nWednesday – Dosa, Sambar, Avial\nThursday – Idiyappam, Egg Curry, Pappadam\nFriday – Kerala Sadya, Payasam, Banana Chips\nSaturday – Fish Curry, Red Rice, Thoran\nSunday – Nadan Chicken Curry, Parotta, Rasam`,
-    "maharashtrian cooks near me": "We have Ashok Kumar and he is 3.6km away and today he will be cooking Pithla Bhakri for Lunch"
-};
+interface Message {
+  role: "user" | "assistant";
+  content: string;
+  timestamp: Date;
+}
 
 const Chatbot = () => {
-  const [messages, setMessages] = useState<{ role: string; content: string }[]>([
-    { role: "bot", content: "Hello! How can I assist you with Campus Dabba today?" }
+  const [messages, setMessages] = useState<Message[]>([
+    { 
+      role: "assistant", 
+      content: "# Welcome to Campus Dabba AI Assistant! 🍛\n\nI can help you with:\n\n• **Finding local cooks and menus** 🏠👨‍🍳\n• **Location-based recommendations** 📍\n• **Food preferences and dietary needs** 🍽️\n• **Order assistance and tracking** 📞\n• **Payment and refund support** 💳\n\nWhat would you like to know?",
+      timestamp: new Date()
+    }
   ]);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
-    const newMessage = { role: "user", content: input };
-    setMessages((prev) => [...prev, newMessage]);
+    const userMessage: Message = { 
+      role: "user", 
+      content: input, 
+      timestamp: new Date() 
+    };
+    
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
-
-    const lowerCaseInput = input.toLowerCase().trim();
-    if (hardcodedResponses[lowerCaseInput]) {
-      setMessages((prev) => [...prev, { role: "bot", content: hardcodedResponses[lowerCaseInput] }]);
-      return;
-    }
+    setIsLoading(true);
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch("/api/ai/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: input }] }]
+          message: input,
+          context: "Campus Dabba chatbot - helping with food delivery and cook recommendations"
         })
       });
-      const data = await response.json();
 
-      let botResponse = "I'm having trouble understanding. Please try again.";
-      if (data.candidates && data.candidates.length > 0) {
-        botResponse = data.candidates[0]?.content?.parts?.map((part: any) => part.text).join("\n") || botResponse;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      setMessages((prev) => [...prev, { role: "bot", content: botResponse }]);
+      const data = await response.json();
+      
+      const assistantMessage: Message = {
+        role: "assistant",
+        content: data.response || "I'm sorry, I couldn't process your request. Please try again.",
+        timestamp: new Date()
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      console.error("Error fetching response:", error);
-      setMessages((prev) => [...prev, { role: "bot", content: "Oops! Something went wrong. Please try again later." }]);
+      console.error("Error sending message:", error);
+      const errorMessage: Message = {
+        role: "assistant",
+        content: "I'm experiencing some technical difficulties. Please try again later or contact our support team.",
+        timestamp: new Date()
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
     }
   };
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center bg-black p-4">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="relative w-full max-w-lg h-[80vh] flex flex-col shadow-xl rounded-2xl bg-black/70 backdrop-blur-lg border border-gray-700 overflow-hidden"
-      >
-        <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
-          {messages.map((msg, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className={`max-w-[75%] p-3 rounded-xl shadow-md text-sm whitespace-pre-line ${
-                msg.role === "user"
-                  ? "ml-auto bg-blue-600 text-white"
-                  : "mr-auto bg-gray-800 text-white"
-              }`}
-            >
-              {msg.content}
-            </motion.div>
-          ))}
-        </CardContent>
-        <div className="p-4 flex items-center space-x-2 border-t bg-black/80 backdrop-blur-lg">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type a message..."
-            className="flex-1 border rounded-full px-4 py-2 shadow-sm focus:ring-2 focus:ring-blue-400 bg-gray-900 text-white"
-          />
-          <motion.div whileTap={{ scale: 0.9 }}>
-            <Button onClick={sendMessage} className="rounded-full p-2 bg-blue-600 hover:bg-blue-700">
-              <Send size={20} className="text-white" />
-            </Button>
-          </motion.div>
-        </div>
-      </motion.div>
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 dark:from-gray-900 dark:to-gray-800 p-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-6"
+        >
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            Campus Dabba AI Assistant
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300">
+            Get instant help with food recommendations, cook locations, and orders
+          </p>
+        </motion.div>
+
+        {/* Chat Container */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+          className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+        >
+          {/* Chat Messages */}
+          <CardContent className="h-[70vh] overflow-y-auto p-6 space-y-4">
+            <AnimatePresence>
+              {messages.map((message, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className={`flex items-start gap-3 ${
+                    message.role === "user" ? "flex-row-reverse" : "flex-row"
+                  }`}
+                >
+                  {/* Avatar */}
+                  <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                    message.role === "user" 
+                      ? "bg-blue-500 text-white" 
+                      : "bg-orange-500 text-white"
+                  }`}>
+                    {message.role === "user" ? <User size={16} /> : <Bot size={16} />}
+                  </div>
+
+                  {/* Message Bubble */}
+                  <div className={`max-w-[75%] ${
+                    message.role === "user" ? "text-right" : "text-left"
+                  }`}>
+                    <div className={`inline-block p-4 rounded-2xl shadow-sm ${
+                      message.role === "user"
+                        ? "bg-blue-500 text-white rounded-tr-sm"
+                        : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-tl-sm"
+                    }`}>
+                      <div className="text-sm leading-relaxed prose prose-sm max-w-none dark:prose-invert">
+                        {message.role === "assistant" ? (
+                          <ReactMarkdown 
+                            components={{
+                              p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                              ul: ({ children }) => <ul className="mb-2 last:mb-0 list-disc list-inside">{children}</ul>,
+                              li: ({ children }) => <li className="mb-1">{children}</li>,
+                              strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                              em: ({ children }) => <em className="italic">{children}</em>,
+                            }}
+                          >
+                            {message.content}
+                          </ReactMarkdown>
+                        ) : (
+                          <div className="whitespace-pre-wrap">{message.content}</div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 px-2">
+                      {message.timestamp.toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                      })}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+
+            {/* Loading Indicator */}
+            {isLoading && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex items-start gap-3"
+              >
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center">
+                  <Bot size={16} />
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl rounded-tl-sm p-4 shadow-sm">
+                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                    <Loader2 size={16} className="animate-spin" />
+                    <span className="text-sm">Thinking...</span>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </CardContent>
+
+          {/* Input Area */}
+          <div className="border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-4">
+            <div className="flex items-center gap-3">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Ask me about food, cooks, or places orders..."
+                disabled={isLoading}
+                className="flex-1 border-gray-300 dark:border-gray-600 rounded-full px-4 py-3 text-sm focus:ring-2 focus:ring-orange-400 focus:border-orange-400 bg-white dark:bg-gray-700"
+              />
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <Button 
+                  onClick={sendMessage} 
+                  disabled={!input.trim() || isLoading}
+                  className="rounded-full p-3 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                >
+                  {isLoading ? (
+                    <Loader2 size={20} className="animate-spin text-white" />
+                  ) : (
+                    <Send size={20} className="text-white" />
+                  )}
+                </Button>
+              </motion.div>
+            </div>
+            
+            {/* Quick Actions */}
+            <div className="flex flex-wrap gap-2 mt-3">
+              {[
+                "Find cooks near me",
+                "Today's menu",
+                "Order status",
+                "Payment help"
+              ].map((suggestion, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setInput(suggestion)}
+                  disabled={isLoading}
+                  className="text-xs rounded-full border-gray-300 dark:border-gray-600 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                >
+                  {suggestion}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 };

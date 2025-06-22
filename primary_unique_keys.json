@@ -1,0 +1,122 @@
+[
+  {
+    "table_name": "users",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "cook_bank_details",
+    "column_name": "account_number",
+    "constraint_type": "UNIQUE"
+  },
+  {
+    "table_name": "cook_bank_details",
+    "column_name": "cook_id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "cook_orders",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "cook_payments",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "cook_profiles",
+    "column_name": "aadhaar",
+    "constraint_type": "UNIQUE"
+  },
+  {
+    "table_name": "cook_profiles",
+    "column_name": "pan",
+    "constraint_type": "UNIQUE"
+  },
+  {
+    "table_name": "cook_profiles",
+    "column_name": "cook_id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "cook_ratings",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "cooks",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "dabba_menu",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "menu",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "payments",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "student_profiles",
+    "column_name": "student_id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "subscriptions",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "users",
+    "column_name": "email",
+    "constraint_type": "UNIQUE"
+  },
+  {
+    "table_name": "users",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "orders",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "settings",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "order_items",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "admin_keys",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "admin_keys",
+    "column_name": "key",
+    "constraint_type": "UNIQUE"
+  },
+  {
+    "table_name": "admins",
+    "column_name": "id",
+    "constraint_type": "PRIMARY KEY"
+  },
+  {
+    "table_name": "cook_orders",
+    "column_name": "cook_id",
+    "constraint_type": "UNIQUE"
+  }
+]

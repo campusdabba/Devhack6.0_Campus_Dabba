@@ -25,7 +25,14 @@ export function CookNav() {
   const router = useRouter();
   const { toast } = useToast();
   const { cart, getCartTotal } = useCart();
-  const { user } = useAuth();
+  const { user, refreshCounter } = useAuth();
+  
+  // Debug log to track re-renders
+  console.log('[CookNav] Rendering with:', { 
+    hasUser: !!user, 
+    refreshCounter,
+    userId: user?.id 
+  });
   
   const cartItemCount = cart.reduce((total: number, item: any) => total + item.quantity, 0);
   const cartTotal = getCartTotal();

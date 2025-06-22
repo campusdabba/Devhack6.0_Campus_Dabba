@@ -1,0 +1,184 @@
+[
+  {
+    "constraint_name": "cook_payments_order_id_fkey",
+    "source_table": "cook_payments",
+    "source_column": "order_id",
+    "target_table": "cook_orders",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "cooks_user_id_fkey",
+    "source_table": "cooks",
+    "source_column": "user_id",
+    "target_table": "users",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "cook_ratings_customer_id_fkey",
+    "source_table": "cook_ratings",
+    "source_column": "customer_id",
+    "target_table": "users",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "cook_ratings_customer_id_fkey1",
+    "source_table": "cook_ratings",
+    "source_column": "customer_id",
+    "target_table": "users",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "payments_student_id_fkey",
+    "source_table": "payments",
+    "source_column": "student_id",
+    "target_table": "users",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "student_profiles_student_id_fkey",
+    "source_table": "student_profiles",
+    "source_column": "student_id",
+    "target_table": "users",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "subscriptions_student_id_fkey",
+    "source_table": "subscriptions",
+    "source_column": "student_id",
+    "target_table": "users",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "users_id_fkey1",
+    "source_table": "users",
+    "source_column": "id",
+    "target_table": "users",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "orders_user_id_fkey",
+    "source_table": "orders",
+    "source_column": "user_id",
+    "target_table": "users",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "order_items_order_id_fkey",
+    "source_table": "order_items",
+    "source_column": "order_id",
+    "target_table": "orders",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "order_items_menu_id_fkey",
+    "source_table": "order_items",
+    "source_column": "menu_id",
+    "target_table": "dabba_menu",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "order_items_cook_id_fkey",
+    "source_table": "order_items",
+    "source_column": "cook_id",
+    "target_table": "cooks",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "cooks_auth_user_id_fkey",
+    "source_table": "cooks",
+    "source_column": "auth_user_id",
+    "target_table": "users",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "admin_keys_used_by_fkey",
+    "source_table": "admin_keys",
+    "source_column": "used_by",
+    "target_table": "users",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "admins_id_fkey",
+    "source_table": "admins",
+    "source_column": "id",
+    "target_table": "users",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "order_items_menu_item_id_fkey",
+    "source_table": "order_items",
+    "source_column": "menu_item_id",
+    "target_table": "dabba_menu",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "orders_cook_id_fkey",
+    "source_table": "orders",
+    "source_column": "cook_id",
+    "target_table": "cooks",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "cook_bank_details_cook_id_fkey",
+    "source_table": "cook_bank_details",
+    "source_column": "cook_id",
+    "target_table": "cooks",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "cook_orders_cook_id_fkey",
+    "source_table": "cook_orders",
+    "source_column": "cook_id",
+    "target_table": "cooks",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "cook_payments_cook_id_fkey",
+    "source_table": "cook_payments",
+    "source_column": "cook_id",
+    "target_table": "cooks",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "cook_profiles_cook_id_fkey",
+    "source_table": "cook_profiles",
+    "source_column": "cook_id",
+    "target_table": "cooks",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "dabba_menu_cook_id_fkey",
+    "source_table": "dabba_menu",
+    "source_column": "cook_id",
+    "target_table": "cooks",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "menu_cook_id_fkey",
+    "source_table": "menu",
+    "source_column": "cook_id",
+    "target_table": "cooks",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "payments_cook_id_fkey",
+    "source_table": "payments",
+    "source_column": "cook_id",
+    "target_table": "cooks",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "subscriptions_cook_id_fkey",
+    "source_table": "subscriptions",
+    "source_column": "cook_id",
+    "target_table": "cooks",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "cooks_id_fkey",
+    "source_table": "cooks",
+    "source_column": "id",
+    "target_table": "users",
+    "target_column": "id"
+  }
+]

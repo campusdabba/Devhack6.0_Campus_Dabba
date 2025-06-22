@@ -9,6 +9,7 @@ import { useCart } from "@/components/providers/cart-provider";
 import { useAuth } from "@/components/providers/auth-provider";
 import { useToast } from "@/components/ui/use-toast";
 import InputSearch from "@/components/ui/search-bar";
+import AdvancedSearchBar from "@/components/shared/AdvancedSearchBar";
 import { UserNav } from "@/components/layout/User-nav";
 import Image from "next/image";
 
@@ -36,7 +37,15 @@ export function MainNav() {
   const router = useRouter();
   const { toast } = useToast();
   const { cart, getCartTotal } = useCart();
-  const { user, isAdmin, signOut } = useAuth();
+  const { user, isAdmin, signOut, refreshCounter } = useAuth();
+  
+  // Debug log to track re-renders
+  console.log('[MainNav] Rendering with:', { 
+    hasUser: !!user, 
+    isAdmin, 
+    refreshCounter,
+    userId: user?.id 
+  });
   
   const cartItemCount = cart.reduce((total: number, item: any) => total + item.quantity, 0);
   const cartTotal = getCartTotal();
@@ -97,9 +106,9 @@ export function MainNav() {
           "/cook/login",
           "/cook/registration",
         ].includes(pathname) && (
-          <Link href="/chatbot">
-            <InputSearch />
-          </Link>
+          <div className="hidden md:block">
+            <AdvancedSearchBar />
+          </div>
         )}
       </div>
       <div className="flex items-center space-x-4">

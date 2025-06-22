@@ -18,7 +18,17 @@ import { useAuth } from "@/components/providers/auth-provider";
 export function UserNav() {
   const router = useRouter();
   const { toast } = useToast();
-  const { user, signOut, isCook, isAdmin } = useAuth();
+  const { user, signOut, isCook, isAdmin, refreshCounter } = useAuth();
+
+  // Debug log to track re-renders
+  console.log('[UserNav] Rendering with:', { 
+    hasUser: !!user, 
+    isCook, 
+    isAdmin, 
+    refreshCounter,
+    userId: user?.id,
+    userEmail: user?.email 
+  });
 
   const handleLogout = async () => {
     try {

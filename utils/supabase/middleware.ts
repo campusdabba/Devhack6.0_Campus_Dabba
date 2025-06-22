@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 
-const publicRoutes = ['/', '/auth/login', '/auth/register', '/browse','/cook/register','/student/register','/search',"/cart",'/checkout','cook/login','/states','/cooks/:id','/chatbot', '/auth/admin-register', '/faq', '/support', '/about', '/careers']
+const publicRoutes = ['/', '/auth/login', '/auth/register', '/browse','/cook/register','/student/register','/search',"/cart",'/checkout','cook/login','/states','/cooks/:id','/chatbot', '/auth/admin-register', '/faq', '/support', '/about', '/careers', '/api/search', '/api/ai/chat']
 
 
 export async function updateSession(request: NextRequest) {

@@ -1,47 +1,42 @@
 "use client";
 
 import { useEffect } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { useAuth } from "@/components/providers/auth-provider";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createClient();
+  const { user, isAdmin, loading } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
-    const checkAdmin = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-          window.location.href = "/auth/login";
-          return;
-        }
+    // Wait for auth to be loaded
+    if (loading) return;
+    
+    // Redirect if not logged in or not admin
+    if (!user || !isAdmin) {
+      router.push("/auth/login");
+      return;
+    }
+  }, [user, isAdmin, loading, router]);
 
-        const { data: isAdmin, error } = await supabase
-          .rpc('is_admin', { input_user_id: user.id });
+  // Show loading while auth is being determined
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
-        if (error) {
-          console.error('Error checking admin status:', error);
-          window.location.href = "/";
-          return;
-        }
-
-        if (!isAdmin) {
-          console.log('User is not an admin');
-          window.location.href = "/";
-          return;
-        }
-      } catch (error) {
-        console.error('Error in admin check:', error);
-        window.location.href = "/";
-      }
-    };
-
-    checkAdmin();
-  }, [supabase]);
+  // Don't render anything if not admin (will redirect)
+  if (!user || !isAdmin) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -51,4 +46,4 @@ export default function AdminLayout({
       </main>
     </div>
   );
-} 
+}

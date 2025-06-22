@@ -2,10 +2,11 @@
 
 import { useEffect, useState, useRef } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { useAuth } from "@/components/providers/auth-provider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Navigation, Star } from "lucide-react";
+import { MapPin, Navigation, Star, Users, Clock, User } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Cook } from "./types";
@@ -13,11 +14,13 @@ import { Cook } from "./types";
 interface MapLocation {
   latitude: number;
   longitude: number;
+  source: 'gps' | 'profile' | 'default';
+  address?: string;
 }
 
 const MAPTILER_API_KEY = "XZiubdaky8VdD93jgd6l";
 const DEFAULT_ZOOM = 13;
-const MAX_DISTANCE_KM = 5; // Maximum distance to show cooks (in kilometers)
+const MAX_DISTANCE_KM = 10; // Maximum distance to show cooks (in kilometers)
 
 // Calculate distance between two points using Haversine formula
 function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -31,6 +34,49 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
     Math.sin(dLon / 2) * Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c; // Distance in km
+}
+
+// Function to geocode address using OpenStreetMap Nominatim API
+async function geocodeAddress(address: any): Promise<{lat: number, lng: number} | null> {
+  try {
+    let addressString = "";
+    if (typeof address === 'object' && address !== null) {
+      const parts = [
+        address.street,
+        address.city,
+        address.state,
+        address.pincode
+      ].filter(Boolean);
+      addressString = parts.join(", ");
+    } else {
+      addressString = address;
+    }
+
+    console.log("🗺️ Geocoding address:", addressString);
+    
+    // Using OpenStreetMap Nominatim API (free)
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addressString)}&limit=1&countrycodes=in`
+    );
+    
+    if (!response.ok) {
+      throw new Error('Geocoding failed');
+    }
+    
+    const data = await response.json();
+    
+    if (data && data.length > 0) {
+      return {
+        lat: parseFloat(data[0].lat),
+        lng: parseFloat(data[0].lon)
+      };
+    }
+    
+    return null;
+  } catch (error) {
+    console.error("🚨 Geocoding error:", error);
+    return null;
+  }
 }
 
 export function NearbyCooksMap() {

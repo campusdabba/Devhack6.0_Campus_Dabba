@@ -13,8 +13,10 @@ interface AuthContextType {
   isStudent: boolean
   isCustomer: boolean
   loading: boolean
+  refreshCounter: number // Add this to force re-renders
   signOut: () => Promise<void>
   refreshUser: () => Promise<void>
+  forceRefresh: () => void // Add manual refresh function
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -25,6 +27,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userRole, setUserRole] = useState<string | string[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false) // Prevent concurrent refreshes
+  const [refreshCounter, setRefreshCounter] = useState(0) // Force re-renders
   const supabase = createClient()
 
   // Cache user role to avoid repeated DB calls
@@ -166,6 +169,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setRoleCache({}) // Clear cache on sign out
   }
 
+  const forceRefresh = () => {
+    console.log('Force refreshing auth state...')
+    setRefreshCounter(prev => prev + 1)
+    refreshUser()
+  }
+
   useEffect(() => {
     let mounted = true;
     
@@ -188,22 +197,46 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     initAuth()
 
-    // Only listen for SIGNED_OUT events to clean up state
-    // Don't listen for SIGNED_IN or TOKEN_REFRESHED to prevent window switching reloads
+    // Listen for auth state changes and handle them properly
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
       console.log('Auth state changed:', event)
       
-      // Only handle SIGNED_OUT to clean up state
-      if (event === 'SIGNED_OUT' && mounted) {
+      if (!mounted) return;
+      
+      if (event === 'SIGNED_OUT') {
+        console.log('User signed out, clearing state...')
         setUser(null)
         setSession(null)
         setUserRole(null)
         setRoleCache({})
         setLoading(false)
+      } else if (event === 'SIGNED_IN' && currentSession?.user) {
+        console.log('User signed in, refreshing auth state...')
+        // Force immediate refresh
+        setRefreshCounter(prev => prev + 1)
+        setSession(currentSession)
+        setUser(currentSession.user)
+        
+        // Fetch role for the new user
+        try {
+          const role = await getUserRole(currentSession.user.id)
+          console.log('New user role fetched:', role)
+          setUserRole(role)
+          // Force another refresh after role is set
+          setRefreshCounter(prev => prev + 1)
+        } catch (error) {
+          console.error('Error fetching role after sign in:', error)
+          setUserRole('customer') // Default fallback
+          // Force refresh even on error
+          setRefreshCounter(prev => prev + 1)
+        }
+      } else if (event === 'TOKEN_REFRESHED' && currentSession?.user) {
+        console.log('Token refreshed, updating session...')
+        setSession(currentSession)
+        // Don't need to refetch role on token refresh, just update session
       }
-      // Ignore all other events (SIGNED_IN, TOKEN_REFRESHED, etc.)
     })
 
     return () => {
@@ -227,8 +260,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isStudent,
     isCustomer,
     loading,
+    refreshCounter,
     signOut,
     refreshUser,
+    forceRefresh,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
